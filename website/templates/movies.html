@@ -1,0 +1,44 @@
+{% extends "base.html" %} {% block title %}Welcome{% endblock %} {%block content
+%}
+
+<html>
+  <h1 color="#000000" align="center">Welcome to PickFlix</h1>
+  <h3 color="#000000" align="center">
+    Click next to generate random popular Movies
+  </h3>
+
+  <form method="post">
+    <div class="text-center">
+      <a href="/" align="center">
+        <button
+          align="center"
+          type="button"
+          class="btn btn-primary"
+          color="#000000"
+        >
+          Home
+        </button>
+      </a>
+      <button align="center" type="submit" class="btn btn-primary">Next</button>
+    </div>
+  </form>
+
+  <h3 align="center">{{ Title_Name }}</h3>
+
+  <h4>
+    <style>
+      img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .text-center {
+        text-align: center;
+      }
+    </style>
+
+    <img src="{{ movie_image_url }}" width="400" height="500" class="center" />
+  </h4>
+</html>
+
+{% endblock %}
