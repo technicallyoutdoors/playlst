@@ -6,6 +6,8 @@ from flask_login import login_user, login_required, logout_user, current_user
 import requests
 import random
 import json
+from .models import Favorite
+from . import db
 
 
 auth = Blueprint('auth', __name__)
@@ -113,7 +115,21 @@ def movies():
     movie_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
     print(movie_image_url)
     # if request.method == "POST":
+    
+    if request.method == 'POST':
+        favorite = request.form.get('favorite')
+        return redirect(url_for('favorite', favorite=favorite))
     return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Title_Name=Title_Name)
+
+
+@auth.route('/favorites', methods=['GET, POST'])
+def favorite():
+    favorite = request.args.get('favorite', None)
+    new_favorite = Favorite(user_id=current_user.id)
+    db.session.add(new_favorite)
+    db.session.commit()
+    flash('Added to Watchlist!', category='success')
+    return render_template('favorites.html', favorite=favorite)
 
 
 @auth.route('/tvshows', methods=['GET', 'POST'])

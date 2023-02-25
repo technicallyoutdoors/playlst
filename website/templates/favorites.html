@@ -1,0 +1,52 @@
+{% extends "base.html" %} {% block title %}Welcome{% endblock %} {%block content
+    %}
+    
+    <html>
+      <h1 color="#000000" align="center">WatchList</h1>
+      <ul class="list-group list-group-flush" id="favorites">
+
+        {% for favorites in user.favorites %}
+        <li class="list-group-item"> {{favorite.data}} </li>
+        {% endfor %} 
+
+
+
+      <h3 color="#000000" align="center">
+      </h3>
+      <form method="post">
+        <div class="text-center">
+          <a href="/" align="center">
+            <button
+              align="center"
+              type="button"
+              class="btn btn-primary"
+              color="#000000">
+              Home
+            </button>
+          </a>
+          <a>
+          <button align="center" type="submit" class="btn btn-primary">     </button> </a>
+          <a>
+            <button name="favorite" align="center" type="submit" class="btn btn-primary"></button> </a>
+    
+        </div>
+      </form>
+    
+      
+    
+      <h4>
+        <style>
+          img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          .text-center {
+            text-align: center;
+          }
+        </style>
+    
+      </h4>
+    </html>
+    
+    {% endblock %}

@@ -12,5 +12,5 @@ class User(db.Model, UserMixin):
 class Favorite(db.Model):
     imdb_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150))
-    data_added = db.Column(db.DateTime(timezone=True), default=func.now())
+    date_added = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
