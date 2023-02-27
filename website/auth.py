@@ -81,7 +81,7 @@ def movies():
     url1 = "https://online-movie-database.p.rapidapi.com/title/v2/get-popular-movies-by-genre"
     querystring1 = {"genre": users_input, "limit": "100"}
     headers = {
-        "X-RapidAPI-Key": "20719788e5msh46d7f8c7ed9abd9p1d8da2jsnb3f8e9ee7b85",
+        "X-RapidAPI-Key": "4aa56d7288msh5be0286e95c8c10p160380jsnfce8a0c61ccd",
         "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
     }
     response1 = requests.request(
@@ -99,33 +99,32 @@ def movies():
     querystring2 = {"i": choice}
     response2 = requests.request("GET", url2, params=querystring2)
     data2 = json.loads(response2.text)
-    Title_Name = data2['Title']
-    print(Title_Name)
+    Movie_Title_Name = data2['Title']
+    print(Movie_Title_Name)
 
     # gets the image for the title ID from the url2 API only 500 requests/month
     url3 = "https://online-movie-database.p.rapidapi.com/title/get-images"
     querystring3 = {"tconst": choice, "limit": "1"}
     headers = {
-        "X-RapidAPI-Key": "20719788e5msh46d7f8c7ed9abd9p1d8da2jsnb3f8e9ee7b85",
-        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
-    }
+	"X-RapidAPI-Key": "4aa56d7288msh5be0286e95c8c10p160380jsnfce8a0c61ccd",
+	"X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
+}
     response3 = requests.request(
         "GET", url3, headers=headers, params=querystring3)
     data3 = json.loads(response3.text)
     movie_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
     print(movie_image_url)
-    # if request.method == "POST":
-    
+
     if request.method == 'POST':
         favorite = request.form.get('favorite')
-        return redirect(url_for('favorite', favorite=favorite))
-    return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Title_Name=Title_Name)
+        return redirect(url_for('auth.favorite'))
+    return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name)
 
 
-@auth.route('/favorites', methods=['GET, POST'])
+@auth.route('/favorites', methods=['GET', 'POST'])
 def favorite():
     favorite = request.args.get('favorite', None)
-    new_favorite = Favorite(user_id=current_user.id)
+    new_favorite = Favorite(user_id=current_user.id).favorites.append(favorite)
     db.session.add(new_favorite)
     db.session.commit()
     flash('Added to Watchlist!', category='success')
@@ -153,8 +152,8 @@ def tvshows():
     querystring2 = {"i": choice}
     response2 = requests.request("GET", url2, params=querystring2)
     data2 = json.loads(response2.text)
-    Title_Name = data2['Title']
-    print(Title_Name)
+    Tv_Show_Title_Name = data2['Title']
+    print(Tv_Show_Title_Name)
 
     url3 = "https://online-movie-database.p.rapidapi.com/title/get-images"
     querystring3 = {"tconst": choice, "limit": "1"}
@@ -167,15 +166,4 @@ def tvshows():
     data3 = json.loads(response3.text)
     tv_show_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
 
-    return render_template("tvshows.html", user=current_user, tv_show_image_url=tv_show_image_url, Title_Name=Title_Name)
-
-
-@auth.route('/show_movies', methods=['GET', 'POST'])
-def show_movies():
-    return render_template("show_movies.html", user=current_user)
-
-
-@auth.route('/pick_a_flix', methods=['GET', 'POST'])
-def pick_flix():
-    print('hello world')
-    return redirect(url_for(pick_flix))
+    return render_template("tvshows.html", user=current_user, tv_show_image_url=tv_show_image_url, Tv_Show_Title_Name=Tv_Show_Title_Name)

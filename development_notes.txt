@@ -1,0 +1,1 @@
+New online-movie-database API has been applied to auth.py and am using the mattmill1217 username account for rapidapi because previous account reached api call max. 
