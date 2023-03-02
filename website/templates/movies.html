@@ -20,10 +20,29 @@
         </button>
       </a>
       <a>
-      <button align="center" type="submit" class="btn btn-primary">Next</button> </a>
-      <a>
-        <button name="favorites" align="center" type="submit" class="btn btn-primary">Add to Watchlist</button> </a>
+        <button
+          name="next"
+          align="center"
+          type="submit"
+          value="next"
+          class="btn btn-primary"
+        >
+          Next
+        </button>
+      </a>
 
+      <form action="/favorites" method="post">
+        <a>
+          <button
+            name="favorites"
+            align="center"
+            type="submit"
+            class="btn btn-primary"
+          >
+            Add to Watchlist
+          </button>
+        </a>
+      </form>
     </div>
   </form>
 

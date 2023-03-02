@@ -77,7 +77,7 @@ def movies():
     user = User.query.filter_by(email=email).first()
     # gets the genre from user and selects a random movie from that genre to display
     # 500/month hard stop requests
-    users_input = request.form.get("genre")
+    users_input = request.form.get("next")
     url1 = "https://online-movie-database.p.rapidapi.com/title/v2/get-popular-movies-by-genre"
     querystring1 = {"genre": users_input, "limit": "100"}
     headers = {
@@ -106,29 +106,30 @@ def movies():
     url3 = "https://online-movie-database.p.rapidapi.com/title/get-images"
     querystring3 = {"tconst": choice, "limit": "1"}
     headers = {
-	"X-RapidAPI-Key": "4aa56d7288msh5be0286e95c8c10p160380jsnfce8a0c61ccd",
-	"X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
-}
+        "X-RapidAPI-Key": "4aa56d7288msh5be0286e95c8c10p160380jsnfce8a0c61ccd",
+        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
+    }
     response3 = requests.request(
         "GET", url3, headers=headers, params=querystring3)
     data3 = json.loads(response3.text)
     movie_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
     print(movie_image_url)
 
-    if request.method == 'POST':
-        favorite = request.form.get('favorite')
-        return redirect(url_for('auth.favorite'))
     return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name)
 
 
 @auth.route('/favorites', methods=['GET', 'POST'])
 def favorite():
-    favorite = request.args.get('favorite', None)
-    new_favorite = Favorite(user_id=current_user.id).favorites.append(favorite)
-    db.session.add(new_favorite)
+    favorite_list = request.args.get('favorites', None)
+    Favorite(user_id=current_user.id).favorites.append(favorite_list)
+    db.session.add(favorite_list)
     db.session.commit()
+    print(favorite_list)
     flash('Added to Watchlist!', category='success')
-    return render_template('favorites.html', favorite=favorite)
+    return render_template('favorites.html', user=current_user)
+
+    #   elif request.form.get('favorites'):
+    # redirect(url_for('favorites.html'))
 
 
 @auth.route('/tvshows', methods=['GET', 'POST'])
