@@ -77,6 +77,7 @@ def movies():
     user = User.query.filter_by(email=email).first()
     # gets the genre from user and selects a random movie from that genre to display
     # 500/month hard stop requests
+  
     users_input = request.form.get("next")
     url1 = "https://online-movie-database.p.rapidapi.com/title/v2/get-popular-movies-by-genre"
     querystring1 = {"genre": users_input, "limit": "100"}
@@ -114,9 +115,14 @@ def movies():
     data3 = json.loads(response3.text)
     movie_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
     print(movie_image_url)
-
+    
     return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name)
 
+    
+
+        
+#  if request.form.get('next'):
+#             show_next_movie()
 
 @auth.route('/favorites', methods=['GET', 'POST'])
 def favorite():
