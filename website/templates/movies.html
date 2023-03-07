@@ -19,6 +19,8 @@
           Home
         </button>
       </a>
+    </form>
+    <form method="post">
       <a>
         <button
           name="next"
@@ -30,21 +32,22 @@
           Next
         </button>
       </a>
-
-      <form action="/favorites" method="post">
+    </form>
+      <form action="/favorites.html" method="post">
         <a>
           <button
             name="favorites"
             align="center"
             type="submit"
             class="btn btn-primary"
+            value="favorites"
           >
             Add to Watchlist
           </button>
         </a>
       </form>
     </div>
-  </form>
+  
 
   <h3 align="center">{{ Movie_Title_Name }}</h3>
 
