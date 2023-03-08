@@ -131,6 +131,7 @@ def favorite():
     if request.method == "POST": 
         favorite = request.form["favorites"]
         new_favorite = Favorites(favorites=favorite) 
+        #todo add movie title name and image url to the variable 
     db.session.add(new_favorite)
     db.session.commit()
     flash('Added to Watchlist!', category='success')
