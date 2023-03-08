@@ -74,6 +74,8 @@ def signup():
 
 @auth.route('/movies', methods=['GET', 'POST'])
 def movies():
+    global movie_image_url
+    global Movie_Title_Name
     email = request.form.get('email')
     user = User.query.filter_by(email=email).first()
 
@@ -116,6 +118,7 @@ def movies():
     data3 = json.loads(response3.text)
     movie_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
     print(movie_image_url)
+    
 
     return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name)
 
@@ -125,13 +128,10 @@ def movies():
 
 @auth.route('/favorites', methods=['GET', 'POST'])
 def favorite():
-    favorite_list = request.args.get('favorites', None)
-    Favorite(user_id=current_user.id).favorites.append(favorite_list)
     db.session.add(favorite_list)
     db.session.commit()
-    print(favorite_list)
     flash('Added to Watchlist!', category='success')
-    return render_template('favorites.html', user=current_user)
+    return render_template('movies.html', user=current_user)
 
     #   elif request.form.get('favorites'):
     # redirect(url_for('favorites.html'))

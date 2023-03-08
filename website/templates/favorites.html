@@ -15,7 +15,12 @@
           Home
         </button>
       </a>
-      <h3 align="center">{{ favorites }}</h3>
+      <ul class="list-group list-group-flush" id="favorites"> 
+       {% for favorite in user.favorites %}
+       <li class="list-group list-group-flush">{{ favorite.data }}</li>
+       {% endfor %}
+      
+      </ul>
     </div>
   </form>
 
