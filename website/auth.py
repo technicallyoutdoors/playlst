@@ -128,6 +128,9 @@ def movies():
 
 @auth.route('/favorites', methods=['GET', 'POST'])
 def favorite():
+    if request.method == "POST": 
+        favorite = request.form["favorites"]
+        new_favorite = Favorites(favorites=favorite) 
     db.session.add(favorite_list)
     db.session.commit()
     flash('Added to Watchlist!', category='success')
