@@ -16,7 +16,6 @@ class Favorite(db.Model):
     date_added = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     first_name = db.Column(db.String(150))
-    favorites = []
     
     # def __repr__(self):
     #     return f"Favorites('{self.title}', '{self.first_name}')"

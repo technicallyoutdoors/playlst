@@ -16,7 +16,7 @@
         </button>
       </a>
       <ul class="list-group list-group-flush" id="favorites"> 
-       {% for favorite in user.favorites %}
+       {% for new_favorite in user.favorite %}
        <li class="list-group list-group-flush">{{ favorite.data }}</li>
        {% endfor %}
       
