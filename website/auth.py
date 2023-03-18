@@ -131,8 +131,9 @@ def movies():
 @auth.route('/favorites', methods=['GET', 'POST'])
 def favorite():
     if request.method == "POST":
-        Movie_Title_Name = request.form.get("Movie_Title_Name") 
-        new_favorite = Favorite(id=id, title=Movie_Title_Name) #todo add the image url variable picture to the database model - figure out flask's method to storing photos 
+        new_favorite = Favorite(id=id, title=Movie_Title_Name)
+        print(new_favorite)
+        #todo add the image url variable picture to the database model - figure out flask's method to storing photos 
     db.session.add(new_favorite)
     db.session.commit()
     flash('Added to Watchlist!', category='success')
