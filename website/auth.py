@@ -76,7 +76,8 @@ def signup():
 def movies():
     global movie_image_url
     global Movie_Title_Name
-    global id 
+    global id
+    global choice
     email = request.form.get('email')
     user = User.query.filter_by(email=email).first()
 
@@ -119,8 +120,6 @@ def movies():
     data3 = json.loads(response3.text)
     movie_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
     print(movie_image_url)
-    
-    
 
     return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name)
 
@@ -129,11 +128,13 @@ def movies():
 #             show_next_movie()
 
 @auth.route('/favorites', methods=['GET', 'POST'])
-def favorite():
+def add_favorite():
     if request.method == "POST":
-        new_favorite = Favorite(id=id, title=Movie_Title_Name)
+        title = request.form.get('title')
+        image = request.form.get('movie_image')
+        new_favorite = Favorite(title=title, )
         print(new_favorite)
-        #todo add the image url variable picture to the database model - figure out flask's method to storing photos 
+        # todo add the image url variable picture to the database model - figure out flask's method to storing photos
     db.session.add(new_favorite)
     db.session.commit()
     flash('Added to Watchlist!', category='success')
@@ -179,3 +180,17 @@ def tvshows():
     tv_show_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
 
     return render_template("tvshows.html", user=current_user, tv_show_image_url=tv_show_image_url, Tv_Show_Title_Name=Tv_Show_Title_Name)
+
+
+@auth.route('/favorites/<username>')
+def favorites(username):
+    # Find the user by username
+    user = User.query.filter_by(username=username).first()
+
+    if user:
+        # Get the user's favorite movies
+        favorites = user.favorites
+
+        return render_template('favorites.html', username=username, favorites=favorites)
+
+    return redirect(url_for('index'))

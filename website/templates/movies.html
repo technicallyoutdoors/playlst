@@ -49,7 +49,7 @@
     </div>
   
 <form>
-  <h3 align="center" name="Movie_Title_Name">{{ Movie_Title_Name }}</h3>
+  <h3 align="center" name="title">{{ Movie_Title_Name }}</h3>
 </form> 
   <h4>
     <style>
@@ -62,8 +62,9 @@
         text-align: center;
       }
     </style>
-
-    <img src="{{ movie_image_url }}" width="400" height="500" class="center" />
+<form>
+    <img src="{{ movie_image_url }}" width="400" height="500" class="center" name="movie_image" />
+</form> 
   </h4>
 </html>
 
