@@ -33,7 +33,10 @@
         </button>
       </a>
     </form>
-      <form action="/favorites" method="post">
+      <form method="post" action="{{ url_for('auth.add_favorite') }}">
+        <input type="hidden" name="movie_title" value="{{ Movie_Title_Name }}">
+        <input type="hidden" name="movie_image_url" value="{{ movie_image_url }}">
+        <input type="hidden" name="current_user" value="{{ current_user }}">
         <a>
           <button
             name="favorites"

@@ -96,7 +96,7 @@ def movies():
     data1 = json.loads(response1.text)
 
     for id in data1:
-        ids.append(id.split("/")[2])
+        ids.append(id.split("/")[2]) 
         # res = [sub[2:] for sub in ids]
     choice = random.choice(ids)
 
@@ -120,28 +120,36 @@ def movies():
     data3 = json.loads(response3.text)
     movie_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
     print(movie_image_url)
+    
+    # if request.method == "POST":
+    #     if "favorites" in request.form:
+    #         title = request.form['title']
+    #         image = request.form['movie_image']
+    #         new_favorite = Favorite(title=title, image=image)
+    #         print(new_favorite)
+    #         # todo add the image url variable picture to the database model - figure out flask's method to storing photos
+    #     db.session.add(new_favorite)
+    #     db.session.commit() 
+    #     flash('Added to Watchlist!', category='success')
 
     return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name)
 
 
-#  if request.form.get('next'):
-#             show_next_movie()
-
 @auth.route('/favorites', methods=['GET', 'POST'])
 def add_favorite():
-    if request.method == "POST":
-        title = request.form.get('title')
-        image = request.form.get('movie_image')
-        new_favorite = Favorite(title=title, )
-        print(new_favorite)
+   if request.method == 'POST':
+        title = request.form['movie_title']
+        image = request.form['movie_image_url']
+        user_id = request.form['current_user']
+        new_favorite = Favorite(title=title, image=image, user_id=current_user.id)
         # todo add the image url variable picture to the database model - figure out flask's method to storing photos
-    db.session.add(new_favorite)
-    db.session.commit()
-    flash('Added to Watchlist!', category='success')
-    return render_template('movies.html', user=current_user)
-
-    #   elif request.form.get('favorites'):
-    # redirect(url_for('favorites.html'))
+        db.session.add(new_favorite)
+        db.session.commit() 
+        flash('Added to Watchlist!', category='success')
+        return redirect(url_for('auth.movies'))
+   else:
+    favorites = current_user.favorites
+    return render_template('favorites.html', user=current_user, favorites=favorites)
 
 
 @auth.route('/tvshows', methods=['GET', 'POST'])
