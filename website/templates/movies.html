@@ -33,7 +33,7 @@
         </button>
       </a>
     </form>
-      <form method="post" action="{{ url_for('auth.add_favorite') }}">
+      <form method="post" action="{{ url_for('auth.add_favorite_movie') }}">
         <input type="hidden" name="movie_title" value="{{ Movie_Title_Name }}">
         <input type="hidden" name="movie_image_url" value="{{ movie_image_url }}">
         <input type="hidden" name="current_user" value="{{ current_user }}">
@@ -46,7 +46,7 @@
             value="favorites"
           >
             Add to Watchlist
-          </button>x
+          </button>
         </a>
       </form>
     </div>

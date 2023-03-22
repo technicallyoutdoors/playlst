@@ -19,10 +19,27 @@
           Home
         </button>
       </a>
+      <a>
       <button align="center" type="submit" class="btn btn-primary">Next</button>
+      </a>
     </div>
   </form>
-
+  <form method="post" action="{{ url_for('auth.add_favorite_tv_show') }}">
+    <input type="hidden" name="tv_show_title" value="{{ Tv_Show_Title_Name }}">
+    <input type="hidden" name="tv_show_image_url" value="{{ tv_show_image_url }}">
+    <input type="hidden" name="current_user" value="{{ current_user }}">
+    <a>
+      <button
+        name="favorites"
+        align="center"
+        type="submit"
+        class="btn btn-primary"
+        value="favorites"
+      >
+        Add to Watchlist
+      </button>
+    </a>
+  </form>
   <h3 align="center">{{ Tv_Show_Title_Name }}</h3>
 
   <h4>
