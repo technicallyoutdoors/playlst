@@ -22,7 +22,7 @@
       <a>
       <button align="center" type="submit" class="btn btn-primary">Next</button>
       </a>
-    </div>
+    
   </form>
   <form method="post" action="{{ url_for('auth.add_favorite_tv_show') }}">
     <input type="hidden" name="tv_show_title" value="{{ Tv_Show_Title_Name }}">
@@ -40,6 +40,7 @@
       </button>
     </a>
   </form>
+</div>
   <h3 align="center">{{ Tv_Show_Title_Name }}</h3>
 
   <h4>

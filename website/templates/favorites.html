@@ -20,6 +20,14 @@
         {% for favorite in favorites %}
         <div class="favorite">
           <h2>{{ favorite.title }}</h2>
+
+          <form method="post" action="{{ url_for('auth.delete_favorite') }}">
+          
+          <input type="hidden" name="favorite" value="{{ favorite.title }}">
+          <button type="submit">Delete</button>
+          </form>
+<span aria-hidden="true">&times;</span> 
+          </button>
           <img src="{{ favorite.image }}" alt="{{ favorite.title }}" width="400" height="400"/>
         </div>
         {% endfor %}

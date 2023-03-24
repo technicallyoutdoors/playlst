@@ -143,7 +143,6 @@ def add_favorite_movie():
         user_id = request.form['current_user']
         new_favorite = Favorite(title=title, image=image,
                                 user_id=current_user.id)
-        # todo add the image url variable picture to the database model - figure out flask's method to storing photos
         db.session.add(new_favorite)
         db.session.commit()
         flash('Added to Watchlist!', category='success')
@@ -191,13 +190,14 @@ def tvshows():
     return render_template("tvshows.html", user=current_user, tv_show_image_url=tv_show_image_url, Tv_Show_Title_Name=Tv_Show_Title_Name)
 
 
-@auth.route('/favorites', methods=['GET', 'POST'])
+@auth.route('/add_favorite_tv_show', methods=['GET', 'POST'])
 def add_favorite_tv_show():
+    global favorites
     if request.method == "POST":
-        title2 = request.form['tv_show_title']
-        image2 = request.form['tv_show_image_url']
+        title = request.form['tv_show_title']
+        image = request.form['tv_show_image_url']
         user_id = request.form['current_user']
-        new_favorite = Favorite(title=title2, image=image2, user_id=current_user.id)
+        new_favorite = Favorite(title=title, image=image, user_id=current_user.id)
         db.session.add(new_favorite)
         db.session.commit()
         flash('Added to Watchlist!', category='success')
@@ -205,3 +205,12 @@ def add_favorite_tv_show():
     else:
         favorites = current_user.favorites
     return render_template('favorites.html', user=current_user, favorites=favorites)
+
+@auth.route('/delete_favorite', methods=['POST'])
+def delete_favorite(favorites):
+    if favorites.user_id == current_user.id:
+        db.session.delete(favorites)
+        db.session.commit()
+        flash("Favorite has been removed", category='success')
+        return redirect(url_for('auth.favorites'))
+        
