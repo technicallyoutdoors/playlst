@@ -207,10 +207,15 @@ def add_favorite_tv_show():
     return render_template('favorites.html', user=current_user, favorites=favorites)
 
 @auth.route('/delete_favorite', methods=['POST'])
-def delete_favorite(favorites):
-    if favorites.user_id == current_user.id:
-        db.session.delete(favorites)
-        db.session.commit()
-        flash("Favorite has been removed", category='success')
-        return redirect(url_for('auth.favorites'))
-        
+def delete_favorite():
+    # if favorites.user_id == current_user.id:
+    # favorite = Favorite.query.filter_by(title=title, user_id=current_user.id)
+    # if favorite:
+    title = request.form['title']
+    image = request.form['image']
+    deletion = title + image 
+    db.session.delete(deletion)
+    db.session.commit()
+    flash("Favorite has been removed", category='success')
+    return redirect(url_for('auth.favorites'))
+    
