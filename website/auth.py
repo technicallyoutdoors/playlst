@@ -135,21 +135,23 @@ def movies():
     return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name)
 
 
-@auth.route('/favorites', methods=['GET', 'POST'])
+@auth.route('/add_favorite_movie', methods=['GET', 'POST'])
 def add_favorite_movie():
-    if request.method == 'POST':
+        global favorites
         title = request.form['movie_title']
         image = request.form['movie_image_url']
         user_id = request.form['current_user']
         new_favorite = Favorite(title=title, image=image,
                                 user_id=current_user.id)
-        db.session.add(new_favorite)
-        db.session.commit()
-        flash('Added to Watchlist!', category='success')
-        return redirect(url_for('auth.movies'))
-    else:
-        favorites = current_user.favorites
-    return render_template('favorites.html', user=current_user, favorites=favorites)
+        if new_favorite:
+            db.session.add(new_favorite)
+            db.session.commit()
+            flash('Added to Watchlist!', category='success')
+            return redirect(url_for('auth.movies'))
+        else:
+            favorites = current_user.favorites
+
+        return render_template('favorites.html', user=current_user, favorites=favorites)
 
 
 @auth.route('/tvshows', methods=['GET', 'POST'])
@@ -192,31 +194,36 @@ def tvshows():
 
 @auth.route('/add_favorite_tv_show', methods=['GET', 'POST'])
 def add_favorite_tv_show():
-    global favorites
-    if request.method == "POST":
         title = request.form['tv_show_title']
         image = request.form['tv_show_image_url']
         user_id = request.form['current_user']
         new_favorite = Favorite(title=title, image=image, user_id=current_user.id)
-        db.session.add(new_favorite)
-        db.session.commit()
-        flash('Added to Watchlist!', category='success')
-        return redirect(url_for('auth.tvshows'))
-    else:
-        favorites = current_user.favorites
-    return render_template('favorites.html', user=current_user, favorites=favorites)
+        if new_favorite:
+            db.session.add(new_favorite)
+            db.session.commit()
+            flash('Added to Watchlist!', category='success')
+            return redirect(url_for('auth.tvshows'))
+        else:
+            favorites = current_user.favorites
+        return render_template('favorites.html', user=current_user, favorites=favorites)
 
-@auth.route('/delete_favorite', methods=['POST'])
+@auth.route('/delete_favorite', methods=['GET', 'POST'])
 def delete_favorite():
-    # if favorites.user_id == current_user.id:
-    # favorite = Favorite.query.filter_by(title=title, user_id=current_user.id)
-    # if favorite:
     title = request.form['title']
     image = request.form['image']
     user_id = request.form['current_user']
-    deletion = Favorite(title=title, image=image, user_id=current_user.id) 
-    db.session.delete(deletion)
-    db.session.commit()
-    flash("Favorite has been removed", category='success')
-    return redirect(url_for('auth.favorites'))
+    print(title, image, user_id)
+    favorite = Favorite.query.filter_by(title=title, image=image, user_id=user_id).first()
+    if favorite:
+        db.session.delete(favorite)
+        db.session.commit()
+        flash("Favorite has been removed", category='success')
+    else:
+        flash("Favorite not found", category='error')
+    return redirect(url_for('auth.show_favorites'))
+print(delete_favorite)
+
     
+@auth.route('/favorites', methods=['GET', 'POST'])
+def show_favorites():
+    return render_template('favorites.html', user=current_user, favorites = current_user.favorites)
