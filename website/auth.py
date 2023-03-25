@@ -213,7 +213,8 @@ def delete_favorite():
     # if favorite:
     title = request.form['title']
     image = request.form['image']
-    deletion = title + image 
+    user_id = request.form['current_user']
+    deletion = Favorite(title=title, image=image, user_id=current_user.id) 
     db.session.delete(deletion)
     db.session.commit()
     flash("Favorite has been removed", category='success')
