@@ -147,6 +147,7 @@ def add_favorite_movie():
 
 @auth.route('/tvshows', methods=['GET', 'POST'])
 def tvshows():
+    global choice
     url1 = "https://online-movie-database.p.rapidapi.com/title/get-most-popular-tv-shows"
     querystring1 = {"currentCountry": "US",
                     "purchaseCountry": "US", "homeCountry": "US"}
@@ -185,10 +186,11 @@ def tvshows():
 
 @auth.route('/add_favorite_tv_show', methods=['GET', 'POST'])
 def add_favorite_tv_show():
+        id = request.form['favorite_id']
         title = request.form['tv_show_title']
         image = request.form['tv_show_image_url']
         user_id = request.form['current_user']
-        new_favorite = Favorite(title=title, image=image, user_id=current_user.id)
+        new_favorite = Favorite(id=choice, title=title, user_id=current_user.id, image=image)
         if new_favorite:
             db.session.add(new_favorite)
             db.session.commit()
@@ -217,21 +219,6 @@ def delete_favorite():
         flash("Error while deleting favorite", category='error')
     return redirect(url_for('auth.show_favorites'))
 
-
-# @auth.route('/delete_favorite', methods=['GET', 'POST'])
-# def delete_favorite():
-#     title = request.form['title']
-#     image = request.form['image']
-#     user_id = request.form['current_user']
-#     print(title, image, user_id)
-#     favorite = Favorite.query.filter_by(title=title, image=image, user_id=current_user.id).first()
-#     if favorite:
-#         db.session.delete(favorite)
-#         db.session.commit()
-#         flash("Favorite has been removed", category='success')
-#     # else:
-#     #     flash("Favorite not found", category='error')
-#     return redirect(url_for('auth.show_favorites'))
     
 @auth.route('/favorites', methods=['GET', 'POST'])
 def show_favorites():

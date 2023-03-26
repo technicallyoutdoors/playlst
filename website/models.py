@@ -11,7 +11,7 @@ class User(db.Model, UserMixin):
     favorites = db.relationship('Favorite')
     
 class Favorite(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(50), primary_key=True)
     title = db.Column(db.String(150))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     image = db.Column(db.String(200))   
