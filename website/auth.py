@@ -8,6 +8,7 @@ import random
 import json
 from .models import Favorite
 from . import db
+from sqlalchemy import func
 # from movie_show_generator import movie_show_generator
 
 
@@ -121,16 +122,6 @@ def movies():
     movie_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
     print(movie_image_url)
 
-    # if request.method == "POST":
-    #     if "favorites" in request.form:
-    #         title = request.form['title']
-    #         image = request.form['movie_image']
-    #         new_favorite = Favorite(title=title, image=image)
-    #         print(new_favorite)
-    #         # todo add the image url variable picture to the database model - figure out flask's method to storing photos
-    #     db.session.add(new_favorite)
-    #     db.session.commit()
-    #     flash('Added to Watchlist!', category='success')
 
     return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name)
 
@@ -207,23 +198,41 @@ def add_favorite_tv_show():
             favorites = current_user.favorites
         return render_template('favorites.html', user=current_user, favorites=favorites)
 
-@auth.route('/delete_favorite', methods=['GET', 'POST'])
+@auth.route('/delete_favorite', methods=['POST'])
 def delete_favorite():
-    title = request.form['title']
-    image = request.form['image']
-    user_id = request.form['current_user']
-    print(title, image, user_id)
-    favorite = Favorite.query.filter_by(title=title, image=image, user_id=user_id).first()
-    if favorite:
-        db.session.delete(favorite)
-        db.session.commit()
-        flash("Favorite has been removed", category='success')
-    else:
-        flash("Favorite not found", category='error')
+    try:
+        title = request.form['title']
+        image = request.form['image']
+        user_id = request.form['current_user']
+        print(title, image, user_id)
+        favorite = Favorite.query.filter_by(title=title, image=image, user_id=current_user.id).filter(func.lower(Favorite.title) == func.lower(title), func.lower(Favorite.image) == func.lower(image)).first()
+        if favorite:
+            db.session.delete(favorite)
+            db.session.commit()
+            flash("Favorite has been removed", category='success')
+        else:
+            flash("Favorite not found", category='error')
+    except Exception as e:
+        print(e)
+        flash("Error while deleting favorite", category='error')
     return redirect(url_for('auth.show_favorites'))
-print(delete_favorite)
 
+
+# @auth.route('/delete_favorite', methods=['GET', 'POST'])
+# def delete_favorite():
+#     title = request.form['title']
+#     image = request.form['image']
+#     user_id = request.form['current_user']
+#     print(title, image, user_id)
+#     favorite = Favorite.query.filter_by(title=title, image=image, user_id=current_user.id).first()
+#     if favorite:
+#         db.session.delete(favorite)
+#         db.session.commit()
+#         flash("Favorite has been removed", category='success')
+#     # else:
+#     #     flash("Favorite not found", category='error')
+#     return redirect(url_for('auth.show_favorites'))
     
 @auth.route('/favorites', methods=['GET', 'POST'])
 def show_favorites():
-    return render_template('favorites.html', user=current_user, favorites = current_user.favorites)
+    return render_template('favorites.html', user=current_user.id, favorites=current_user.favorites)
