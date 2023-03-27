@@ -15,7 +15,8 @@ class Favorite(db.Model):
     title = db.Column(db.String(150))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     image = db.Column(db.String(200))   
+
     
-    # def __repr__(self):
-    #     return f"Favorites('{self.title}', '{self.first_name}')"
-    
+#todo buiild a database model that allows the user to creat a group for a family and then add another 
+#todo cont. user to that group so that they can see eachothers favorites in a page called "matched" or
+#todo cont. something else. 

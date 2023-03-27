@@ -1,8 +1,8 @@
-{% extends "base.html" %} {% block title %}Welcome{% endblock %} {%block content
+{% extends "base.html" %} {% block title %}Favorites{% endblock %} {%block content
 %}
 
 <html>
-  <h1 color="#000000" align="center">WatchList</h1>
+  <h1 color="#000000" align="center"></h1>
   <form method="post">
     <div class="text-center">
       <a href="/" align="center">
@@ -15,6 +15,7 @@
           Home
         </button>
       </a>
+    </form>
       <h2>Favorites</h2>
       <ul class="list-group list-group-flush" id="favorites">
         {% for favorite in favorites %}
@@ -22,14 +23,17 @@
           <h2>{{ favorite.title }}</h2>
 
           <form method="post" action="{{ url_for('auth.delete_favorite') }}">
-            <input type="hidden" name="title" value="{{ favorite.title }}">
-            <input type="hidden" name="image" value="{{ favorite.image }}">
+            <input type="hidden" name="title" value="{{ favorite.title }}" />
+            <input type="hidden" name="image" value="{{ favorite.image }}" />
             <input
               type="hidden"
               name="current_user"
-              value="{{ current_user }}">
+              value="{{ current_user }}"
+            />
 
-            <button type="submit">Delete</button>
+            <button type="submit" class="btn btn-primary" align="center">
+              Delete
+            </button>
           </form>
 
           <img

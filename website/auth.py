@@ -9,7 +9,6 @@ import json
 from .models import Favorite
 from . import db
 from sqlalchemy import func
-# from movie_show_generator import movie_show_generator
 
 
 auth = Blueprint('auth', __name__)
@@ -122,27 +121,26 @@ def movies():
     movie_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
     print(movie_image_url)
 
-
     return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name)
 
 
 @auth.route('/add_favorite_movie', methods=['GET', 'POST'])
 def add_favorite_movie():
-        global favorites
-        title = request.form['movie_title']
-        image = request.form['movie_image_url']
-        user_id = request.form['current_user']
-        new_favorite = Favorite(title=title, image=image,
-                                user_id=current_user.id)
-        if new_favorite:
-            db.session.add(new_favorite)
-            db.session.commit()
-            flash('Added to Watchlist!', category='success')
-            return redirect(url_for('auth.movies'))
-        else:
-            favorites = current_user.favorites
+    global favorites
+    title = request.form['movie_title']
+    image = request.form['movie_image_url']
+    user_id = request.form['current_user']
+    new_favorite = Favorite(id=choice, title=title,
+                            user_id=current_user.id, image=image)
+    if new_favorite:
+        db.session.add(new_favorite)
+        db.session.commit()
+        flash('Added to Watchlist!', category='success')
+        return redirect(url_for('auth.movies'))
+    else:
+        favorites = current_user.favorites
 
-        return render_template('favorites.html', user=current_user, favorites=favorites)
+    return render_template('favorites.html', user=current_user, favorites=favorites)
 
 
 @auth.route('/tvshows', methods=['GET', 'POST'])
@@ -186,19 +184,21 @@ def tvshows():
 
 @auth.route('/add_favorite_tv_show', methods=['GET', 'POST'])
 def add_favorite_tv_show():
-        id = request.form['favorite_id']
-        title = request.form['tv_show_title']
-        image = request.form['tv_show_image_url']
-        user_id = request.form['current_user']
-        new_favorite = Favorite(id=choice, title=title, user_id=current_user.id, image=image)
-        if new_favorite:
-            db.session.add(new_favorite)
-            db.session.commit()
-            flash('Added to Watchlist!', category='success')
-            return redirect(url_for('auth.tvshows'))
-        else:
-            favorites = current_user.favorites
-        return render_template('favorites.html', user=current_user, favorites=favorites)
+    id = request.form['favorite_id']
+    title = request.form['tv_show_title']
+    image = request.form['tv_show_image_url']
+    user_id = request.form['current_user']
+    new_favorite = Favorite(id=choice, title=title,
+                            user_id=current_user.id, image=image)
+    if new_favorite:
+        db.session.add(new_favorite)
+        db.session.commit()
+        flash('Added to Watchlist!', category='success')
+        return redirect(url_for('auth.tvshows'))
+    else:
+        favorites = current_user.favorites
+    return render_template('favorites.html', user=current_user, favorites=favorites)
+
 
 @auth.route('/delete_favorite', methods=['POST'])
 def delete_favorite():
@@ -207,7 +207,8 @@ def delete_favorite():
         image = request.form['image']
         user_id = request.form['current_user']
         print(title, image, user_id)
-        favorite = Favorite.query.filter_by(title=title, image=image, user_id=current_user.id).filter(func.lower(Favorite.title) == func.lower(title), func.lower(Favorite.image) == func.lower(image)).first()
+        favorite = Favorite.query.filter_by(title=title, image=image, user_id=current_user.id).filter(
+            func.lower(Favorite.title) == func.lower(title), func.lower(Favorite.image) == func.lower(image)).first()
         if favorite:
             db.session.delete(favorite)
             db.session.commit()
@@ -215,11 +216,10 @@ def delete_favorite():
         else:
             flash("Favorite not found", category='error')
     except Exception as e:
-        print(e)
         flash("Error while deleting favorite", category='error')
     return redirect(url_for('auth.show_favorites'))
 
-    
+
 @auth.route('/favorites', methods=['GET', 'POST'])
 def show_favorites():
     return render_template('favorites.html', user=current_user.id, favorites=current_user.favorites)
