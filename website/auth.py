@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User
+from .models import User, FamilyMember
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -248,16 +248,33 @@ def generate_code():
     return render_template('family_code.html', user=current_user, code=code)
 
 
-@auth.route('/join_family')
+@auth.route('/join_family', methods=['POST', 'GET'])
 @login_required
-def join_family(code, user_id):
+def join_family():
+    code = request.form['code']
     family = Family.query.filter_by(code=code).first()
-    user = User.query.get(int(user_id))
-    if family:
-        family.members.append(user)
-        db.session.commit()
-        flash('You have joined the family!', category='success')
+    if not family:
+        flash('Invalid code', category='error')
         return redirect(url_for('auth.join_family'))
-    else:
-        flash('Invalid code. Please try again.', category='error')
-        return redirect(url_for('auth.join_family'))
+
+    member = FamilyMember(user_id=current_user.id, family_id=family.id)
+    db.session.add(member)
+    db.session.commit()
+
+    flash('You have joined the family!', category='success')
+    return redirect(url_for('views.home'))
+# TODO figure out how to route the page to the join_family.html page instead of redirecting
+
+
+# @auth.route('/join_family', methods=['POST', 'GET'])
+# @login_required
+# def join_family():
+#     user = current_user
+#     family = Family.query.filter_by(code=user.code).first()
+#     if family:
+#         family.members.append(user)
+#         db.session.commit()
+#         flash('You have joined the family!', category='success')
+#         return redirect(url_for('auth.join_family'))
+#     else:
+#         return render_template('join_family.html', user=current_user)

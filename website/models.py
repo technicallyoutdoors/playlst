@@ -24,7 +24,7 @@ class Family(db.Model):
     code = db.Column(db.String(6), unique=True)
     members = db.relationship('User', backref='family', lazy=True)
     
-    
-#todo buiild a database model that allows the user to creat a group for a family and then add another 
-#todo cont. user to that group so that they can see eachothers favorites in a page called "matched" or
-#todo cont. something else. 
+class FamilyMember(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    family_id = db.Column(db.Integer, db.ForeignKey('family.id'))

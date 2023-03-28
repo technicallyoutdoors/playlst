@@ -6,15 +6,19 @@
   <div class="text-center">
   <button align="center" type="button" class="btn btn-primary" color="#000000">
     Movies
-  </button>
+  </button> </a>
   <a href="/tvshows" align="center">
   <button align="center" type="button" class="btn btn-primary" color="#000000">
     TV Shows
-  </button>
+  </button> </a>
   <a href="/favorites" align="center">
     <button align="center" type="button" class="btn btn-primary" color="#000000">
       Favorites
-    </button>
+    </button> </a>
+    <a href="/join_family" align="center">
+      <button align="center" type="button" class="btn btn-primary" color="#000000">
+        Join Family
+      </button> </a>
       <form method="post" action="{{ url_for('auth.generate_code') }}">
         <input type="hidden" name="generate_code" value="{{ generate_code }}">
         <input type="hidden" name="current_user" value="{{ current_user }}">
