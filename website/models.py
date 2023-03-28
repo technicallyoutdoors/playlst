@@ -10,6 +10,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(150))
     favorites = db.relationship('Favorite')
     family_id = db.Column(db.Integer, db.ForeignKey('family.id'))
+    code = db.Column(db.String(6), unique=True, nullable=True)
     
 class Favorite(db.Model):
     id = db.Column(db.String(50), primary_key=True)

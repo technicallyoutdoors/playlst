@@ -15,9 +15,9 @@
     <button align="center" type="button" class="btn btn-primary" color="#000000">
       Favorites
     </button>
-      <form method="post" action="{{ url_for('auth.join_family') }}">
+      <form method="post" action="{{ url_for('auth.generate_code') }}">
         <input type="hidden" name="generate_code" value="{{ generate_code }}">
-        <input type="hidden" name="current_user.id" value="{{ current_user.id }}">
+        <input type="hidden" name="current_user" value="{{ current_user }}">
     <button align="center" type="submit" class="btn btn-primary">Create Group</button>
 </form>
 

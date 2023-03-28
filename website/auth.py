@@ -10,6 +10,7 @@ from .models import Favorite, Family
 from . import db
 from sqlalchemy import func
 from .code_generator import generate_code
+import string
 
 
 auth = Blueprint('auth', __name__)
@@ -227,11 +228,36 @@ def show_favorites():
 
 
 @auth.route('/family_code', methods=['GET', 'POST'])
+def family_code():
+    user = current_user
+    code = current_user.code
+    return render_template('family_code.html', user=current_user, code=code)
+
+
+@auth.route('/generate_code', methods=['POST'])
 @login_required
-def join_family():
-    if request.method == 'POST':
-        code = request.form['generate_code']
-        user_id = request.form['current_user.id']
-        #join_family(code, user_id)
-        # return redirect(url_for('auth.home'))
-    return render_template('family_code.html', code=code, user=current_user.id)
+def generate_code():
+    user = current_user
+    if user.code:
+        flash("Code has already been generated for this user", category='error')
+        return redirect(url_for('auth.family_code'))
+    code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+    user.code = code
+    db.session.commit()
+    flash("Code generated successfully", category='success')
+    return render_template('family_code.html', user=current_user, code=code)
+
+
+@auth.route('/join_family')
+@login_required
+def join_family(code, user_id):
+    family = Family.query.filter_by(code=code).first()
+    user = User.query.get(int(user_id))
+    if family:
+        family.members.append(user)
+        db.session.commit()
+        flash('You have joined the family!', category='success')
+        return redirect(url_for('auth.join_family'))
+    else:
+        flash('Invalid code. Please try again.', category='error')
+        return redirect(url_for('auth.join_family'))
