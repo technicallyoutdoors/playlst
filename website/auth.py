@@ -6,9 +6,10 @@ from flask_login import login_user, login_required, logout_user, current_user
 import requests
 import random
 import json
-from .models import Favorite
+from .models import Favorite, Family
 from . import db
 from sqlalchemy import func
+from .code_generator import generate_code
 
 
 auth = Blueprint('auth', __name__)
@@ -223,3 +224,14 @@ def delete_favorite():
 @auth.route('/favorites', methods=['GET', 'POST'])
 def show_favorites():
     return render_template('favorites.html', user=current_user.id, favorites=current_user.favorites)
+
+
+@auth.route('/family_code', methods=['GET', 'POST'])
+@login_required
+def join_family():
+    if request.method == 'POST':
+        code = request.form['generate_code']
+        user_id = request.form['current_user.id']
+        #join_family(code, user_id)
+        # return redirect(url_for('auth.home'))
+    return render_template('family_code.html', code=code, user=current_user.id)
