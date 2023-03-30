@@ -248,22 +248,28 @@ def generate_code():
     return render_template('family_code.html', user=current_user, code=code)
 
 
-@auth.route('/join_family', methods=['POST', 'GET'])
-@login_required
-def join_family():
+@auth.route('/add_member', methods=['GET', 'POST'])
+def add_member():
+    user = current_user
     code = request.form['code']
-    family = Family.query.filter_by(code=code).first()
+    family = User.query.filter_by(code=code).first()
     if not family:
         flash('Invalid code', category='error')
         return redirect(url_for('auth.join_family'))
+    else:
+        member = Family(code=current_user.code)
+        db.session.add(member)
+        db.session.commit()
+        flash('You have joined the family!', category='success')
+        return redirect(url_for('views.home'))
 
-    member = FamilyMember(user_id=current_user.id, family_id=family.id)
-    db.session.add(member)
-    db.session.commit()
+# todo currrent joining of family is not working, must be something with the code validation
 
-    flash('You have joined the family!', category='success')
-    return redirect(url_for('views.home'))
-# TODO figure out how to route the page to the join_family.html page instead of redirecting
+
+@auth.route('/join_family', methods=['POST', 'GET'])
+@login_required
+def join_family():
+    return render_template('join_family.html', user=current_user)
 
 
 # @auth.route('/join_family', methods=['POST', 'GET'])
