@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Shared Favorites</h1>
+  <ul>
+    {% for item in favorite_items %}
+      <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -243,6 +243,7 @@ def generate_code():
         return redirect(url_for('auth.family_code'))
     code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
     user.code = code
+    db.session.add(code)
     db.session.commit()
     flash("Code generated successfully", category='success')
     return render_template('family_code.html', user=current_user, code=code)
@@ -251,17 +252,16 @@ def generate_code():
 @auth.route('/add_member', methods=['GET', 'POST'])
 def add_member():
     user = current_user
-    code = request.form['code']
-    family = User.query.filter_by(code=code).first()
-    if not family:
-        flash('Invalid code', category='error')
-        return redirect(url_for('auth.join_family'))
-    else:
-        member = Family(code=current_user.code)
-        db.session.add(member)
+    code = request.form.get('code')
+    family = Family.query.filter_by(code=code).first()
+    if family:
+        family.members.append(user)
         db.session.commit()
         flash('You have joined the family!', category='success')
-        return redirect(url_for('views.home'))
+        return redirect(url_for('auth.join_family'))
+    else:
+        flash('Invalid code. Please try again.', category='error')
+        return render_template('join_family.html', user=current_user)
 
 # todo currrent joining of family is not working, must be something with the code validation
 
@@ -284,3 +284,22 @@ def join_family():
 #         return redirect(url_for('auth.join_family'))
 #     else:
 #         return render_template('join_family.html', user=current_user)
+
+
+@auth.route('/shared_favorites')
+@login_required
+def shared_favorites():
+    # Get the current user's family
+    family = current_user.family
+    user = current_user
+
+    # Get all the members of the family
+    members = family.members
+
+    # Get the favorite items of all the members
+    favorite_items = []
+    for member in members:
+        favorite_items.extend(member.favorites)
+
+    # Render the template with the list of favorite items
+    return render_template('shared_favorites.html', favorite_items=favorite_items, user=current_user)

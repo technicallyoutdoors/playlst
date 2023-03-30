@@ -23,6 +23,9 @@ class Family(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(6), unique=True)
     members = db.relationship('User', backref='family', lazy=True)
+    favorites = db.relationship('Favorite', secondary='user', lazy='subquery',
+                                 backref=db.backref('families', lazy=True))
+
     
 class FamilyMember(db.Model):
     id = db.Column(db.Integer, primary_key=True)
