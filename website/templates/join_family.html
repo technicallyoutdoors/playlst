@@ -1,17 +1,24 @@
-{% extends "base.html" %} {% block title %}Favorites{% endblock %} {%block content
-    %}
+{% extends "base.html" %}
 
-<h1>Join Family</h2> 
-<form method="post" align="center" action="{{ url_for('auth.add_member') }}">
-<input type="text" name="code" align="center" class="form-control" placeholder="Enter family code"/>
-<a> <button class="btn btn-primary" type="submit">Submit</button></a>
+{% block title %}Join Family{% endblock %}
 
-</form> 
+{% block content %}
+  <h1>Join Family</h1>
 
-
-
-
-    
-
-
+  {% if current_user.family %}
+    <p>You are already a member of the {{ current_user.family.name }} family.</p>
+    {% if current_user.family.code %}
+      <p>The family code is {{ current_user.family.code }}</p>
+    {% else %}
+      <p>There is no family code for this family.</p>
+    {% endif %}
+  {% else %}
+    <form method="post" action="{{ url_for('auth.add_member') }}">
+      <div class="form-group">
+        <label for="code">Enter Family Code:</label>
+        <input type="text" id="code" name="code" class="form-control" placeholder="Enter family code" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Join Family</button>
+    </form>
+  {% endif %}
 {% endblock %}

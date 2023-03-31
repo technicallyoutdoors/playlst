@@ -1,12 +1,22 @@
-{% extends "base.html" %} {% block title %}Favorites{% endblock %} {%block content
-    %}
+{% extends 'base.html' %}
 
-<h1 align="center">Family Code</h1>
-<h2 align="center"> {{ code }} </h2>
-
-
-
-    
-
-
+{% block content %}
+  <h1>Family Code</h1>
+  
+  {% if current_user.family %}
+    <p><strong>Name:</strong> {{ current_user.family.name }}</p>
+    {% if current_user.family.code %}
+      <p><strong>Code:</strong> {{ current_user.family.code }}</p>
+    {% else %}
+      <p>No family code available.</p>
+    {% endif %}
+    <h2>Members</h2>
+    <ul>
+      {% for member in current_user.family.members %}
+        <li>{{ member.username }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You are not currently a member of a family.</p>
+  {% endif %}
 {% endblock %}

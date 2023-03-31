@@ -186,12 +186,11 @@ def tvshows():
 
 @auth.route('/add_favorite_tv_show', methods=['GET', 'POST'])
 def add_favorite_tv_show():
-    id = request.form['favorite_id']
+    # choice = request.form['favorite_id']
     title = request.form['tv_show_title']
     image = request.form['tv_show_image_url']
     user_id = request.form['current_user']
-    new_favorite = Favorite(id=choice, title=title,
-                            user_id=current_user.id, image=image)
+    new_favorite = Favorite(title=title, image=image, user_id=current_user.id)
     if new_favorite:
         db.session.add(new_favorite)
         db.session.commit()
@@ -238,21 +237,24 @@ def family_code():
 @login_required
 def generate_code():
     user = current_user
-    if user.code:
+    if user.family:
         flash("Code has already been generated for this user", category='error')
         return redirect(url_for('auth.family_code'))
     code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-    user.code = code
-    db.session.add(code)
+    family = Family(code=code)
+    family.members.append(user)
+    db.session.add(family)
     db.session.commit()
     flash("Code generated successfully", category='success')
     return render_template('family_code.html', user=current_user, code=code)
 
 
+
 @auth.route('/add_member', methods=['GET', 'POST'])
 def add_member():
     user = current_user
-    code = request.form.get('code')
+    # if request.method == 'POST':
+    code = request.form['code']
     family = Family.query.filter_by(code=code).first()
     if family:
         family.members.append(user)
@@ -263,6 +265,22 @@ def add_member():
         flash('Invalid code. Please try again.', category='error')
         return render_template('join_family.html', user=current_user)
 
+
+
+# @auth.route('/add_member', methods=['GET', 'POST'])
+# def add_member():
+#     user = current_user
+#     code = request.form['code']
+#     family = Family.query.filter_by(code=code).first()
+#     if family:
+#         family.members.append(user)
+#         db.session.commit()
+#         flash('You have joined the family!', category='success')
+#         return redirect(url_for('auth.join_family'))
+#     else:
+#         flash('Invalid code. Please try again.', category='error')
+#         return render_template('join_family.html', user=current_user)
+
 # todo currrent joining of family is not working, must be something with the code validation
 
 
@@ -272,34 +290,69 @@ def join_family():
     return render_template('join_family.html', user=current_user)
 
 
-# @auth.route('/join_family', methods=['POST', 'GET'])
-# @login_required
-# def join_family():
-#     user = current_user
-#     family = Family.query.filter_by(code=user.code).first()
-#     if family:
-#         family.members.append(user)
-#         db.session.commit()
-#         flash('You have joined the family!', category='success')
-#         return redirect(url_for('auth.join_family'))
-#     else:
-#         return render_template('join_family.html', user=current_user)
-
 
 @auth.route('/shared_favorites')
 @login_required
 def shared_favorites():
-    # Get the current user's family
-    family = current_user.family
+    shared_favorites = db.session.query(Favorite)\
+        .join(User)\
+        .join(Family)\
+        .filter(Family.code == current_user.family.code)\
+        .filter(Favorite.id.in_(db.session.query(Favorite.id)\
+            .join(User)\
+            .join(Family)\
+            .filter(Family.code == current_user.family.code)\
+            .filter(User.id != current_user.id)))
     user = current_user
+    family = Family.query.filter(Family.members.contains(user)).first()
+    if family:
+        favorites = Favorite.query.filter(Favorite.user_id == user.id).all()
+        other_favorites = []
+        for member in family.members:
+            if member.id != user.id:
+                member_favorites = Favorite.query.filter(Favorite.user_id == member.id).all()
+                other_favorites.extend([fav for fav in member_favorites if fav in favorites])
+        print(shared_favorites)        
+        return render_template('shared_favorites.html', user=current_user, favorites=shared_favorites)
+    else:
+        flash("You are not a member of a family yet!", category='error')
+        return redirect(url_for('auth.join_family'))
 
-    # Get all the members of the family
-    members = family.members
 
-    # Get the favorite items of all the members
-    favorite_items = []
-    for member in members:
-        favorite_items.extend(member.favorites)
+# @auth.route('/shared_favorites')
+# @login_required
+# def shared_favorites():
+#     shared_favorites = db.session.query(Favorite)\
+#     .join(User)\
+#     .join(Family)\
+#     .filter(Family.code == current_user.family.code)\
+#     .filter(Favorite.id.in_(db.session.query(Favorite.id)\
+#         .join(User)\
+#         .join(Family)\
+#         .filter(Family.code == current_user.family.code)\
+#         .filter(User.id != current_user.id)))
+#     user = current_user
+#     family = Family.query.filter(Family.members.contains(user)).first()
+#     if family:
+#         favorites = Favorite.query.filter(Favorite.user_id == user.id).all()
+#         shared_favorites = []
+#         for member in family.members:
+#             if member.id != user.id:
+#                 member_favorites = Favorite.query.filter(Favorite.user_id == member.id).all()
+#                 shared_favorites.extend([fav for fav in member_favorites if fav in favorites])
+#         return render_template('shared_favorites.html', user=current_user, favorites=shared_favorites)
+#     else:
+#         flash("You are not a member of a family yet!", category='error')
+#         return redirect(url_for('auth.join_family'))
 
-    # Render the template with the list of favorite items
-    return render_template('shared_favorites.html', favorite_items=favorite_items, user=current_user)
+
+# @auth.route('/shared_favorites')
+# @login_required
+# def shared_favorites():
+#     user = current_user
+#     matched_favorites = db.session.query(Favorite).\
+#     join(User).join(Family).\
+#     filter(Family.code == user.code).\
+#     group_by(Favorite.title).\
+#     having(func.count(Favorite.user_id) > 1).all()
+#     return render_template('shared_favorites.html', favorites=matched_favorites, user=current_user)
