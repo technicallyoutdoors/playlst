@@ -89,8 +89,8 @@ def movies():
     url1 = "https://online-movie-database.p.rapidapi.com/title/v2/get-popular-movies-by-genre"
     querystring1 = {"genre": users_input, "limit": "100"}
     headers = {
-        "X-RapidAPI-Key": "4aa56d7288msh5be0286e95c8c10p160380jsnfce8a0c61ccd",
-        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
+        'X-RapidAPI-Key': 'ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87',
+        'X-RapidAPI-Host': 'online-movie-database.p.rapidapi.com'
     }
     response1 = requests.request(
         "GET", url1, headers=headers, params=querystring1)
@@ -132,7 +132,7 @@ def add_favorite_movie():
     title = request.form['movie_title']
     image = request.form['movie_image_url']
     user_id = request.form['current_user']
-    new_favorite = Favorite(id=choice, title=title,
+    new_favorite = Favorite(title=title,
                             user_id=current_user.id, image=image)
     if new_favorite:
         db.session.add(new_favorite)
@@ -152,8 +152,8 @@ def tvshows():
     querystring1 = {"currentCountry": "US",
                     "purchaseCountry": "US", "homeCountry": "US"}
     headers = {
-        "X-RapidAPI-Key": "20719788e5msh46d7f8c7ed9abd9p1d8da2jsnb3f8e9ee7b85",
-        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
+        'X-RapidAPI-Key': 'ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87',
+        'X-RapidAPI-Host': 'online-movie-database.p.rapidapi.com'
     }
     response1 = requests.request(
         "GET", url1, headers=headers, params=querystring1)
