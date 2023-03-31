@@ -249,7 +249,6 @@ def generate_code():
     return render_template('family_code.html', user=current_user, code=code)
 
 
-
 @auth.route('/add_member', methods=['GET', 'POST'])
 def add_member():
     user = current_user
@@ -264,7 +263,6 @@ def add_member():
     else:
         flash('Invalid code. Please try again.', category='error')
         return render_template('join_family.html', user=current_user)
-
 
 
 # @auth.route('/add_member', methods=['GET', 'POST'])
@@ -290,7 +288,6 @@ def join_family():
     return render_template('join_family.html', user=current_user)
 
 
-
 @auth.route('/shared_favorites')
 @login_required
 def shared_favorites():
@@ -298,11 +295,11 @@ def shared_favorites():
         .join(User)\
         .join(Family)\
         .filter(Family.code == current_user.family.code)\
-        .filter(Favorite.id.in_(db.session.query(Favorite.id)\
-            .join(User)\
-            .join(Family)\
-            .filter(Family.code == current_user.family.code)\
-            .filter(User.id != current_user.id)))
+        .filter(Favorite.id.in_(db.session.query(Favorite.id)
+                                .join(User)
+                                .join(Family)
+                                .filter(Family.code == current_user.family.code)
+                                .filter(User.id != current_user.id)))
     user = current_user
     family = Family.query.filter(Family.members.contains(user)).first()
     if family:
@@ -310,9 +307,11 @@ def shared_favorites():
         other_favorites = []
         for member in family.members:
             if member.id != user.id:
-                member_favorites = Favorite.query.filter(Favorite.user_id == member.id).all()
-                other_favorites.extend([fav for fav in member_favorites if fav in favorites])
-        print(shared_favorites)        
+                member_favorites = Favorite.query.filter(
+                    Favorite.user_id == member.id).all()
+                other_favorites.extend(
+                    [fav for fav in member_favorites if fav in favorites])
+        print(shared_favorites)
         return render_template('shared_favorites.html', user=current_user, favorites=shared_favorites)
     else:
         flash("You are not a member of a family yet!", category='error')
