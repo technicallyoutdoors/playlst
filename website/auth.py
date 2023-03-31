@@ -291,15 +291,13 @@ def join_family():
 @auth.route('/shared_favorites')
 @login_required
 def shared_favorites():
-    shared_favorites = db.session.query(Favorite)\
-        .join(User)\
-        .join(Family)\
-        .filter(Family.code == current_user.family.code)\
-        .filter(Favorite.id.in_(db.session.query(Favorite.id)
-                                .join(User)
-                                .join(Family)
-                                .filter(Family.code == current_user.family.code)
-                                .filter(User.id != current_user.id)))
+    shared_favorites = Favorite.query.join(User).join(Family).filter(
+        Family.code == current_user.family.code,
+        Favorite.user_id != current_user.id,
+        Favorite.title.in_([f.title for f in current_user.favorites]),
+        Favorite.image.in_([f.image for f in current_user.favorites])
+    ).all()
+
     user = current_user
     family = Family.query.filter(Family.members.contains(user)).first()
     if family:
@@ -310,48 +308,13 @@ def shared_favorites():
                 member_favorites = Favorite.query.filter(
                     Favorite.user_id == member.id).all()
                 other_favorites.extend(
-                    [fav for fav in member_favorites if fav in favorites])
-        print(shared_favorites)
+                    [fav for fav in member_favorites if fav.title in [f.title for f in favorites] and fav.image in [f.image for f in favorites]])
+        print("User's favorites:", favorites)
+        print("Other members' favorites:", member_favorites)
+        print("Shared favorites:", shared_favorites)
         return render_template('shared_favorites.html', user=current_user, favorites=shared_favorites)
     else:
         flash("You are not a member of a family yet!", category='error')
         return redirect(url_for('auth.join_family'))
 
 
-# @auth.route('/shared_favorites')
-# @login_required
-# def shared_favorites():
-#     shared_favorites = db.session.query(Favorite)\
-#     .join(User)\
-#     .join(Family)\
-#     .filter(Family.code == current_user.family.code)\
-#     .filter(Favorite.id.in_(db.session.query(Favorite.id)\
-#         .join(User)\
-#         .join(Family)\
-#         .filter(Family.code == current_user.family.code)\
-#         .filter(User.id != current_user.id)))
-#     user = current_user
-#     family = Family.query.filter(Family.members.contains(user)).first()
-#     if family:
-#         favorites = Favorite.query.filter(Favorite.user_id == user.id).all()
-#         shared_favorites = []
-#         for member in family.members:
-#             if member.id != user.id:
-#                 member_favorites = Favorite.query.filter(Favorite.user_id == member.id).all()
-#                 shared_favorites.extend([fav for fav in member_favorites if fav in favorites])
-#         return render_template('shared_favorites.html', user=current_user, favorites=shared_favorites)
-#     else:
-#         flash("You are not a member of a family yet!", category='error')
-#         return redirect(url_for('auth.join_family'))
-
-
-# @auth.route('/shared_favorites')
-# @login_required
-# def shared_favorites():
-#     user = current_user
-#     matched_favorites = db.session.query(Favorite).\
-#     join(User).join(Family).\
-#     filter(Family.code == user.code).\
-#     group_by(Favorite.title).\
-#     having(func.count(Favorite.user_id) > 1).all()
-#     return render_template('shared_favorites.html', favorites=matched_favorites, user=current_user)
