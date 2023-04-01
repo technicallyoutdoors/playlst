@@ -309,9 +309,9 @@ def shared_favorites():
                     Favorite.user_id == member.id).all()
                 other_favorites.extend(
                     [fav for fav in member_favorites if fav.title in [f.title for f in favorites] and fav.image in [f.image for f in favorites]])
-        print("User's favorites:", favorites)
-        print("Other members' favorites:", member_favorites)
-        print("Shared favorites:", shared_favorites)
+        # print("User's favorites:", favorites)
+        # print("Other members' favorites:", member_favorites)
+        # print("Shared favorites:", shared_favorites)
         return render_template('shared_favorites.html', user=current_user, favorites=shared_favorites)
     else:
         flash("You are not a member of a family yet!", category='error')
