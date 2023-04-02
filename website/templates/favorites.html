@@ -1,7 +1,40 @@
-{% extends "base.html" %} {% block title %}Favorites{% endblock %} {%block content
-%}
+{% extends "base.html" %} 
+{% block title %}Favorites{% endblock %} 
+{% block content %}
 
 <html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #FF0000, #0000FF);
+      min-height: 100vh;
+    }
+    .card {
+      border-radius: 20px;
+      background-color: black;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    .card {
+      border-radius: 15px;
+      background-color: white;
+      margin-bottom: 20px;
+      margin-right: 10px;
+      margin-left: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }    
+    .card-body {
+      padding: 20px;
+    }
+    .card-title {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .card-text {
+      font-size: 16px;
+    }
+    </style>
+
   <h1 color="#000000" align="center"></h1>
   <form method="post">
     <div class="text-center">
@@ -17,49 +50,30 @@
       </a>
     </form>
       <h2>Favorites</h2>
-      <ul class="list-group list-group-flush" id="favorites">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for favorite in favorites %}
-        <div class="text-center">
-          <h2>{{ favorite.title }}</h2>
-
-          <form method="post" action="{{ url_for('auth.delete_favorite') }}">
-            <input type="hidden" name="title" value="{{ favorite.title }}" />
-            <input type="hidden" name="image" value="{{ favorite.image }}" />
-            <input
-              type="hidden"
-              name="current_user"
-              value="{{ current_user }}"
+        <div class="col">
+          <div class="card h-100 rounded">
+            <img
+              src="{{ favorite.image }}"
+              alt="{{ favorite.title }}"
+              class="card-img-top rounded-top"
             />
-
-            <button type="submit" class="btn btn-primary" align="center">
-              Delete
-            </button>
-          </form>
-
-          <img
-            src="{{ favorite.image }}"
-            alt="{{ favorite.title }}"
-            width="400"
-            height="400"
-          />
+            <div class="card-body">
+              <h5 class="card-title">{{ favorite.title }}</h5>
+              <form method="post" action="{{ url_for('auth.delete_favorite') }}">
+                <input type="hidden" name="title" value="{{ favorite.title }}" />
+                <input type="hidden" name="image" value="{{ favorite.image }}" />
+                <input type="hidden" name="current_user" value="{{ current_user }}"/>
+                <button type="submit" class="btn btn-primary">Delete</button>
+              </form>
+            </div>
+          </div>
         </div>
         {% endfor %}
-      </ul>
+      </div>
     </div>
   </form>
-
-  <h4>
-    <style>
-      img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .text-center {
-        text-align: center;
-      }
-    </style>
-  </h4>
 </html>
 
 {% endblock %}
