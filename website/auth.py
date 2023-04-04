@@ -232,6 +232,10 @@ def family_code():
     code = current_user.code
     return render_template('family_code.html', user=current_user, code=code)
 
+@auth.route('/group_hub', methods=['GET', 'POST'])
+def group_hub_render():
+    family = Family.query.filter_by().first()
+    return render_template('group_hub.html', user=current_user, family=family)
 
 @auth.route('/generate_code', methods=['POST'])
 @login_required
@@ -247,7 +251,6 @@ def generate_code():
     db.session.commit()
     flash("Code generated successfully", category='success')
     return render_template('family_code.html', user=current_user, code=code)
-
 
 @auth.route('/add_member', methods=['GET', 'POST'])
 def add_member():
@@ -318,3 +321,23 @@ def shared_favorites():
         return redirect(url_for('auth.join_family'))
 
 
+@auth.route('/leave_family', methods=['POST', 'GET'])
+@login_required
+def leave_family():
+    family_name = request.form['family_name']
+    family = Family.query.filter_by(name=family_name).first()
+
+    if not family:
+        flash(f'Family {family_name} not found.', 'danger')
+        return redirect(url_for('index'))
+
+    if current_user not in family.members:
+        flash('You are not a member of this family.', 'danger')
+        return redirect(url_for('index'))
+
+    current_user.family = None
+    family.members.remove(current_user)
+    db.session.commit()
+
+    flash(f'You have left the family {family_name}.', 'success')
+    return render_template('family_code.html', family=family, family_name=family_name)

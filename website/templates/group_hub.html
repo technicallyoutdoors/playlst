@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Family Code</h1>
+  
+  {% if current_user.family %}
+    <p><strong>Name:</strong> {{ current_user.family.name }}</p>
+    {% if current_user.family.code %}
+      <p><strong>Code:</strong> {{ current_user.family.code }}</p>
+    {% else %}
+      <p>No family code available.</p>
+    {% endif %}
+    <h2>Members</h2>
+    <ul>
+      {% for member in current_user.family.members %}
+        <li>{{ member.username }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You are not currently a member of a family.</p>
+  {% endif %}
+  <h1>Join Family</h1>
+
+  {% if current_user.family %}
+    <p>You are already a member of the {{ current_user.family.name }} family.</p>
+    {% if current_user.family.code %}
+      <p>The family code is {{ current_user.family.code }}</p>
+    {% else %}
+      <p>There is no family code for this family.</p>
+    {% endif %}
+  {% else %}
+    <form method="post" action="{{ url_for('auth.add_member') }}">
+      <div class="form-group">
+        <label for="code">Enter Family Code:</label>
+        <input type="text" id="code" name="code" class="form-control" placeholder="Enter family code" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Join Family</button>
+    </form>
+  {% endif %}
+  <form method="POST" action="{{ url_for('auth.leave_family') }}">
+    <input type="hidden" name="family_name" value="{{ family.name }}" />
+    <button type="submit" class="btn btn-danger">Leave Family</button>
+</form>
+
+
+{% endblock %}
