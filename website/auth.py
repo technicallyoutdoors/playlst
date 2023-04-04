@@ -11,6 +11,7 @@ from . import db
 from sqlalchemy import func
 from .code_generator import generate_code
 import string
+import time 
 
 
 auth = Blueprint('auth', __name__)
@@ -226,31 +227,36 @@ def show_favorites():
     return render_template('favorites.html', user=current_user.id, favorites=current_user.favorites)
 
 
-@auth.route('/family_code', methods=['GET', 'POST'])
-def family_code():
+@auth.route('/group_code', methods=['GET', 'POST'])
+def group_code():
     user = current_user
     code = current_user.code
-    return render_template('family_code.html', user=current_user, code=code)
+    return render_template('group_code.html', user=current_user, code=code)
+
 
 @auth.route('/group_hub', methods=['GET', 'POST'])
-def group_hub_render():
+def group_hub():
     family = Family.query.filter_by().first()
     return render_template('group_hub.html', user=current_user, family=family)
 
-@auth.route('/generate_code', methods=['POST'])
+
+@auth.route('/generate_code', methods=['POST', 'GET'])
 @login_required
 def generate_code():
     user = current_user
     if user.family:
         flash("Code has already been generated for this user", category='error')
-        return redirect(url_for('auth.family_code'))
-    code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-    family = Family(code=code)
-    family.members.append(user)
-    db.session.add(family)
-    db.session.commit()
-    flash("Code generated successfully", category='success')
-    return render_template('family_code.html', user=current_user, code=code)
+        time.sleep(1)
+        return redirect(url_for('auth.group_code'))
+    else:
+        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        family = Family(code=code)
+        family.members.append(user)
+        db.session.add(family)
+        db.session.commit()
+        flash("Code generated successfully", category='success')
+        return render_template('group_code.html', user=current_user, code=code)
+
 
 @auth.route('/add_member', methods=['GET', 'POST'])
 def add_member():
@@ -262,33 +268,16 @@ def add_member():
         family.members.append(user)
         db.session.commit()
         flash('You have joined the family!', category='success')
-        return redirect(url_for('auth.join_family'))
+        return redirect(url_for('auth.group_hub'))
     else:
         flash('Invalid code. Please try again.', category='error')
-        return render_template('join_family.html', user=current_user)
+        return render_template('group_hub.html', user=current_user)
 
 
-# @auth.route('/add_member', methods=['GET', 'POST'])
-# def add_member():
-#     user = current_user
-#     code = request.form['code']
-#     family = Family.query.filter_by(code=code).first()
-#     if family:
-#         family.members.append(user)
-#         db.session.commit()
-#         flash('You have joined the family!', category='success')
-#         return redirect(url_for('auth.join_family'))
-#     else:
-#         flash('Invalid code. Please try again.', category='error')
-#         return render_template('join_family.html', user=current_user)
-
-# todo currrent joining of family is not working, must be something with the code validation
-
-
-@auth.route('/join_family', methods=['POST', 'GET'])
+@auth.route('/join_group', methods=['POST', 'GET'])
 @login_required
-def join_family():
-    return render_template('join_family.html', user=current_user)
+def join_group():
+    return render_template('join_group.html', user=current_user)
 
 
 @auth.route('/shared_favorites')
@@ -312,32 +301,25 @@ def shared_favorites():
                     Favorite.user_id == member.id).all()
                 other_favorites.extend(
                     [fav for fav in member_favorites if fav.title in [f.title for f in favorites] and fav.image in [f.image for f in favorites]])
-        # print("User's favorites:", favorites)
-        # print("Other members' favorites:", member_favorites)
-        # print("Shared favorites:", shared_favorites)
         return render_template('shared_favorites.html', user=current_user, favorites=shared_favorites)
     else:
         flash("You are not a member of a family yet!", category='error')
         return redirect(url_for('auth.join_family'))
 
 
-@auth.route('/leave_family', methods=['POST', 'GET'])
+@auth.route('/leave_group', methods=['POST', 'GET'])
 @login_required
-def leave_family():
-    family_name = request.form['family_name']
-    family = Family.query.filter_by(name=family_name).first()
+def leave_group():
+    user = current_user
+    family = user.family
 
     if not family:
-        flash(f'Family {family_name} not found.', 'danger')
-        return redirect(url_for('index'))
+        flash('You are not currently a member of any family', 'warning')
+        return redirect(url_for('auth.group_hub'))
 
-    if current_user not in family.members:
-        flash('You are not a member of this family.', 'danger')
-        return redirect(url_for('index'))
-
-    current_user.family = None
-    family.members.remove(current_user)
+    family.members.remove(user)
+    user.family = None
     db.session.commit()
 
-    flash(f'You have left the family {family_name}.', 'success')
-    return render_template('family_code.html', family=family, family_name=family_name)
+    flash(f"You have left the family {family.name}.", 'success')
+    return redirect(url_for('auth.group_hub'))

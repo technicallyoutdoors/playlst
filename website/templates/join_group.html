@@ -1,27 +1,26 @@
-{% extends "base.html" %} {% block content %}
-<h1>Shared Favorites</h1>
-{% if favorites %}
-<ul>
-  {% for favorite in favorites %}
-  <li>
-    {{ favorite.title }} {{ favorite.user.username }}
-    <img
-      src="{{ favorite.image }}"
-      alt="{{ favorite.title }}"
-      width="400"
-      height="400"
-    />
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>No shared favorites yet.</p>
-{% endif %}
+{% extends "base.html" %} {% block title %}Join Group{% endblock %} {% block
+content %}
+<h1>Join Group</h1>
 
-<style>
-  .text-center {
-    text-align: center;
-  }
+
+<form method="post" action="{{ url_for('auth.add_member') }}">
+  <div class="form-group">
+   
+    <input
+      type="text"
+      id="code"
+      name="code"
+      class="form-control"
+      placeholder="Enter group code"
+      required
+    />
+  </div>
+  <button type="submit" class="btn btn-primary">Join</button>
+</form>
+
+
+<style> 
+
   h1 {
     font-family: Arial, sans-serif;
     font-size: 50px;
@@ -55,7 +54,7 @@
     text-align: center;
   }
   body {
-    background: linear-gradient(to bottom right, #ff0000, #0000ff);
+    background: linear-gradient(to bottom right, #FF0000, #0000FF);
     background-attachment: fixed;
     background-size: cover;
     font-family: Arial, sans-serif;
@@ -79,6 +78,7 @@
   }
   .card-body {
     padding: 0;
+  
   }
   .col {
     margin-bottom: 20px;
@@ -89,13 +89,15 @@
     left: 0;
     width: 100%;
     padding: 10px;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255,255,255,0.7);
     text-align: center;
   }
-
+  
   .card-text {
     font-size: 16px;
   }
+
+
 </style>
 
 {% endblock %}

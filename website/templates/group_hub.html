@@ -1,46 +1,77 @@
-{% extends 'base.html' %}
+{% extends "base.html" %} {% block title %} Group Hub {% endblock %} {%block
+content %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Join or Create Group</title>
+    <div class="center"> 
+      {% if current_user.family %}
+        <p>You are already a member of the {{ current_user.family.name }} family.</p>
+        {% if current_user.family.code %}
+          <p>The group code is {{ current_user.family.code }}</p>
+        {% else %}
+          <p>There is no family code for this family.</p>
+        {% endif %}
+        {% if current_user.family.members %}
+          <p>Members of this family:</p>
+          <ul>
+            {% for member in current_user.family.members %}
+              <li>{{ member.first_name }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endif %}
+    </div>
+    
+    <style>
+      body {
+        background: linear-gradient(to bottom right, #FF0000, #0000FF);
+        background-attachment: fixed;
+        background-size: cover;
+        font-family: Arial, sans-serif;
+      }
 
-{% block content %}
-  <h1>Family Code</h1>
-  
-  {% if current_user.family %}
-    <p><strong>Name:</strong> {{ current_user.family.name }}</p>
-    {% if current_user.family.code %}
-      <p><strong>Code:</strong> {{ current_user.family.code }}</p>
-    {% else %}
-      <p>No family code available.</p>
-    {% endif %}
-    <h2>Members</h2>
-    <ul>
-      {% for member in current_user.family.members %}
-        <li>{{ member.username }}</li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>You are not currently a member of a family.</p>
-  {% endif %}
-  <h1>Join Family</h1>
+      .container {
+        margin: 0 auto;
+        text-align: center;
+      }
 
-  {% if current_user.family %}
-    <p>You are already a member of the {{ current_user.family.name }} family.</p>
-    {% if current_user.family.code %}
-      <p>The family code is {{ current_user.family.code }}</p>
-    {% else %}
-      <p>There is no family code for this family.</p>
-    {% endif %}
-  {% else %}
-    <form method="post" action="{{ url_for('auth.add_member') }}">
-      <div class="form-group">
-        <label for="code">Enter Family Code:</label>
-        <input type="text" id="code" name="code" class="form-control" placeholder="Enter family code" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Join Family</button>
-    </form>
-  {% endif %}
-  <form method="POST" action="{{ url_for('auth.leave_family') }}">
-    <input type="hidden" name="family_name" value="{{ family.name }}" />
-    <button type="submit" class="btn btn-danger">Leave Family</button>
-</form>
+      h1 {
+        font-family: Arial, sans-serif;
+        font-size: 50px;
+        font-weight: bold;
+      }
 
+      button {
+        background-color: #007bff;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 4px;
+        border: none;
+        margin-top: 20px;
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: bold;
+      }
 
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Join or Create Group</h1>
+      
+      <a href="{{ url_for('auth.generate_code') }}"><button>Create Group</button></a>
+      <a href="{{ url_for('auth.join_group') }}"><button>Join Group</button></a>
+      <a href="{{ url_for('auth.group_code') }}"><button>Group Code</button></a>
+      <a href="{{ url_for('auth.leave_group') }}"><button>Leave Group</button></a>
+      <a href="/"><button>Home</button></a>
+     
+
+    </div>
+  </body>
+</html>
 {% endblock %}
