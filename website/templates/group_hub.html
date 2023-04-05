@@ -11,10 +11,10 @@ content %}
         {% if current_user.family.code %}
           <p>The group code is {{ current_user.family.code }}</p>
         {% else %}
-          <p>There is no family code for this family.</p>
+          <p>There is no group code for this group.</p>
         {% endif %}
         {% if current_user.family.members %}
-          <p>Members of this family:</p>
+          <p>Members of this group:</p>
           <ul>
             {% for member in current_user.family.members %}
               <li>{{ member.first_name }}</li>

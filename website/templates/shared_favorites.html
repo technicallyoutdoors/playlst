@@ -3,6 +3,16 @@
 {% if favorites %}
 <ul>
   {% for favorite in favorites %}
+  <div class="col-4">
+    <div class="card h-100 rounded">
+      <form method="post" action="{{ url_for('auth.delete_favorite') }}">
+        <input type="hidden" name="title" value="{{ favorite.title }}" />
+        <input type="hidden" name="image" value="{{ favorite.image }}" />
+        <input type="hidden" name="current_user" value="{{ current_user }}"/>
+        <button type="submit" class="delete-btn">X</button>
+      </form>
+    </div>
+  </div>
   <li>
     {{ favorite.title }} {{ favorite.user.username }}
     <img

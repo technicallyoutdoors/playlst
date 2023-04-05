@@ -11,7 +11,7 @@ from . import db
 from sqlalchemy import func
 from .code_generator import generate_code
 import string
-import time 
+import time
 
 
 auth = Blueprint('auth', __name__)
@@ -76,6 +76,7 @@ def signup():
 
 
 @auth.route('/movies', methods=['GET', 'POST'])
+@login_required
 def movies():
     global movie_image_url
     global Movie_Title_Name
@@ -128,6 +129,7 @@ def movies():
 
 
 @auth.route('/add_favorite_movie', methods=['GET', 'POST'])
+@login_required
 def add_favorite_movie():
     global favorites
     title = request.form['movie_title']
@@ -147,6 +149,7 @@ def add_favorite_movie():
 
 
 @auth.route('/tvshows', methods=['GET', 'POST'])
+@login_required
 def tvshows():
     global choice
     url1 = "https://online-movie-database.p.rapidapi.com/title/get-most-popular-tv-shows"
@@ -186,6 +189,7 @@ def tvshows():
 
 
 @auth.route('/add_favorite_tv_show', methods=['GET', 'POST'])
+@login_required
 def add_favorite_tv_show():
     # choice = request.form['favorite_id']
     title = request.form['tv_show_title']
@@ -203,6 +207,7 @@ def add_favorite_tv_show():
 
 
 @auth.route('/delete_favorite', methods=['POST'])
+@login_required
 def delete_favorite():
     try:
         title = request.form['title']
@@ -223,11 +228,13 @@ def delete_favorite():
 
 
 @auth.route('/favorites', methods=['GET', 'POST'])
-def show_favorites():
+@login_required
+def favorites():
     return render_template('favorites.html', user=current_user.id, favorites=current_user.favorites)
 
 
 @auth.route('/group_code', methods=['GET', 'POST'])
+@login_required
 def group_code():
     user = current_user
     code = current_user.code
@@ -235,6 +242,7 @@ def group_code():
 
 
 @auth.route('/group_hub', methods=['GET', 'POST'])
+@login_required
 def group_hub():
     family = Family.query.filter_by().first()
     return render_template('group_hub.html', user=current_user, family=family)
@@ -249,7 +257,8 @@ def generate_code():
         time.sleep(1)
         return redirect(url_for('auth.group_code'))
     else:
-        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        code = ''.join(random.choices(
+            string.ascii_uppercase + string.digits, k=6))
         family = Family(code=code)
         family.members.append(user)
         db.session.add(family)
@@ -259,6 +268,7 @@ def generate_code():
 
 
 @auth.route('/add_member', methods=['GET', 'POST'])
+@login_required
 def add_member():
     user = current_user
     # if request.method == 'POST':

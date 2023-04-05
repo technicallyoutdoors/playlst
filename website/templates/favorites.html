@@ -70,7 +70,7 @@
       <h2>Favorites</h2>
       <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for favorite in favorites %}
-        <div class="col">
+        <div class="col-4">
           <div class="card h-100 rounded">
             <form method="post" action="{{ url_for('auth.delete_favorite') }}">
               <input type="hidden" name="title" value="{{ favorite.title }}" />
