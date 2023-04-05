@@ -224,7 +224,7 @@ def delete_favorite():
             flash("Favorite not found", category='error')
     except Exception as e:
         flash("Error while deleting favorite", category='error')
-    return redirect(url_for('auth.show_favorites'))
+    return redirect(url_for('auth.favorites'))
 
 
 @auth.route('/favorites', methods=['GET', 'POST'])
