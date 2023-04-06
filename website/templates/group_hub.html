@@ -4,34 +4,14 @@ content %}
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Join or Create Group</title>
-    <div class="center"> 
-      {% if current_user.family %}
-        <p>You are already a member of the {{ current_user.family.name }} family.</p>
-        {% if current_user.family.code %}
-          <p>The group code is {{ current_user.family.code }}</p>
-        {% else %}
-          <p>There is no group code for this group.</p>
-        {% endif %}
-        {% if current_user.family.members %}
-          <p>Members of this group:</p>
-          <ul>
-            {% for member in current_user.family.members %}
-              <li>{{ member.first_name }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      {% endif %}
-    </div>
-    
+    <title>Group Hub</title>
     <style>
       body {
-        background: linear-gradient(to bottom right, #FF0000, #0000FF);
+        background: linear-gradient(to bottom right, #ff0000, #0000ff);
         background-attachment: fixed;
         background-size: cover;
         font-family: Arial, sans-serif;
       }
-
       .container {
         margin: 0 auto;
         text-align: center;
@@ -54,7 +34,11 @@ content %}
         font-size: 20px;
         font-weight: bold;
       }
-
+      li {
+        justify-content: center;
+        align-items: center;
+      }
+      
       button:hover {
         background-color: #0056b3;
       }
@@ -62,15 +46,46 @@ content %}
   </head>
   <body>
     <div class="container">
-      <h1>Join or Create Group</h1>
-      
-      <a href="{{ url_for('auth.generate_code') }}"><button>Create Group</button></a>
+      <h1>Group Hub</h1>
+
+      <a href="{{ url_for('auth.generate_code') }}"
+        ><button>Create Group</button></a
+      >
       <a href="{{ url_for('auth.join_group') }}"><button>Join Group</button></a>
       <a href="{{ url_for('auth.group_code') }}"><button>Group Code</button></a>
-      <a href="{{ url_for('auth.leave_group') }}"><button>Leave Group</button></a>
+      <a href="{{ url_for('auth.leave_group') }}"
+        ><button>Leave Group</button></a
+      >
       <a href="/"><button>Home</button></a>
-     
+    </div>
+    <div class="center">
+      {% if current_user.family %}
+      <br/>
+      <br/>
+      <p>
+        You are a member of the {{ current_user.family.name }} group.
+      </p>
+      {% if current_user.family.code %}
+      <p>The group code is {{ current_user.family.code }}</p>
+      {% else %}
+      <p>There is no group code for this group.</p>
+      {% endif %} {% if current_user.family.members %}
+      <p>Members of this group:</p>
+      <ul>
+        {% for member in current_user.family.members %}
+        <li>{{ member.first_name }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endif %}
 
+      <p>You group name is {{ current_user.family.name }}</p>
+
+      <form action="{{ url_for('auth.generate_code') }}" method="POST">
+        <label for="group_name">Group Name</label>
+        <input type="text" id="group_name" name="group_name" required />
+        <br />
+        <input type="submit" value="Create Group" />
+      </form>
     </div>
   </body>
 </html>

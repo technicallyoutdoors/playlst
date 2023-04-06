@@ -252,19 +252,27 @@ def group_hub():
 @login_required
 def generate_code():
     user = current_user
-    if user.family:
-        flash("Code has already been generated for this user", category='error')
-        time.sleep(1)
-        return redirect(url_for('auth.group_code'))
-    else:
+    family = user.family
+
+    # Check if user has a family
+    if not family:
         code = ''.join(random.choices(
             string.ascii_uppercase + string.digits, k=6))
-        family = Family(code=code)
+        name = request.form['group_name']
+        family = Family(code=code, name=name)
         family.members.append(user)
         db.session.add(family)
         db.session.commit()
         flash("Code generated successfully", category='success')
-        return render_template('group_code.html', user=current_user, code=code)
+
+    # Update family name if request contains a new name
+    elif request.method == 'POST' and 'group_name' in request.form:
+        family.name = request.form['group_name']
+        db.session.commit()
+        flash("Group name updated!", category='success')
+
+    return render_template('group_hub.html', user=current_user, family=family)
+
 
 
 @auth.route('/add_member', methods=['GET', 'POST'])
