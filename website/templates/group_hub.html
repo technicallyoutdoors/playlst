@@ -38,54 +38,160 @@ content %}
         justify-content: center;
         align-items: center;
       }
-      
+
       button:hover {
         background-color: #0056b3;
       }
+      label {
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      input {
+        padding: 12px 24px;
+        border-radius: 4px;
+        border: none;
+        margin-top: 20px;
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      p {
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        text: center
+      }
+      ul {
+        list-style-position: inside;
+      }
+      .group-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background-color: trasparent;
+        border-radius: 5px;
+        }
+        
+        .title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        }
+        
+        .info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        }
+        
+        .card {
+          width: 35%;
+          margin: auto;
+          text-align: center;
+          background-color: #007bff;
+          color: white;
+          border-radius: 5px;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-header {
+          font-size: 24px;
+          padding: 10px;
+          background-color: #007bff;
+          color: #fff;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+        }
+        
+        .card-body {
+          padding: 20px;
+        }
+        
+        .subtitle {
+          font-size: 18px;
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+        
+        .value {
+          font-size: 14px;
+          margin-top: 0;
+          margin-bottom: 20px;
+        }
+        
+        .members {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          font-size: 16px;
+        }
+        
+        .members li {
+          margin-bottom: 5px;
+        }
+        
+        
     </style>
   </head>
   <body>
     <div class="container">
       <h1>Group Hub</h1>
-
+      <a href="/"><button>Home</button></a>
       <a href="{{ url_for('auth.generate_code') }}"
         ><button>Create Group</button></a
       >
       <a href="{{ url_for('auth.join_group') }}"><button>Join Group</button></a>
-      <a href="{{ url_for('auth.group_code') }}"><button>Group Code</button></a>
       <a href="{{ url_for('auth.leave_group') }}"
         ><button>Leave Group</button></a
       >
-      <a href="/"><button>Home</button></a>
+     
     </div>
     <div class="center">
       {% if current_user.family %}
-      <br/>
-      <br/>
-      <p>
-        You are a member of the {{ current_user.family.name }} group.
-      </p>
-      {% if current_user.family.code %}
-      <p>The group code is {{ current_user.family.code }}</p>
-      {% else %}
-      <p>There is no group code for this group.</p>
-      {% endif %} {% if current_user.family.members %}
-      <p>Members of this group:</p>
-      <ul>
-        {% for member in current_user.family.members %}
-        <li>{{ member.first_name }}</li>
-        {% endfor %}
-      </ul>
-      {% endif %} {% endif %}
-
-      <p>You group name is {{ current_user.family.name }}</p>
-
-      <form action="{{ url_for('auth.generate_code') }}" method="POST">
-        <label for="group_name">Group Name</label>
-        <input type="text" id="group_name" name="group_name" required />
-        <br />
-        <input type="submit" value="Create Group" />
-      </form>
+      <br />
+      
+      <div class="container">
+        <form action="{{ url_for('auth.generate_code') }}" method="POST">
+          <div class="center">
+            <input type="text" id="group_name" name="group_name" required placeholder="Enter group name">
+            <button type="submit">Change</button>
+          </div>
+        </form>
+      </div>
+      
+      <br />
+      <div class="card">
+        <div class="card-header">
+          Group Information
+          <div class="card-body">
+          <p class="subtitle">Group Name</p>
+          <p class="value">{{ current_user.family.name }}</p>
+          {% if current_user.family.code %}
+          <p class="subtitle">Group Code</p>
+          <p class="value">{{ current_user.family.code }}</p>
+          {% else %}
+          <p class="subtitle">Group Code</p>
+          <p class="value">No code for this group</p>
+          {% endif %}
+          {% if current_user.family.members %}
+          <p class="subtitle">Members</p>
+          <ul class="members">
+            {% for member in current_user.family.members %}
+            <li>{{ member.first_name }}</li>
+            {% endfor %}
+          </ul>    
+          {% else %}
+          <p class="subtitle">Members</p>
+          <p class="value">No members in this group yet</p>
+          {% endif %}
+          {% endif %}
+        </div>
+      </div>
+      
+      
     </div>
   </body>
 </html>
