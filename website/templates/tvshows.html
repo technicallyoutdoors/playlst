@@ -168,31 +168,31 @@
     />
   </h4>
 
-  <form method="post">
-    <div class="text-center">
-      <a href="/">
-<button type="button">Home</button>
-      </a>
-      <a>
-        <button
-          name="favorites"
-          type="submit"
-          value="favorites"
-        >
-          Add to Favorites
-        </button>
-      </a>
-      <a>
-      <button type="submit">Next</button>
-      </a>
-    
-  </form>
+  
   <form method="post" action="{{ url_for('auth.add_favorite_tv_show') }}">
     <input type="hidden" name="tv_show_title" value="{{ Tv_Show_Title_Name }}">
     <input type="hidden" name="tv_show_image_url" value="{{ tv_show_image_url }}">
     <input type="hidden" name="current_user" value="{{ current_user }}">
     </div>
-    
+    <form method="post">
+      <div class="text-center">
+        <a href="/">
+  <button type="button">Home</button>
+        </a>
+        <a>
+          <button
+            name="favorites"
+            type="submit"
+            value="favorites"
+          >
+            Add to Favorites
+          </button>
+        </a>
+        <a>
+        <button type="submit">Next</button>
+        </a>
+      
+    </form>
   </form>
 </div>
 

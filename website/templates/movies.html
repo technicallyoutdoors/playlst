@@ -161,44 +161,45 @@
     <img src="{{ movie_image_url }}" width="400" height="500" class="center" name="movie_image" />
 </form> 
 
-<form method="post">
-  <div class="text-center">
-    <a href="/" align="center">
-      <button
-        align="center"
-        type="button"
-        color="#000000"
-      >
-        Home
-      </button>
-      <a>
-        <button
-          name="favorites"
-          align="center"
-          type="submit"
-          value="favorites"
-        >
-          Add to Favorites
-        </button>
-      </a>
-    </a>
-      <a>
-      <button
-        name="next"
-        align="center"
-        type="submit"
-        value="next"
-       
-      >
-        Next
-      </button>
-    </a>
+
     
     <form method="post" action="{{ url_for('auth.add_favorite_movie') }}">
       <input type="hidden" name="movie_title" value="{{ Movie_Title_Name }}">
       <input type="hidden" name="movie_image_url" value="{{ movie_image_url }}">
       <input type="hidden" name="current_user" value="{{ current_user }}">
       
+      <form method="post">
+        <div class="text-center">
+          <a href="/" align="center">
+            <button
+              align="center"
+              type="button"
+              color="#000000"
+            >
+              Home
+            </button>
+            <a>
+              <button
+                name="favorites"
+                align="center"
+                type="submit"
+                value="favorites"
+              >
+                Add to Favorites
+              </button>
+            </a>
+          </a>
+            <a>
+            <button
+              name="next"
+              align="center"
+              type="submit"
+              value="next"
+             
+            >
+              Next
+            </button>
+          </a>
     </form>
   </form>
   </div>
