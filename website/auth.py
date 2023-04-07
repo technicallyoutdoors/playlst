@@ -258,8 +258,8 @@ def generate_code():
     if not family:
         code = ''.join(random.choices(
             string.ascii_uppercase + string.digits, k=6))
-        name = request.form['group_name']
-        family = Family(code=code, name=name)
+        # name = request.form['group_name']
+        family = Family(code=code)
         family.members.append(user)
         db.session.add(family)
         db.session.commit()
