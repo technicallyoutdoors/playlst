@@ -1,5 +1,6 @@
 {% extends "base.html" %} {% block content %}
-<h1>Shared Favorites</h1>
+<br/>
+<h1 class="text-center">Matches 🔥</h1>
 {% if favorites %}
 <ul>
   {% for favorite in favorites %}
@@ -25,7 +26,7 @@
   {% endfor %}
 </ul>
 {% else %}
-<p>No shared favorites yet.</p>
+<p>No matches yet :/ come back later!</p>
 {% endif %}
 
 <style>
@@ -106,6 +107,17 @@
   .card-text {
     font-size: 16px;
   }
+  p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 10px 0;
+    color: black;
+    font-family: Arial, sans-serif;
+    text-align: justify;
+    margin: 250px;
+    word-wrap: break-word;
+  }
+  
 </style>
 
 {% endblock %}

@@ -1,110 +1,203 @@
 {% extends "base.html" %} {% block title %} Home {% endblock %} {%block content
 %}
-<h1 align="center">PickFlix</h1>
-
+<br/>
+<h1 align="center">🎥PickFlix🎥</h1>
+<p>Meet PickFlix, your TV show and movie matching companion! Simply create a group, invite your friends, and start finding your PickFlix match!</p>
+<br/>
+<br/>
+<div class="button-group">
 <a href="/movies" align="center">
   <div class="text-center">
   <button align="center" type="button" color="#000000">
-    Movies
+    Movies 🎥
   </button> </a>
   <a href="/tvshows" align="center">
-  <button align="center" type="button" color="#000000">
-    TV Shows
+    <button align="center" type="button" color="#000000">
+    TV Shows 📺
   </button> </a>
   <a href="/favorites" align="center">
-    <button align="center" type="button" color="#000000">
-      Favorites
+    <button  align="center" type="button" color="#000000">
+      My Favorites ⭐️
     </button> </a>
       <form method="post" action="/group_hub">
-    <button align="center" type="submit">Group Hub</button>
+        <button align="center" type="submit">Group Hub 👥</button>
     <a href="/shared_favorites" align="center">
       <button align="center" type="button" color="#000000">
-        Shared Favorites
+        Matched Favorites 🔥
       </button> </a>
 </form>
 
     </div>
 
+<style>
+  body {
+    background: linear-gradient(to bottom right, #ff0000, #0000ff);
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+  }
+  .container {
+    margin: 0 auto;
+    text-align: center;
+  }
 
+  h1 {
+    font-family: Arial, sans-serif;
+    font-size: 50px;
+    font-weight: bold;
+  }
 
-</a>
+  button {
+    display: block;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 4px;
+    border: none;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  li {
+    justify-content: center;
+    align-items: center;
+  }
 
-<style> 
-
-    h1 {
-      font-family: Arial, sans-serif;
-      font-size: 50px;
-      font-weight: bold;
+  button:hover {
+    background-color: #0056b3;
+  }
+  label {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  input {
+    padding: 12px 24px;
+    border-radius: 4px;
+    border: none;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  ul {
+    list-style-position: inside;
+  }
+  .group-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: trasparent;
+    border-radius: 5px;
     }
-    h2 {
-      background-color: #f7f7f7;
-      display: inline-block;
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-family: Arial, sans-serif;
-      font-size: 24px;
-      font-weight: bold;
-      background-color: white;
-      padding: 1px; /* add some padding to make the background more visible */
+    
+    .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    }
+    
+    .info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    }
+    
+    .card {
+      width: 35%;
+      margin: 0 auto; 
+      padding: 20px;
+      margin: auto;
       text-align: center;
-    }
-
-    h3 {
-      font-family: Arial, sans-serif;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    img {
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      padding: 15px;
-    }
-    .text-center {
-      text-align: center;
-    }
-    body {
-      background: linear-gradient(to bottom right, #FF0000, #0000FF);
-      background-attachment: fixed;
-      background-size: cover;
-      font-family: Arial, sans-serif;
-    }
-    button {
       background-color: #007bff;
       color: white;
-      padding: 1px 30px;
-      border-radius: 4px;
-      border: none;
-      margin-top: 20px;
-      cursor: pointer;
-      font-size: 20px;
-      font-weight: bold;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     }
-    .card {
-      border-radius: 15px;
-      background-color: white;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      position: relative;
+    @media (max-width: 767px) {
+      .card {
+        width: 100%; /* Set width to 100% to fill the screen */
+        margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */
+        padding: 20px; /* Maintain the same padding */
+      }
     }
-    .card-body {
-      padding: 0;
+    .card-header {
+      font-size: 24px;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
     
+    .card-body {
+      padding: 20px;
     }
-    .col {
+    
+    .subtitle {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .value {
+      font-size: 14px;
+      margin-top: 0;
       margin-bottom: 20px;
     }
-    .card-title {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      padding: 10px;
-      background-color: rgba(255,255,255,0.7);
+    
+    .members {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 16px;
+    }
+    
+    .members li {
+      margin-bottom: 5px;
+    }
+    
+    #change_button {
+      background-color: black;
+      border-radius: 10px;
+    }
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 0px 0;
+      color: black;
+      max-width: 300px;
+      font-family: Arial, sans-serif;
+      margin: 0 250px;
+      background-color: white;
+      border-radius: 15px;
+      margin: 0 auto;
+      padding: 2px; 
+      text-align: center;     
+    }
+    
+    @media (max-width: 767px) {
+      p {
+        font-size: 16px;
+        margin: 0 auto;
+      }
+    }
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
       text-align: center;
     }
     
-    .card-text {
-      font-size: 16px;
+    .button-group button {
+      flex: 1 1 auto;
+      margin: 10px;
+      width: 300px;
+      border-radius: 15px;
     }
 
 

@@ -4,6 +4,7 @@ content %}
 <html>
   <head>
     <meta charset="UTF-8" />
+    <br/>
     <title>Group Hub</title>
     <style>
       body {
@@ -55,6 +56,7 @@ content %}
         cursor: pointer;
         font-size: 20px;
         font-weight: bold;
+        margin: 0 auto;
       }
       p {
         font-family: Arial, sans-serif;
@@ -89,14 +91,38 @@ content %}
         
         .card {
           width: 35%;
+          margin: 0 auto; 
+          padding: 20px;
           margin: auto;
           text-align: center;
           background-color: #007bff;
           color: white;
           border-radius: 5px;
           box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+          max-width: 600px;
+          border-radius: 15px;   
         }
-        
+        @media (max-width: 767px) {
+          .card {
+            width: 300px; /* Set width to 100% to fill the screen */
+            margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */
+            padding: 10px; /* Maintain the same padding */
+            margin: 0 auto;
+          }
+        }
+        @media (max-width: 767px) {
+          .card-header {
+            padding: 5px:
+          }
+        }
+        @media (max-width: 767px) {
+          input {
+            width: 200px; /* Set width to 100% to fill the screen */
+           
+            padding: 10px; /* Maintain the same padding */
+            margin: 0 auto;
+          }
+        }
         .card-header {
           font-size: 24px;
           padding: 10px;
@@ -104,10 +130,12 @@ content %}
           color: #fff;
           border-top-left-radius: 5px;
           border-top-right-radius: 5px;
+          
         }
         
         .card-body {
-          padding: 20px;
+          padding: 0px;
+          
         }
         
         .subtitle {
@@ -133,12 +161,31 @@ content %}
           margin-bottom: 5px;
         }
         
+        #change_button {
+          background-color: black;
+          border-radius: 10px;
+        }
+        .button-group {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+        }
+        
+        .button-group button {
+          flex: 1 1 auto;
+          margin: 10px;
+          width: 300px;
+          border-radius: 15px;
+        }
         
     </style>
   </head>
   <body>
     <div class="container">
       <h1>Group Hub</h1>
+      <div class="button-group">
       <a href="/"><button>Home</button></a>
       <a href="{{ url_for('auth.generate_code') }}"
         ><button>Create Group</button></a
@@ -147,20 +194,17 @@ content %}
       <a href="{{ url_for('auth.leave_group') }}"
         ><button>Leave Group</button></a
       >
+      <a href="/shared_favorites" align="center">
+        <button align="center" type="button" color="#000000">
+          Matched Favorites
+        </button> </a>
      
     </div>
     <div class="center">
       {% if current_user.family %}
       <br />
       
-      <div class="container">
-        <form action="{{ url_for('auth.generate_code') }}" method="POST">
-          <div class="center">
-            <input type="text" id="group_name" name="group_name" required placeholder="Enter group name">
-            <button type="submit">Change</button>
-          </div>
-        </form>
-      </div>
+      
       
       <br />
       <div class="card">
@@ -190,7 +234,14 @@ content %}
           {% endif %}
         </div>
       </div>
-      
+      <div class="container">
+        <form action="{{ url_for('auth.generate_code') }}" method="POST">
+          <div class="center">
+            <input type="text" id="group_name" name="group_name" required placeholder="Enter group name">
+            <button type="submit" id="change_button">Change</button>
+          </div>
+        </form>
+      </div>
       
     </div>
   </body>
