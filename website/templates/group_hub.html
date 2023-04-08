@@ -224,7 +224,7 @@ content %}
           <p class="subtitle">Members</p>
           <ul class="members">
             {% for member in current_user.family.members %}
-            <li>{{ member.first_name }}</li>
+            <li>{{ member.first_name }} {{ member.last_name }}</li>
             {% endfor %}
           </ul>    
           {% else %}

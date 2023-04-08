@@ -1,6 +1,8 @@
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
+import datetime
+from flask_wtf.file import FileField
 
 
 
@@ -8,6 +10,8 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     first_name = db.Column(db.String(150))
+    last_name = db.Column(db.String(150))
+    profile_photo = FileField("Profile Pic")
     password = db.Column(db.String(60), nullable=False)
     code = db.Column(db.String(6), unique=True, nullable=True)
     family_id = db.Column(db.Integer, db.ForeignKey('family.id'))
@@ -50,3 +54,4 @@ class FamilyMember(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     family_id = db.Column(db.Integer, db.ForeignKey('family.id'))
+

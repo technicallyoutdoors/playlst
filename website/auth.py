@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User, FamilyMember
+from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app
+from .models import User, FamilyMember, Photo
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -12,7 +12,9 @@ from sqlalchemy import func
 from .code_generator import generate_code
 import string
 import time
-
+from werkzeug.utils import secure_filename
+import os
+from .__init__ import create_app
 
 auth = Blueprint('auth', __name__)
 
@@ -50,6 +52,7 @@ def signup():
     if request.method == 'POST':
         email = request.form.get('email')
         first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
         user = User.query.filter_by(email=email).first()
@@ -64,7 +67,7 @@ def signup():
         elif len(password2) < 7:
             flash('Password must be more than 7 characters', category='error')
         else:
-            new_user = User(email=email, first_name=first_name,
+            new_user = User(email=email, first_name=first_name, last_name=last_name,
                             password=generate_password_hash(password1, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
@@ -111,6 +114,10 @@ def movies():
     data2 = json.loads(response2.text)
     Movie_Title_Name = data2['Title']
     print(Movie_Title_Name)
+
+    # favorites = current_user.favorites
+    # for title in Movie_Title_Name:
+    #     if title in favorites
 
     # gets the image for the title ID from the url2 API only 500 requests/month
     url3 = "https://online-movie-database.p.rapidapi.com/title/get-images"
@@ -274,7 +281,6 @@ def generate_code():
     return render_template('group_hub.html', user=current_user, family=family)
 
 
-
 @auth.route('/add_member', methods=['GET', 'POST'])
 @login_required
 def add_member():
@@ -341,3 +347,34 @@ def leave_group():
 
     flash(f"You have left the family {family.name}.", 'success')
     return redirect(url_for('auth.group_hub'))
+
+
+@auth.route('/user_profile', methods=['POST', 'GET'])
+@login_required
+def user_profile():
+    return render_template('user_profile.html', user=current_user)
+
+# app.config['UPLOAD_FOLDER'] = os.path.join(
+#     os.path.dirname(__file__), 'static/uploads')
+
+@auth.route('/edit_user_profile', methods=['POST', 'GET'])
+@login_required
+def edit_user_profile():
+    user = User.query.get(current_user.id)
+    user.email = request.form['email']
+    user.first_name = request.form['first_name']
+    user.last_name = request.form['last_name']
+    if request.method == 'POST':
+        if 'profile_picture' in request.files:
+            profile_picture = request.files['profile_picture']
+            if profile_picture:
+                filename = secure_filename(profile_picture.filename)
+                filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+                profile_picture.save(filepath)
+                photo = Photo(filename=filename, filepath=filepath, user_id=current_user.id)
+                db.session.add(photo)
+                user.profile_picture_id = photo.id
+        db.session.commit()
+        flash("Profile saved!", category='success')
+        return redirect(url_for('auth.user_profile'))
+    return render_template("user_profile.html", user=current_user)

@@ -1,0 +1,189 @@
+{% extends "base.html" %} {% block title %}Edit Profile{% endblock %} {%block content
+    %}
+    
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>User Profile</title>
+      </head>
+      <body>
+        <h1>User Profile</h1>
+        <img src={{ current_user.profile_photo }} alt="User Avatar">
+        <h2>{{ user.username }}</h2>
+        {{ form.profile_pic }}
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>First Name:</strong> {{ user.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+        <p><strong>Interests:</strong></p>
+        <div class="container">
+            <form action="{{ url_for('auth.edit_user_profile') }}" method="POST" enctype="multipart/form-data">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" required>
+                
+                <label for="first_name">First Name</label>
+                <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+                
+                <label for="last_name">Last Name</label>
+                <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}" required>
+                
+                <label for="profile_picture">Profile Picture</label>
+                <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+                
+                <input type="submit" name="edit_profile" value="Save Changes">
+              </form>
+              
+          </div>
+      </body>
+    </html>
+    
+        <style>
+            body {
+              background: linear-gradient(to bottom right, #ff0000, #0000ff);
+              background-attachment: fixed;
+              background-size: cover;
+              font-family: Arial, sans-serif;
+            }
+            .container {
+              margin: 0 auto;
+              text-align: center;
+            }
+      
+            h1 {
+              font-family: Arial, sans-serif;
+              font-size: 50px;
+              font-weight: bold;
+            }
+      
+            button {
+                background-color: #007bff;
+                color: white;
+                padding: 12px 24px;
+                border-radius: 4px;
+                border: none;
+                margin-top: 20px;
+                cursor: pointer;
+                font-size: 20px;
+                font-weight: bold;
+              }
+            li {
+              justify-content: center;
+              align-items: center;
+            }
+      
+            button:hover {
+              background-color: #0056b3;
+            }
+            label {
+              font-family: Arial, sans-serif;
+              font-size: 16px;
+              font-weight: bold;
+            }
+            input {
+              padding: 12px 24px;
+              border-radius: 4px;
+              border: none;
+              margin-top: 20px;
+              cursor: pointer;
+              font-size: 20px;
+              font-weight: bold;
+            }
+            p {
+              font-family: Arial, sans-serif;
+              font-size: 16px;
+              font-weight: bold;
+              text: center
+            }
+            ul {
+              list-style-position: inside;
+            }
+            .group-info {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              padding: 20px;
+              background-color: trasparent;
+              border-radius: 5px;
+              }
+              
+              .title {
+              font-size: 24px;
+              font-weight: bold;
+              margin-bottom: 10px;
+              }
+              
+              .info {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              }
+              
+              .card {
+                width: 35%;
+                margin: 0 auto; 
+                padding: 20px;
+                margin: auto;
+                text-align: center;
+                background-color: #007bff;
+                color: white;
+                border-radius: 5px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+              }
+              @media (max-width: 767px) {
+                .card {
+                  width: 100%; /* Set width to 100% to fill the screen */
+                  margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */
+                  padding: 20px; /* Maintain the same padding */
+                }
+              }
+              .card-header {
+                font-size: 24px;
+                padding: 10px;
+                background-color: #007bff;
+                color: #fff;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+              }
+              
+              .card-body {
+                padding: 20px;
+              }
+              
+              .subtitle {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 5px;
+              }
+              
+              .value {
+                font-size: 14px;
+                margin-top: 0;
+                margin-bottom: 20px;
+              }
+              
+              .members {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                font-size: 16px;
+              }
+              
+              .members li {
+                margin-bottom: 5px;
+              }
+              
+              #change_button {
+                background-color: black;
+                border-radius: 10px;
+              }
+              img {
+                border-radius: 35px;
+                padding-top: 23px;
+                image-rendering: -webkit-optimize-contrast;
+              }
+              
+              
+        </style>
+
+    </div> 
+        {% endblock %}

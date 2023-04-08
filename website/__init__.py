@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
+import os
 
 
 db = SQLAlchemy()
@@ -20,6 +21,10 @@ def create_app():
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static/uploads')
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    # app.config['UPLOAD_FOLDER'] = os.path.join(
+    #     os.path.dirname(__file__), 'static/uploads')
 
     from .models import User, Favorite
 
