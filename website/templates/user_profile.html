@@ -3,38 +3,80 @@
     
     <!DOCTYPE html>
     <html>
-      <head>
-        <title>User Profile</title>
-      </head>
-      <body>
-        <h1>User Profile</h1>
-        <img src={{ current_user.profile_photo }} alt="User Avatar">
-        <h2>{{ user.username }}</h2>
-        {{ form.profile_pic }}
-        <p><strong>Email:</strong> {{ user.email }}</p>
-        <p><strong>First Name:</strong> {{ user.first_name }}</p>
-        <p><strong>Last Name:</strong> {{ user.last_name }}</p>
-        <p><strong>Interests:</strong></p>
-        <div class="container">
-            <form action="{{ url_for('auth.edit_user_profile') }}" method="POST" enctype="multipart/form-data">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" value="{{ user.email }}" required>
-                
-                <label for="first_name">First Name</label>
-                <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" required>
-                
-                <label for="last_name">Last Name</label>
-                <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}" required>
-                
-                <label for="profile_picture">Profile Picture</label>
-                <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
-                
-                <input type="submit" name="edit_profile" value="Save Changes">
-              </form>
-              
-          </div>
-      </body>
-    </html>
+  <head>
+    <title>User Profile</title>
+    <style>
+      .avatar1 {
+        width: 200px;
+        height: 200px;
+        border-radius: 35%;
+        
+        object-position: center;
+      }
+
+      .container {
+        margin-top: 20px;
+        max-width: 600px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      label {
+        margin-top: 10px;
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="file"] {
+        padding: 10px;
+        margin-bottom: 20px;
+        border: none;
+        border-bottom: 2px solid #ccc;
+      }
+
+      input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>User Profile</h1>
+    {% if current_user.photo %}
+    <img src="{{ url_for('static', filename='uploads/' + current_user.photo.filename) }}" alt="User Avatar" class="avatar1">
+    {% else %}
+    <img src="{{ url_for('static', filename='default_profile.png') }}" alt="User Avatar" class="avatar">
+    {% endif %}
+    <h2>{{ user.username }}</h2>
+    <div class="container">
+      <form action="{{ url_for('auth.edit_user_profile') }}" method="POST" enctype="multipart/form-data">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{ user.email }}" required>
+
+        <label for="first_name">First Name</label>
+        <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+
+        <label for="last_name">Last Name</label>
+        <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}" required>
+
+        <label for="profile_picture">Profile Picture</label>
+        <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+
+        <input type="submit" name="edit_profile" value="Save Changes">
+      </form>
+    </div>
+  </body>
+</html>
+
+
     
         <style>
             body {
@@ -181,6 +223,8 @@
                 padding-top: 23px;
                 image-rendering: -webkit-optimize-contrast;
               }
+              
+              
               
               
         </style>

@@ -22,6 +22,13 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">PickFlix</a>
+        <a class="navbar-brand">
+        {% if current_user.photo %}
+            <a class="nav-item nav-link" id="current_user">
+              <img src="{{ url_for('static', filename='uploads/' + current_user.photo.filename) }}" alt="User Avatar" class="avatar">
+            </a>
+            {% endif %}
+          </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <i class="fas fa-bars"></i>
         </button>
@@ -32,7 +39,7 @@
             <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
             <a class="nav-item nav-link" id="user_profile" href="/user_profile">Profile</a>
             <a class="nav-item nav-link" id="current_user">{{ current_user.email }}</a>
-            
+
             {% else %}
             <a class="nav-item nav-link" id="login" href="/login">Login</a>
             <a class="nav-item nav-link" id="signUp" href="/signup">Sign Up</a>
@@ -42,9 +49,7 @@
       </div>
     </nav>
     
-    
-    
-    
+  
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==
     'error' %}
@@ -92,7 +97,6 @@
 
   <style> 
 
-    <style>
       .navbar-nav.ml-auto {
         position: right;
         top: 100%;
@@ -150,9 +154,22 @@
         .navbar-toggler[aria-expanded="true"] i::before {
           content: "\f00d"; /* FontAwesome X icon */
         }
+        .avatar {
+          width: 55px;
+          height: 55px;
+          border-radius: 50%;
+          
+          object-position: center;
+        }
+        @media (max-width: 767px) {
+          .avatar {
+            width: 55px; /* Set width to 100% to fill the screen */
+            height: 55px;
+            float: right; /* Align to the right */
+          }
+        }
         
-    </style>
-  
+        
     
     
     

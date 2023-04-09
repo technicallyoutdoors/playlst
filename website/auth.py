@@ -15,7 +15,7 @@ import time
 from werkzeug.utils import secure_filename
 import os
 from .__init__ import create_app
-
+import datetime
 auth = Blueprint('auth', __name__)
 
 
@@ -352,10 +352,15 @@ def leave_group():
 @auth.route('/user_profile', methods=['POST', 'GET'])
 @login_required
 def user_profile():
-    return render_template('user_profile.html', user=current_user)
+    profile_photo = None
+    if current_user.photo:
+        profile_photo = current_user.photo.filepath
+    return render_template('user_profile.html', user=current_user, profile_photo=profile_photo)
+
 
 # app.config['UPLOAD_FOLDER'] = os.path.join(
 #     os.path.dirname(__file__), 'static/uploads')
+
 
 @auth.route('/edit_user_profile', methods=['POST', 'GET'])
 @login_required
@@ -369,11 +374,17 @@ def edit_user_profile():
             profile_picture = request.files['profile_picture']
             if profile_picture:
                 filename = secure_filename(profile_picture.filename)
-                filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+                filepath = os.path.join(
+                    current_app.config['UPLOAD_FOLDER'], filename)
                 profile_picture.save(filepath)
-                photo = Photo(filename=filename, filepath=filepath, user_id=current_user.id)
-                db.session.add(photo)
-                user.profile_picture_id = photo.id
+                if user.photo:
+                    user.photo.filename = filename
+                    user.photo.filepath = filepath
+                else:
+                    photo = Photo(filename=filename, filepath=filepath,
+                                  user_id=current_user.id)
+                    db.session.add(photo)
+                    user.photo = photo
         db.session.commit()
         flash("Profile saved!", category='success')
         return redirect(url_for('auth.user_profile'))

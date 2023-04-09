@@ -2,7 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
-import os
+import os 
+from os.path import join, dirname, realpath
 
 
 db = SQLAlchemy()
@@ -21,8 +22,14 @@ def create_app():
 
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
-    UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static/uploads')
+    UPLOAD_FOLDER = join(dirname(realpath(__file__)), './static/uploads/')
+
+    # if not os.path.isdir(UPLOAD_FOLDER):
+    #     os.makedirs(UPLOAD_FOLDER)
+
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    
+    
     # app.config['UPLOAD_FOLDER'] = os.path.join(
     #     os.path.dirname(__file__), 'static/uploads')
 

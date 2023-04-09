@@ -11,7 +11,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     first_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150))
-    profile_photo = FileField("Profile Pic")
+    photo = db.relationship('Photo', uselist=False)
     password = db.Column(db.String(60), nullable=False)
     code = db.Column(db.String(6), unique=True, nullable=True)
     family_id = db.Column(db.Integer, db.ForeignKey('family.id'))
@@ -23,22 +23,6 @@ class Favorite(db.Model):
     image = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User')
-
-
-# class User(db.Model, UserMixin):
-#     id = db.Column(db.Integer, primary_key=True)
-#     email = db.Column(db.String(150), unique=True)
-#     password = db.Column(db.String(150))
-#     first_name = db.Column(db.String(150))
-#     favorites = db.relationship('Favorite')
-#     family_id = db.Column(db.Integer, db.ForeignKey('family.id'))
-#     code = db.Column(db.String(6), unique=True, nullable=True)
-    
-# class Favorite(db.Model):
-#     id = db.Column(db.String(50), primary_key=True)
-#     title = db.Column(db.String(150))
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-#     image = db.Column(db.String(200))   
 
 
 class Family(db.Model):
@@ -55,3 +39,9 @@ class FamilyMember(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     family_id = db.Column(db.Integer, db.ForeignKey('family.id'))
 
+class Photo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(255), nullable=False)
+    filepath = db.Column(db.String(255), nullable=False)
+    uploaded_at = db.Column(db.DateTime)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
