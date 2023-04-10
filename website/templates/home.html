@@ -1,5 +1,5 @@
-{% extends "base.html" %} {% block title %} Home {% endblock %} {%block content
-%}
+{% extends "base.html" %} {% block title %} Home {% endblock %} {%block content%}
+
 <br/>
 <h1 align="center">🎥PickFlix🎥</h1>
 <p>Meet PickFlix, your TV show and movie matching companion! Simply create a group, invite your friends, and start finding your PickFlix match!</p>
@@ -8,21 +8,21 @@
 <div class="button-group">
 <a href="/movies" align="center">
   <div class="text-center">
-  <button align="center" type="button" color="#000000">
+  <button class="generic_button" align="center" type="button" color="#000000">
     Movies 🎥
   </button> </a>
   <a href="/tvshows" align="center">
-    <button align="center" type="button" color="#000000">
+    <button class="generic_button" align="center" type="button" color="#000000">
     TV Shows 📺
   </button> </a>
   <a href="/favorites" align="center">
-    <button  align="center" type="button" color="#000000">
+    <button  class="generic_button" align="center" type="button" color="#000000">
       My Favorites ⭐️
     </button> </a>
       <form method="post" action="/group_hub">
-        <button align="center" type="submit">Group Hub 👥</button>
+        <button class="generic_button" align="center" type="submit">Group Hub 👥</button>
     <a href="/shared_favorites" align="center">
-      <button align="center" type="button" color="#000000">
+      <button class="generic_button" align="center" type="button" color="#000000">
         Matched Favorites 🔥
       </button> </a>
 </form>
@@ -47,31 +47,34 @@
     font-weight: bold;
   }
 
-  button {
+  .generic_button {
     display: block;
     background-color: #007bff;
     color: white;
     padding: 12px 24px;
-    border-radius: 4px;
+    border-radius: 35px;
     border: none;
     margin-top: 20px;
     cursor: pointer;
     font-size: 20px;
     font-weight: bold;
   }
+  
   li {
     justify-content: center;
     align-items: center;
   }
 
-  button:hover {
+  .generic_button:hover {
     background-color: #0056b3;
   }
+
   label {
     font-family: Arial, sans-serif;
     font-size: 16px;
     font-weight: bold;
   }
+
   input {
     padding: 12px 24px;
     border-radius: 4px;
@@ -81,9 +84,11 @@
     font-size: 20px;
     font-weight: bold;
   }
+
   ul {
     list-style-position: inside;
   }
+
   .group-info {
     display: flex;
     flex-direction: column;
@@ -91,7 +96,7 @@
     justify-content: center;
     padding: 20px;
     background-color: trasparent;
-    border-radius: 5px;
+    border-radius: 35px;
     }
     
     .title {
@@ -173,9 +178,9 @@
       font-family: Arial, sans-serif;
       margin: 0 250px;
       background-color: white;
-      border-radius: 15px;
+      border-radius: 35px;
       margin: 0 auto;
-      padding: 2px; 
+      padding: 10px;
       text-align: center;     
     }
     
@@ -185,6 +190,7 @@
         margin: 0 auto;
       }
     }
+    
     .button-group {
       display: flex;
       flex-wrap: wrap;
@@ -197,7 +203,7 @@
       flex: 1 1 auto;
       margin: 10px;
       width: 300px;
-      border-radius: 15px;
+      border-radius: 35x;
     }
 
 

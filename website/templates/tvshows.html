@@ -3,12 +3,9 @@
 
 <html>
   <h1 color="#000000" align="center">Random TV Shows</h1>
-  <h3 color="#000000" align="center">
-  </h3>
-
+  <h3 color="#000000" align="center"> </h3>
   
 <div class="text-center">
-  
 
   <h4>
     <style>
@@ -33,7 +30,7 @@
           background-color: #007bff;
           color: white;
           padding: 12px 24px;
-          border-radius: 4px;
+          border-radius: 35px;
           border: none;
           margin-top: 20px;
           cursor: pointer;
@@ -71,15 +68,6 @@
         ul {
           list-style-position: inside;
         }
-        .group-info {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: 20px;
-          background-color: trasparent;
-          border-radius: 5px;
-          }
           
           .title {
           font-size: 24px;
@@ -99,30 +87,19 @@
             padding: 20px;
             margin: auto;
             text-align: center;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            border-radius: 50px 50px 10px 10px;
           }
-          @media (max-width: 767px) {
+          
+
+          @media (max-width: 480px) {
             .card {
               width: 100%; /* Set width to 100% to fill the screen */
               margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */
               padding: 20px; /* Maintain the same padding */
             }
           }
-          .card-header {
-            font-size: 24px;
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-          }
-          
-          .card-body {
-            padding: 20px;
-          }
+       
+         
           
           .subtitle {
             font-size: 18px;
@@ -146,16 +123,11 @@
           .members li {
             margin-bottom: 5px;
           }
+
+         img {
+          border-radius: 35px;
+         }
           
-          #change_button {
-            background-color: black;
-            border-radius: 10px;
-          }
-          img {
-            border-radius: 35px;
-            padding-top: 23px;
-            image-rendering: -webkit-optimize-contrast;
-          }
           
           
     </style>
@@ -173,6 +145,7 @@
     <input type="hidden" name="tv_show_title" value="{{ Tv_Show_Title_Name }}">
     <input type="hidden" name="tv_show_image_url" value="{{ tv_show_image_url }}">
     <input type="hidden" name="current_user" value="{{ current_user }}">
+  </form>
     </div>
     <form method="post">
       <div class="text-center">

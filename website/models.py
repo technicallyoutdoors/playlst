@@ -1,8 +1,6 @@
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
-import datetime
-from flask_wtf.file import FileField
 
 
 
@@ -22,7 +20,7 @@ class Favorite(db.Model):
     title = db.Column(db.String(100), nullable=False)
     image = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship('User')
+    user = db.relationship('User', overlaps="favorites")
 
 
 class Family(db.Model):
@@ -43,5 +41,4 @@ class Photo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(255), nullable=False)
     filepath = db.Column(db.String(255), nullable=False)
-    uploaded_at = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

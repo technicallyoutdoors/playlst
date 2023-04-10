@@ -19,7 +19,7 @@
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">PickFlix</a>
         <a class="navbar-brand">
@@ -38,8 +38,7 @@
             <a class="nav-item nav-link" id="home" href="/">Home</a>
             <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
             <a class="nav-item nav-link" id="user_profile" href="/user_profile">Profile</a>
-            <a class="nav-item nav-link" id="current_user">{{ current_user.email }}</a>
-
+            <a class="nav-item nav-link" id="current_user">{{ current_user.first_name }} {{ current_user.last_name }}</a>
             {% else %}
             <a class="nav-item nav-link" id="login" href="/login">Login</a>
             <a class="nav-item nav-link" id="signUp" href="/signup">Sign Up</a>
@@ -63,7 +62,7 @@
     <div class="alert alert-success alter-dismissable fade show" role="alert">
       {{ message }}
       <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times; </span>
+        <span aria-hidden="true">&times;</span>
       </button>
     </div>
     {% endif %} {% endfor %} {% endif %} {% endwith %}
@@ -95,83 +94,105 @@
     ></script>
   </body>
 
-  <style> 
-
-      .navbar-nav.ml-auto {
-        position: right;
-        top: 100%;
-        right: 0;
-        background-color: #343a40;
-        border-radius: 0.25rem;
-        padding: 0.5rem 1rem;
-        margin-top: 0.125rem;
-        box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
-      }
-      .navbar-toggler {
-        z-index: 1;
-      }
-      .custom-nav {
-        display: flex;
-        flex-direction: row-reverse;
-      }
-     
+  <style>
+    .collapse navbar-collapse a {
+      color: white;
+    }
+    
+    .navbar navbar-expand-lg {
+      color: white;
+    }
+    
+    .navbar-nav.ml-auto {
+      position: right;
+      top: 100%;
+      right: 0;
+      background-color: transparent;
+      border-radius: 0.25rem;
+      padding: 0.5rem 1rem;
+      margin-top: 0.125rem;
+      color: white;
       
-        .navbar-toggler.active + .navbar-nav.ml-auto {
-          display: block;
-        }
-        .navbar-toggler {
-          border: none;
-          background: transparent;
-        }
-        
-        .navbar-toggler span {
-          display: block;
-          width: 22px;
-          height: 2px;
-          margin-bottom: 4px;
-          position: relative;
-          background: #fff;
-          border-radius: 1px;
-        }
-        
-        .navbar-toggler span:nth-child(2) {
-          width: 16px;
-        }
-        
-        .navbar-toggler.collapsed span:nth-child(1) {
-          transform: rotate(45deg) translate(2px, 0px);
-          top: 3px;
-        }
-        
-        .navbar-toggler.collapsed span:nth-child(2) {
-          opacity: 0;
-        }
-        
-        .navbar-toggler.collapsed span:nth-child(3) {
-          transform: rotate(-45deg) translate(2px, 0px);
-          top: -3px;
-        }
-        .navbar-toggler[aria-expanded="true"] i::before {
-          content: "\f00d"; /* FontAwesome X icon */
-        }
-        .avatar {
-          width: 55px;
-          height: 55px;
-          border-radius: 50%;
-          
-          object-position: center;
-        }
-        @media (max-width: 767px) {
-          .avatar {
-            width: 55px; /* Set width to 100% to fill the screen */
-            height: 55px;
-            float: right; /* Align to the right */
-          }
-        }
-        
-        
+      
+    }
     
+    .navbar-nav.ml-auto a:hover {
+      background-color: transparent
+      border-radius: 35px;
+      
+    }
     
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+    
+    #current_user {
+      cursor: pointer;
+    }
+    
+    #current_user:hover {
+      text-decoration: none;
+    }
+    
+    .alert {
+      margin-top: 1rem;
+      margin-bottom: 0;
+      border-radius: 0;
+      text-align: center;
+    }
+    
+    .alert-success {
+      background-color: #28a745;
+      color: white;
+    }
+    
+    .alert-danger {
+      background-color: #dc3545;
+      color: white;
+    }
+    
+    .alert-dismissable .close {
+      position: relative;
+      top: -0.75rem;
+      right: 0;
+      color: inherit;
+    }
+    
+    #home {
+      margin-right: 1rem;
+    }
+    
+    #user_profile {
+      margin-right: 1rem;
+    }
+    
+    #logout {
+      margin-right: 1rem;
+    }
+    
+    .navbar-toggler {
+      border: none;
+      background-color: transparent;
+    }
+    
+    .navbar-toggler:focus,
+    .navbar-toggler:active,
+    .navbar-toggler-icon:focus {
+      outline: none;
+      box-shadow: none;
+    }
+    
+    .navbar-toggler .fas {
+      font-size: 1.5rem;
+      color: white;
+    }
+    
+    .navbar-toggler.collapsed .fas {
+      color: white;
+    }
     
   </style>
 </html>
