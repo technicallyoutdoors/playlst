@@ -1,209 +1,196 @@
-{% extends "base.html" %} {% block title %}PickFlix{% endblock %} {%block content
-%}
+{% extends "base.html" %} {% block title %}PickFlix{% endblock %} {%block
+content %}
 
 <html>
   <h1 color="#000000" align="center">Random Movies</h1>
-  <h3 color="#000000" align="center">
-  </h3>
+  <h3 color="#000000" align="center"></h3>
 
+    <form>
+      <img
+        src="{{ movie_image_url }}"
+        width="400"
+        height="500"
+        class="center"
+        name="movie_image"
+      />
+    </form>
 
-<form>
-  
-</form> 
-  <h4>
-    <style>
-      body {
-        background: linear-gradient(to bottom right, #ff0000, #0000ff);
-        background-attachment: fixed;
-        background-size: cover;
-        font-family: Arial, sans-serif;
-      }
-      .container {
-        margin: 0 auto;
-        text-align: center;
-      }
-
-      h1 {
-        font-family: Arial, sans-serif;
-        font-size: 50px;
-        font-weight: bold;
-      }
-
-      button {
-        background-color: #007bff;
-        color: white;
-        padding: 12px 24px;
-        border-radius: 35px;
-        border: none;
-        margin-top: 20px;
-        cursor: pointer;
-        font-size: 20px;
-        font-weight: bold;
-      }
-      li {
-        justify-content: center;
-        align-items: center;
-      }
-
-      button:hover {
-        background-color: #0056b3;
-      }
-      label {
-        font-family: Arial, sans-serif;
-        font-size: 16px;
-        font-weight: bold;
-      }
-      input {
-        padding: 12px 24px;
-        border-radius: 4px;
-        border: none;
-        margin-top: 20px;
-        cursor: pointer;
-        font-size: 20px;
-        font-weight: bold;
-      }
-      p {
-        font-family: Arial, sans-serif;
-        font-size: 16px;
-        font-weight: bold;
-        text: center
-      }
-      ul {
-        list-style-position: inside;
-      }
-      .group-info {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        background-color: trasparent;
-        border-radius: 5px;
-        }
-        
-        .title {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        }
-        
-        .info {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        }
-        
-        .card {
-          width: 35%;
-          margin: 0 auto; 
-          padding: 20px;
-          margin: auto;
-          text-align: center;
-          background-color: #007bff;
-          color: white;
-          border-radius: 5px;
-          box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        }
-        @media (max-width: 767px) {
-          .card {
-            width: 100%; /* Set width to 100% to fill the screen */
-            margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */
-            padding: 20px; /* Maintain the same padding */
-          }
-        }
-        .card-header {
-          font-size: 24px;
-          padding: 10px;
-          background-color: #007bff;
-          color: #fff;
-          border-top-left-radius: 5px;
-          border-top-right-radius: 5px;
-        }
-        
-        .card-body {
-          padding: 20px;
-        }
-        
-        .subtitle {
-          font-size: 18px;
-          font-weight: bold;
-          margin-bottom: 5px;
-        }
-        
-        .value {
-          font-size: 14px;
-          margin-top: 0;
-          margin-bottom: 20px;
-        }
-        
-        .members {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-          font-size: 16px;
-        }
-        
-        .members li {
-          margin-bottom: 5px;
-        }
-        
-        #change_button {
-          background-color: black;
-          border-radius: 10px;
-        }
-        img {
-          border-radius: 35px;
-         }
-    </style>
-<form>
-    <img src="{{ movie_image_url }}" width="400" height="500" class="center" name="movie_image" />
-</form> 
-
-
-    
     <form method="post" action="{{ url_for('auth.add_favorite_movie') }}">
-      <input type="hidden" name="movie_title" value="{{ Movie_Title_Name }}">
-      <input type="hidden" name="movie_image_url" value="{{ movie_image_url }}">
+      <div class="text-center">
+        <a href="/" align="center">
+          <button align="center" type="button" color="#000000">Home</button>
+        </a>
+        <a>
+          <button
+            name="favorites"
+            align="center"
+            type="submit"
+            value="favorites">
+            Add to Favorites
+          </button>
+        </a>
+      <input type="hidden" name="movie_title" value="{{ Movie_Title_Name }}" />
+      <input type="hidden" name="movie_image_url"value="{{ movie_image_url }}">
       <input type="hidden" name="current_user" value="{{ current_user }}">
       
-      <form method="post">
-        <div class="text-center">
-          <a href="/" align="center">
-            <button
-              align="center"
-              type="button"
-              color="#000000"
-            >
-              Home
-            </button>
-            <a>
-              <button
-                name="favorites"
-                align="center"
-                type="submit"
-                value="favorites"
-              >
-                Add to Favorites
-              </button>
-            </a>
-          </a>
-            <a>
-            <button
-              name="next"
-              align="center"
-              type="submit"
-              value="next"
-             
-            >
-              Next
-            </button>
-          </a>
     </form>
-  </form>
   </div>
+  <div class="text-center">
+      <form method="post">
+        <a>
+          <button name="next" align="center" type="submit" value="next">
+            Next
+          </button>
+        </a>
+      </form>
+    </div>
+    
 
 
-  </h4>
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #ff0000, #0000ff);
+      background-attachment: fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: Arial, sans-serif;
+      font-size: 50px;
+      font-weight: bold;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 35px;
+      border: none;
+      margin-top: 20px;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    li {
+      justify-content: center;
+      align-items: center;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+    label {
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    input {
+      padding: 12px 24px;
+      border-radius: 4px;
+      border: none;
+      margin-top: 20px;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    p {
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+      text: center;
+    }
+    ul {
+      list-style-position: inside;
+    }
+    .group-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background-color: trasparent;
+      border-radius: 5px;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .card {
+      width: 35%;
+      margin: 0 auto;
+      padding: 20px;
+      margin: auto;
+      text-align: center;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+    @media (max-width: 767px) {
+      .card {
+        width: 100%; /* Set width to 100% to fill the screen */
+        margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */
+        padding: 20px; /* Maintain the same padding */
+      }
+    }
+    .card-header {
+      font-size: 24px;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .value {
+      font-size: 14px;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    .members {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 16px;
+    }
+
+    .members li {
+      margin-bottom: 5px;
+    }
+
+    #change_button {
+      background-color: black;
+      border-radius: 10px;
+    }
+    img {
+      border-radius: 35px;
+    }
+  </style>
 </html>
 
 {% endblock %}
