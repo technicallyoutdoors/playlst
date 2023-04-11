@@ -21,7 +21,10 @@
   <body>
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">PickFlix</a>
+        <a class="navbar-brand" href="/">
+          <img src="{{ url_for('static', filename='brand_images/PickFlix.png') }}" class="brand_logo" alt="playlst Logo">
+
+        </a>
         <a class="navbar-brand">
         {% if current_user.photo %}
             <a class="nav-item nav-link" id="current_user">
@@ -29,9 +32,10 @@
             </a>
             {% endif %}
           </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <i class="fas fa-bars"></i>
-        </button>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+          </button>
+          
         <div class="collapse navbar-collapse" id="navbarNav">
           <div class="navbar-nav ml-auto">
             {% if user.is_authenticated %}
@@ -84,44 +88,85 @@
     ></script>
 
     <script
-      type="text/javascript"
-      src="{{ url_for('static', filename='index.js') }}"
 
-      $('.navbar-toggler').click(function() {
-        $(this).toggleClass('collapsed');
-      });
-
+    // Add click event listener to the navbar toggler button
+    $('.navbar-toggler').click(function() {
+      $(this).find('i').toggleClass('fa-bars fa-times');
+    });
+    
     ></script>
   </body>
 
   <style>
-    .collapse navbar-collapse a {
+
+    /* Style the X icon */
+    .fa-times::before {
+      content: "\f00d";
+    }
+
+    h1 {
+      font-family: classic sans serif, baron;
+      font-size: 50px;
+      font-weight: bold;
+      color: #66aa33;
+    }
+    h2 {
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-family: classic sans serif, baron;
+      font-size: 24px;
+      font-weight: bold;
+      color: #66aa33;
+      padding: 1px; /* add some padding to make the background more visible */
+    }
+  
+    h3 {
+      font-family: classic sans serif, baron;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .navbar-nav .nav-link {
+      color: #66AA33;
+      text-align: right;
+      
+    }
+    .navbar-nav .nav-link:hover {
+      color: #518828;
+      
+    }
+    button {
+      background-color: #66AA33;
       color: white;
+      padding: 1px 30px;
+      border-radius: 4px;
+      border: none;
+      margin-top: 20px;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 35px;
+    }
+
+    button:hover {
+        background-color: #518828;
+      }
+
+    .brand_logo {
+      height: 50px;
+      width: 50x;
+      padding: 0px;
+      
+
+    }
+    .collapse navbar-collapse a {
+      color: #66AA33;
     }
     
     .navbar navbar-expand-lg {
-      color: white;
+      color: #66AA33;
     }
     
-    .navbar-nav.ml-auto {
-      position: right;
-      top: 100%;
-      right: 0;
-      background-color: transparent;
-      border-radius: 0.25rem;
-      padding: 0.5rem 1rem;
-      margin-top: 0.125rem;
-      color: white;
-      
-      
-    }
-    
-    .navbar-nav.ml-auto a:hover {
-      background-color: transparent
-      border-radius: 35px;
-      
-    }
-    
+  
     .avatar {
       width: 32px;
       height: 32px;
@@ -155,8 +200,6 @@
     }
     
     .alert-dismissable .close {
-      position: relative;
-      top: -0.75rem;
       right: 0;
       color: inherit;
     }
@@ -177,6 +220,9 @@
       border: none;
       background-color: transparent;
     }
+    .navbar-toggler:hover {
+      background-color: transparent;
+    }
     
     .navbar-toggler:focus,
     .navbar-toggler:active,
@@ -187,11 +233,11 @@
     
     .navbar-toggler .fas {
       font-size: 1.5rem;
-      color: white;
+      color: #66AA33;
     }
     
     .navbar-toggler.collapsed .fas {
-      color: white;
+      color: #66AA33;
     }
     
   </style>
