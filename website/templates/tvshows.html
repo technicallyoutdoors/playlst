@@ -3,8 +3,8 @@
 {% block content %}
 
 <html>
-  <h1 color="#000000" align="center">Random TV Shows</h1>
-  <h3 color="#000000" align="center"> </h3>
+  <h2 color="#000000" align="center">TV Shows</h2>
+ 
   
   <div class="text-center">
     <h4>
@@ -15,39 +15,43 @@
   </div>
 
   <form method="post" action="{{ url_for('auth.add_favorite_tv_show') }}">
-    <div class="text-center">
-      <a href="/">
+    <div class="button-container">
+      <a href="/" data-inline="true">
         <button type="button">Home</button>
       </a>
-
+      <a data-inline="true">
       <button name="favorites" type="submit" value="favorites">
-        Add to Favorites
+        Add to Playlst
       </button>
+    </a>
 
       <input type="hidden" name="tv_show_title" value="{{ Tv_Show_Title_Name }}">
       <input type="hidden" name="tv_show_image_url" value="{{ tv_show_image_url }}">
       <input type="hidden" name="current_user" value="{{ current_user }}">  
     </div>
   </form>
-<form method="post">
   
+<form method="post" class="button-container">
+  <a data-inline="true">
     <button type="submit">Next</button>
-  
+  </a>
 </form>
+</div>
 </div>
 
 <style>
+  
+  .button-container{
+    data-inline: true;
+    display: inline-block;
+  }
   
   .container {
     margin: 0 auto;
     text-align: center;
   }
 
-  h1 {
-    font-family: Arial, sans-serif;
-    font-size: 50px;
-    font-weight: bold;
-  }
+ 
 
   
   li {
@@ -61,6 +65,7 @@
     font-size: 16px;
     font-weight: bold;
   }
+
   input {
     padding: 12px 24px;
     border-radius: 4px;
@@ -104,7 +109,7 @@
     .card {
       width: 35%;
       margin: 0 auto; 
-      padding: 20px;
+      padding: 5px;
       margin: auto;
       text-align: center;
       background-color: #007bff;
@@ -112,7 +117,7 @@
       border-radius: 5px;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     }
-    @media (max-width: 767px) {
+    @media (max-width: 480px) {
       .card {
         width: 100%; /* Set width to 100% to fill the screen */
         margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */

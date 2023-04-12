@@ -1,5 +1,5 @@
 {% extends "base.html" %} 
-{% block title %}Favorites{% endblock %} 
+{% block title %}My Playlst{% endblock %} 
 {% block content %}
 <html>
   <style>
@@ -56,14 +56,14 @@
         <button
           align="center"
           type="button"
-          class="btn btn-primary"
+          
           color="#000000"
         >
           Home
         </button>
       </a>
     </form>
-      <h2>Favorites</h2>
+      <h2>My Playlst</h2>
       <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for favorite in favorites %}
         <div class="col-4">

@@ -1,8 +1,8 @@
 {% extends "base.html" %} {% block title %} Home {% endblock %} {%block content%}
 
 <br/>
-<h1 align="center">🎥Playlst🎥</h1>
-<p>Meet playlst, your tv show and movie matching companion! Simply create a group, invite your friends, and start finding your playlst!</p>
+<h1 align="center">Playlst</h1>
+<p>Discover your TV show and movie playlist with playlst! Create a group, invite friends, and start matching!</p>
 <br/>
 <br/>
 <div class="button-group">
@@ -17,13 +17,13 @@
   </button> </a>
   <a href="/favorites" align="center">
     <button  class="generic_button" align="center" type="button" color="#000000">
-      My Favorites ⭐️
+      Playlst <img src="{{ url_for('static', filename='brand_images/playlst_icon.png') }}" class="brand_icon">
     </button> </a>
       <form method="post" action="/group_hub">
         <button class="generic_button" align="center" type="submit">Group Hub 👥</button>
     <a href="/shared_favorites" align="center">
       <button class="generic_button" align="center" type="button" color="#000000">
-        Matched Favorites 🔥
+        Matched Playlst 🔥
       </button> </a>
 </form>
 
@@ -36,7 +36,11 @@
     text-align: center;
   }
 
-  
+  .brand_icon {
+    height: 20px;
+    width: 20px;
+    margin: 2px;
+  }
 
   .generic_button {
     display: block;
@@ -56,9 +60,7 @@
     align-items: center;
   }
 
-  .generic_button:hover {
-    background-color: #518828;
-  }
+ 
 
   label {
     font-family: Arial, sans-serif;
@@ -188,6 +190,8 @@
       justify-content: center;
       align-items: center;
       text-align: center;
+      font-family: classic sans serif, baron;
+
     }
     
     .button-group button {
