@@ -16,6 +16,7 @@ from werkzeug.utils import secure_filename
 import os
 from .__init__ import create_app
 import datetime
+
 auth = Blueprint('auth', __name__)
 
 
