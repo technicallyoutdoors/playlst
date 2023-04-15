@@ -148,7 +148,7 @@ def add_favorite_movie():
     if new_favorite:
         db.session.add(new_favorite)
         db.session.commit()
-        flash('Added to Watchlist!', category='success')
+        flash('Added to Playlst!', category='success')
         return redirect(url_for('auth.movies'))
     else:
         favorites = current_user.favorites
@@ -207,7 +207,7 @@ def add_favorite_tv_show():
     if new_favorite:
         db.session.add(new_favorite)
         db.session.commit()
-        flash('Added to Watchlist!', category='success')
+        flash('Added to Playlst!', category='success')
         return redirect(url_for('auth.tvshows'))
     else:
         favorites = current_user.favorites
@@ -227,9 +227,9 @@ def delete_favorite():
         if favorite:
             db.session.delete(favorite)
             db.session.commit()
-            flash("Favorite has been removed", category='success')
+            flash("Title has been removed", category='success')
         else:
-            flash("Favorite not found", category='error')
+            flash("Title not found", category='error')
     except Exception as e:
         flash("Error while deleting favorite", category='error')
     return redirect(url_for('auth.favorites'))
@@ -292,7 +292,7 @@ def add_member():
     if family:
         family.members.append(user)
         db.session.commit()
-        flash('You have joined the family!', category='success')
+        flash('You have joined the group!', category='success')
         return redirect(url_for('auth.group_hub'))
     else:
         flash('Invalid code. Please try again.', category='error')
@@ -328,7 +328,7 @@ def shared_favorites():
                     [fav for fav in member_favorites if fav.title in [f.title for f in favorites] and fav.image in [f.image for f in favorites]])
         return render_template('shared_favorites.html', user=current_user, favorites=shared_favorites)
     else:
-        flash("You are not a member of a family yet!", category='error')
+        flash("You are not a member of group yet!", category='error')
         return redirect(url_for('auth.join_family'))
 
 
@@ -339,14 +339,14 @@ def leave_group():
     family = user.family
 
     if not family:
-        flash('You are not currently a member of any family', 'warning')
+        flash('You are not currently a member of any group', 'warning')
         return redirect(url_for('auth.group_hub'))
 
     family.members.remove(user)
     user.family = None
     db.session.commit()
 
-    flash(f"You have left the family {family.name}.", 'success')
+    flash(f"You have left the group {family.name}.", 'success')
     return redirect(url_for('auth.group_hub'))
 
 
