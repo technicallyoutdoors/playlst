@@ -12,6 +12,7 @@
 
       <img src="{{ tv_show_image_url }}" width="400" height="500" class="center" />
     </h4>
+    <h5>{{ plot_summary }}</h5>
   </div>
 
   <form method="post" action="{{ url_for('auth.add_favorite_tv_show') }}">

@@ -167,10 +167,11 @@ def tvshows():
         'X-RapidAPI-Key': 'ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87',
         'X-RapidAPI-Host': 'online-movie-database.p.rapidapi.com'
     }
-    response1 = requests.request(
+    response5 = requests.request(
         "GET", url1, headers=headers, params=querystring1)
+
     tv_show_ids = []
-    data1 = json.loads(response1.text)
+    data1 = json.loads(response5.text)
     for id in data1:
         tv_show_ids.append(id.split("/")[2])
     choice = random.choice(tv_show_ids)
@@ -192,8 +193,26 @@ def tvshows():
         "GET", url3, headers=headers, params=querystring3)
     data3 = json.loads(response3.text)
     tv_show_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
+    
+    #gets the plot summary of the title 
+    
+    url4 = "https://online-movie-database.p.rapidapi.com/title/get-overview-details"
+    querystring4 = {"tconst":choice, "currentCountry":"US"}
+    headers4 = {
+        "X-RapidAPI-Key": "ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87",
+        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
+    }
+    response4 = requests.request("GET", url4, headers=headers4, params=querystring4)
 
-    return render_template("tvshows.html", user=current_user, tv_show_image_url=tv_show_image_url, Tv_Show_Title_Name=Tv_Show_Title_Name)
+    data5 = json.loads(response4.text)
+    plot_summary = data5['plotSummary']['text']
+
+
+    print(plot_summary)
+    
+    
+
+    return render_template("tvshows.html", user=current_user, tv_show_image_url=tv_show_image_url, Tv_Show_Title_Name=Tv_Show_Title_Name, plot_summary=plot_summary)
 
 
 @auth.route('/add_favorite_tv_show', methods=['GET', 'POST'])
