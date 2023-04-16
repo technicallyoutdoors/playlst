@@ -124,7 +124,7 @@ def movies():
     url3 = "https://online-movie-database.p.rapidapi.com/title/get-images"
     querystring3 = {"tconst": choice, "limit": "1"}
     headers = {
-        "X-RapidAPI-Key": "4aa56d7288msh5be0286e95c8c10p160380jsnfce8a0c61ccd",
+        "X-RapidAPI-Key": "ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87",
         "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
     }
     response3 = requests.request(
