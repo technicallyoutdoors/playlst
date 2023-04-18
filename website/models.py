@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     code = db.Column(db.String(6), unique=True, nullable=True)
     family_id = db.Column(db.Integer, db.ForeignKey('family.id'))
-    favorites = db.relationship('Favorite')
+    favorites = db.relationship('Favorite', lazy='dynamic')
 
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)

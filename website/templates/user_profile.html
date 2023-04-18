@@ -6,10 +6,11 @@
   <head>
     <title>User Profile</title>
     <style>
+
       .avatar1 {
         width: 200px;
-        height: 200px;
-        border-radius: 35%;
+        height: auto;
+        border-radius: 10%;
         
         object-position: center;
       }
@@ -25,7 +26,8 @@
       }
 
       label {
-        margin-top: 10px;
+        margin-top: 2px;
+        margin-bottom: 2px;
         font-weight: bold;
       }
 
@@ -33,20 +35,29 @@
       input[type="email"],
       input[type="file"] {
         padding: 10px;
-        margin-bottom: 20px;
-        border: none;
+        margin-bottom: 2px;
         border-radius: 35px;
-        border-bottom: 2px solid #ccc;
+        border-bottom: 2px solid #66AA33;
+        border-top: 2px solid #66AA33;
+        border-left: 2px solid #66AA33;
+        border-right: 2px solid #66AA33;
       }
 
       input[type="submit"] {
-        background-color: #007bff;
-        color: #fff;
-        padding: 10px 20px;
+        background-color: #66AA33;
+        color: white;
+        padding: 5px 5px;
         border: none;
+        font-size: 20px;
+        cursor: pointer;
+        font-weight: bold;
         border-radius: 35px;
         cursor: pointer;
-        margin-top: 20px;
+        margin-top: 35px;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #518828;
       }
     </style>
   </head>
@@ -73,6 +84,8 @@
         <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
 
         <input type="submit" name="edit_profile" value="Save Changes">
+      
+
       </form>
     </div>
   </body>
@@ -82,148 +95,126 @@
     
         <style>
             
-            .container {
-              margin: 0 auto;
-              text-align: center;
+          .container {
+            margin: 0 auto;
+            text-align: center;
+          }
+        
+          h1 {
+            font-family: Arial, sans-serif;
+            font-size: 50px;
+            font-weight: bold;
+          }
+        
+          li {
+            justify-content: center;
+            align-items: center;
+          }
+        
+         
+          label {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+          }
+          input {
+            padding: 12px 24px;
+            border-radius: 4px;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+          }
+          p {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            text: center
+          }
+          ul {
+            list-style-position: inside;
+          }
+          .group-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-color: trasparent;
+            border-radius: 5px;
             }
-      
-            h1 {
-              font-family: Arial, sans-serif;
-              font-size: 50px;
-              font-weight: bold;
-            }
-      
             
-            li {
-              justify-content: center;
-              align-items: center;
+            .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
             }
-      
-            button:hover {
-              background-color: #0056b3;
+            
+            .info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
             }
-            label {
-              font-family: Arial, sans-serif;
-              font-size: 16px;
-              font-weight: bold;
-            }
-            input {
-              padding: 12px 24px;
-              border-radius: 4px;
-              border: none;
-              margin-top: 20px;
-              cursor: pointer;
-              font-size: 20px;
-              font-weight: bold;
-            }
-            p {
-              font-family: Arial, sans-serif;
-              font-size: 16px;
-              font-weight: bold;
-              text: center
-            }
-            ul {
-              list-style-position: inside;
-            }
-            .group-info {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
+            
+            .card {
+              width: 35%;
+              margin: 0 auto; 
               padding: 20px;
-              background-color: trasparent;
+              margin: auto;
+              text-align: center;
+              background-color: #007bff;
+              color: white;
               border-radius: 5px;
-              }
-              
-              .title {
-              font-size: 24px;
-              font-weight: bold;
-              margin-bottom: 10px;
-              }
-              
-              .info {
-              display: flex;
-              flex-direction: column;
-              align-items: flex-start;
-              }
-              
+              box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            }
+            @media (max-width: 767px) {
               .card {
-                width: 35%;
-                margin: 0 auto; 
-                padding: 20px;
-                margin: auto;
-                text-align: center;
-                background-color: #007bff;
-                color: white;
-                border-radius: 5px;
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+                width: 100%; /* Set width to 100% to fill the screen */
+                margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */
+                padding: 20px; /* Maintain the same padding */
               }
-              @media (max-width: 480px) {
-                .card {
-                  width: 100%; /* Set width to 100% to fill the screen */
-                  margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */
-                  padding: 20px; /* Maintain the same padding */
-                }
-              }
-              .card-header {
-                font-size: 24px;
-                padding: 10px;
-                background-color: #007bff;
-                color: #fff;
-                border-top-left-radius: 5px;
-                border-top-right-radius: 5px;
-              }
-              
-              .card-body {
-                padding: 20px;
-              }
-              
-              .subtitle {
-                font-size: 18px;
-                font-weight: bold;
-                margin-bottom: 5px;
-              }
-              
-              .value {
-                font-size: 14px;
-                margin-top: 0;
-                margin-bottom: 20px;
-              }
-              
-              .members {
-                list-style: none;
-                margin: 0;
-                padding: 0;
-                font-size: 16px;
-              }
-              
-              .members li {
-                margin-bottom: 5px;
-              }
-              
-              #change_button {
-                background-color: black;
-                border-radius: 10px;
-              }
-              img {
-                border-radius: 35px;
-                padding-top: 23px;
-                image-rendering: -webkit-optimize-contrast;
-              }
-              button {
-                background-color: #007bff;
-                color: white;
-                padding: 12px 24px;
-                border-radius: 35px;
-                border: none;
-                margin-top: 20px;
-                cursor: pointer;
-                font-size: 20px;
-                font-weight: bold;
-              }
-              
-              
-              
+            }
+            .card-header {
+              font-size: 24px;
+              padding: 10px;
+              background-color: #007bff;
+              color: #fff;
+              border-top-left-radius: 5px;
+              border-top-right-radius: 5px;
+            }
+            
+            .card-body {
+              padding: 20px;
+            }
+            
+            .subtitle {
+              font-size: 18px;
+              font-weight: bold;
+              margin-bottom: 5px;
+            }
+            
+            .value {
+              font-size: 14px;
+              margin-top: 0;
+              margin-bottom: 20px;
+            }
+            
+            .members {
+              list-style: none;
+              margin: 0;
+              padding: 0;
+              font-size: 16px;
+            }
+            
+            .members li {
+              margin-bottom: 5px;
+            }
+            
+            #change_button {
+              background-color: black;
+              border-radius: 10px;
+            }
         </style>
 
     </div> 

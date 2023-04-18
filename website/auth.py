@@ -116,15 +116,11 @@ def movies():
     Movie_Title_Name = data2['Title']
     print(Movie_Title_Name)
 
-    # favorites = current_user.favorites
-    # for title in Movie_Title_Name:
-    #     if title in favorites
-
     # gets the image for the title ID from the url2 API only 500 requests/month
     url3 = "https://online-movie-database.p.rapidapi.com/title/get-images"
     querystring3 = {"tconst": choice, "limit": "1"}
     headers = {
-        "X-RapidAPI-Key": "4aa56d7288msh5be0286e95c8c10p160380jsnfce8a0c61ccd",
+        "X-RapidAPI-Key": "ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87",
         "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
     }
     response3 = requests.request(
@@ -132,26 +128,48 @@ def movies():
     data3 = json.loads(response3.text)
     movie_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
     print(movie_image_url)
+    
+    #gets the plot summary 
+    url4 = "https://online-movie-database.p.rapidapi.com/title/get-overview-details"
+    querystring4 = {"tconst":choice, "currentCountry":"US"}
+    headers4 = {
+        "X-RapidAPI-Key": "ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87",
+        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
+    }
+    response4 = requests.request("GET", url4, headers=headers4, params=querystring4)
 
-    return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name)
+    data5 = json.loads(response4.text)
+    plot_summary = data5.get('plotSummary', {}).get('text')
+    if not plot_summary:
+        plot_summary = ("No summary available")
+
+
+    # print(plot_summary)
+    
+    
+
+    return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name, plot_summary=plot_summary)
 
 
 @auth.route('/add_favorite_movie', methods=['GET', 'POST'])
 @login_required
 def add_favorite_movie():
-    global favorites
     title = request.form['movie_title']
     image = request.form['movie_image_url']
     user_id = request.form['current_user']
+    favorite_exists = Favorite.query.filter_by(user_id=current_user.id, title=title).first()
+    if favorite_exists:
+        flash('title as already been added to playlst', category='error')
+        return redirect(url_for('auth.movies'))
+    global favorites
     new_favorite = Favorite(title=title,
                             user_id=current_user.id, image=image)
     if new_favorite:
         db.session.add(new_favorite)
         db.session.commit()
-        flash('Added to Playlst!', category='success')
+        flash('Added to Watchlist!', category='success')
         return redirect(url_for('auth.movies'))
-    else:
-        favorites = current_user.favorites
+    
 
     return render_template('favorites.html', user=current_user, favorites=favorites)
 
@@ -167,10 +185,11 @@ def tvshows():
         'X-RapidAPI-Key': 'ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87',
         'X-RapidAPI-Host': 'online-movie-database.p.rapidapi.com'
     }
-    response1 = requests.request(
+    response5 = requests.request(
         "GET", url1, headers=headers, params=querystring1)
+
     tv_show_ids = []
-    data1 = json.loads(response1.text)
+    data1 = json.loads(response5.text)
     for id in data1:
         tv_show_ids.append(id.split("/")[2])
     choice = random.choice(tv_show_ids)
@@ -192,8 +211,27 @@ def tvshows():
         "GET", url3, headers=headers, params=querystring3)
     data3 = json.loads(response3.text)
     tv_show_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
+    
+    # gets the plot summary of the title 
+    
+    url4 = "https://online-movie-database.p.rapidapi.com/title/get-overview-details"
+    querystring4 = {"tconst":choice, "currentCountry":"US"}
+    headers4 = {
+        "X-RapidAPI-Key": "ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87",
+        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
+    }
+    response4 = requests.request("GET", url4, headers=headers4, params=querystring4)
 
-    return render_template("tvshows.html", user=current_user, tv_show_image_url=tv_show_image_url, Tv_Show_Title_Name=Tv_Show_Title_Name)
+    data5 = json.loads(response4.text)
+    plot_summary = data5.get('plotSummary', {}).get('text')
+    if not plot_summary:
+        plot_summary = ("No summary available")
+
+    print(plot_summary)
+    
+    
+
+    return render_template("tvshows.html", user=current_user, tv_show_image_url=tv_show_image_url, Tv_Show_Title_Name=Tv_Show_Title_Name, plot_summary=plot_summary)
 
 
 @auth.route('/add_favorite_tv_show', methods=['GET', 'POST'])
@@ -203,12 +241,16 @@ def add_favorite_tv_show():
     title = request.form['tv_show_title']
     image = request.form['tv_show_image_url']
     user_id = request.form['current_user']
+    favorite_exists = Favorite.query.filter_by(user_id=current_user.id, title=title).first()
+    if favorite_exists:
+        flash('title as already been added to playlst', category='error')
+        return redirect(url_for('tvshows.html'))
     new_favorite = Favorite(title=title, image=image, user_id=current_user.id)
     if new_favorite:
         db.session.add(new_favorite)
         db.session.commit()
         flash('Added to Playlst!', category='success')
-        return redirect(url_for('auth.tvshows'))
+        return render_template('tvshows.html')
     else:
         favorites = current_user.favorites
     return render_template('favorites.html', user=current_user, favorites=favorites)
@@ -305,31 +347,76 @@ def join_group():
     return render_template('join_group.html', user=current_user)
 
 
+
 @auth.route('/shared_favorites')
 @login_required
 def shared_favorites():
+    current_user 
+    family = Family.query.filter(Family.members.contains(current_user)).first()
+    if not family:
+        flash("You are not a member of a family yet!", category='error')
+        return redirect(url_for('auth.join_family'))
+
+# Get shared favorites for each member
+    shared_favorites = []
+    for member in family.members:
+        if member.id != current_user.id:
+            member_favorites = set([fav.title for fav in member.favorites])
+            shared_favorites.append(member_favorites)
+
+    # Find the intersection of shared favorites
+    if shared_favorites:
+        shared_favorites = set.intersection(*shared_favorites)
+    else:
+        shared_favorites = set()
+
+    # Filter favorites to only include shared favorites
+    favorites = current_user.favorites.filter(Favorite.title.in_(shared_favorites)).all()
+
+
+
+    # Convert InstrumentedList objects to regular lists before calling intersection
+    favorites_titles = list(set([f.title for f in favorites]))
+    favorites_images = list(set([f.image for f in favorites]))
+
     shared_favorites = Favorite.query.join(User).join(Family).filter(
         Family.code == current_user.family.code,
         Favorite.user_id != current_user.id,
-        Favorite.title.in_([f.title for f in current_user.favorites]),
-        Favorite.image.in_([f.image for f in current_user.favorites])
+        Favorite.title.in_(favorites_titles),
+        Favorite.image.in_(favorites_images)
     ).all()
 
-    user = current_user
-    family = Family.query.filter(Family.members.contains(user)).first()
-    if family:
-        favorites = Favorite.query.filter(Favorite.user_id == user.id).all()
-        other_favorites = []
-        for member in family.members:
-            if member.id != user.id:
-                member_favorites = Favorite.query.filter(
-                    Favorite.user_id == member.id).all()
-                other_favorites.extend(
-                    [fav for fav in member_favorites if fav.title in [f.title for f in favorites] and fav.image in [f.image for f in favorites]])
-        return render_template('shared_favorites.html', user=current_user, favorites=shared_favorites)
-    else:
-        flash("You are not a member of group yet!", category='error')
-        return redirect(url_for('auth.join_family'))
+
+    return render_template('shared_favorites.html', user=current_user, favorites=shared_favorites)
+
+
+
+
+# @auth.route('/shared_favorites')
+# @login_required
+# def shared_favorites():
+#     shared_favorites = Favorite.query.join(User).join(Family).filter(
+#         Family.code == current_user.family.code,
+#         Favorite.user_id != current_user.id,
+#         Favorite.title.in_([f.title for f in current_user.favorites]),
+#         Favorite.image.in_([f.image for f in current_user.favorites])
+#     ).all()
+
+#     user = current_user
+#     family = Family.query.filter(Family.members.contains(user)).first()
+#     if family:
+#         favorites = Favorite.query.filter(Favorite.user_id == user.id).all()
+#         other_favorites = []
+#         for member in family.members:
+#             if member.id != user.id:
+#                 member_favorites = Favorite.query.filter(
+#                     Favorite.user_id == member.id).all()
+#                 other_favorites.extend(
+#                     [fav for fav in member_favorites if fav.title in [f.title for f in favorites] and fav.image in [f.image for f in favorites]])
+#         return render_template('shared_favorites.html', user=current_user, favorites=shared_favorites)
+#     else:
+#         flash("You are not a member of a family yet!", category='error')
+#         return redirect(url_for('auth.join_family'))
 
 
 @auth.route('/leave_group', methods=['POST', 'GET'])
