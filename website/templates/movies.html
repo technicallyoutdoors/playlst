@@ -2,15 +2,16 @@
 content %}
 
 <html>
-  <h1 color="#000000" align="center">Random Movies</h1>
+  <h1 color="#000000" align="center">Movies</h1>
   <h3 color="#000000" align="center"></h3>
 
     <form>
       <img
         src="{{ movie_image_url }}"
       />
+      
     </form>
-
+    <p> {{ plot_summary }} </p>
     <form method="post" action="{{ url_for('auth.add_favorite_movie') }}">
       <div class="text-center">
         <a href="/" align="center">
@@ -90,11 +91,20 @@ content %}
       font-weight: bold;
     }
     p {
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 0px 0;
+      color: black;
+      max-width: 400px;
       font-family: Arial, sans-serif;
-      font-size: 16px;
-      font-weight: bold;
-      text: center;
+      margin: 0 10px;
+      background-color: white;
+      border-radius: 35px;
+      margin: 0 auto;
+      padding: 1px;
+      text-align: center;     
     }
+
     ul {
       list-style-position: inside;
     }
@@ -180,7 +190,7 @@ content %}
     }
     img {
       border-radius: 35px;
-      height: auto;
+      height: 500px;
       width: 400px;
     }
   </style>

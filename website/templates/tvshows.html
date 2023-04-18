@@ -12,7 +12,7 @@
 
       <img src="{{ tv_show_image_url }}" class="center" />
     </h4>
-    <h5>{{ plot_summary }}</h5>
+    <p>{{ plot_summary }}</p>
   </div>
 
   <form method="post" action="{{ url_for('auth.add_favorite_tv_show') }}">
@@ -73,12 +73,7 @@
     font-size: 20px;
     font-weight: bold;
   }
-  p {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-    text: center
-  }
+  
   ul {
     list-style-position: inside;
   }
@@ -164,9 +159,24 @@
     }
     img {
       border-radius: 35px;
-      height: auto;
+      height: 500px;
       width: 400px;
     }
+    p {
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 0px 0;
+      color: black;
+      max-width: 400px;
+      font-family: Arial, sans-serif;
+      margin: 0 10px;
+      background-color: white;
+      border-radius: 35px;
+      margin: 0 auto;
+      padding: 1px;
+      text-align: center;     
+    }
+
 </style>
 
 </html>

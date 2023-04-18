@@ -116,10 +116,6 @@ def movies():
     Movie_Title_Name = data2['Title']
     print(Movie_Title_Name)
 
-    # favorites = current_user.favorites
-    # for title in Movie_Title_Name:
-    #     if title in favorites
-
     # gets the image for the title ID from the url2 API only 500 requests/month
     url3 = "https://online-movie-database.p.rapidapi.com/title/get-images"
     querystring3 = {"tconst": choice, "limit": "1"}
@@ -132,8 +128,23 @@ def movies():
     data3 = json.loads(response3.text)
     movie_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
     print(movie_image_url)
+    
+    #gets the plot summary 
+    url4 = "https://online-movie-database.p.rapidapi.com/title/get-overview-details"
+    querystring4 = {"tconst":choice, "currentCountry":"US"}
+    headers4 = {
+        "X-RapidAPI-Key": "ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87",
+        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
+    }
+    response4 = requests.request("GET", url4, headers=headers4, params=querystring4)
 
-    return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name)
+    data5 = json.loads(response4.text)
+    plot_summary = data5['plotSummary']['text']
+
+
+    print(plot_summary)
+
+    return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name, plot_summary=plot_summary)
 
 
 @auth.route('/add_favorite_movie', methods=['GET', 'POST'])
