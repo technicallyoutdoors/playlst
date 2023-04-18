@@ -139,10 +139,14 @@ def movies():
     response4 = requests.request("GET", url4, headers=headers4, params=querystring4)
 
     data5 = json.loads(response4.text)
-    plot_summary = data5['plotSummary']['text']
+    plot_summary = data5.get('plotSummary', {}).get('text')
+    if not plot_summary:
+        plot_summary = ("No summary available")
 
 
-    print(plot_summary)
+    # print(plot_summary)
+    
+    
 
     return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name, plot_summary=plot_summary)
 
@@ -150,10 +154,14 @@ def movies():
 @auth.route('/add_favorite_movie', methods=['GET', 'POST'])
 @login_required
 def add_favorite_movie():
-    global favorites
     title = request.form['movie_title']
     image = request.form['movie_image_url']
     user_id = request.form['current_user']
+    favorite_exists = Favorite.query.filter_by(user_id=current_user.id, title=title).first()
+    if favorite_exists:
+        flash('title as already been added to playlst', category='error')
+        return redirect(url_for('auth.movies'))
+    global favorites
     new_favorite = Favorite(title=title,
                             user_id=current_user.id, image=image)
     if new_favorite:
@@ -161,8 +169,7 @@ def add_favorite_movie():
         db.session.commit()
         flash('Added to Playlst!', category='success')
         return redirect(url_for('auth.movies'))
-    else:
-        favorites = current_user.favorites
+    
 
     return render_template('favorites.html', user=current_user, favorites=favorites)
 
@@ -205,7 +212,7 @@ def tvshows():
     data3 = json.loads(response3.text)
     tv_show_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
     
-    #gets the plot summary of the title 
+    # gets the plot summary of the title 
     
     url4 = "https://online-movie-database.p.rapidapi.com/title/get-overview-details"
     querystring4 = {"tconst":choice, "currentCountry":"US"}
@@ -216,8 +223,9 @@ def tvshows():
     response4 = requests.request("GET", url4, headers=headers4, params=querystring4)
 
     data5 = json.loads(response4.text)
-    plot_summary = data5['plotSummary']['text']
-
+    plot_summary = data5.get('plotSummary', {}).get('text')
+    if not plot_summary:
+        plot_summary = ("No summary available")
 
     print(plot_summary)
     
@@ -233,12 +241,16 @@ def add_favorite_tv_show():
     title = request.form['tv_show_title']
     image = request.form['tv_show_image_url']
     user_id = request.form['current_user']
+    favorite_exists = Favorite.query.filter_by(user_id=current_user.id, title=title).first()
+    if favorite_exists:
+        flash('title as already been added to playlst', category='error')
+        return redirect(url_for('tvshows.html'))
     new_favorite = Favorite(title=title, image=image, user_id=current_user.id)
     if new_favorite:
         db.session.add(new_favorite)
         db.session.commit()
-        flash('Added to Watchlist!', category='success')
-        return redirect(url_for('auth.tvshows'))
+        flash('Added to Playlst!', category='success')
+        return render_template('tvshows.html')
     else:
         favorites = current_user.favorites
     return render_template('favorites.html', user=current_user, favorites=favorites)
@@ -335,8 +347,6 @@ def join_group():
     return render_template('join_group.html', user=current_user)
 
 
-
-#TODO - TESTING THIS SHARED FAVORITES ROUTE AND CODE
 
 @auth.route('/shared_favorites')
 @login_required
