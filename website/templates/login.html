@@ -2,8 +2,8 @@
 %}
 <form method="POST">
   <div>
-    <h1 align="center">Welcome to Playlst!</h1>
-    <h2 align="center">Please Sign Up or Login</h2>
+    <h1 align="center"> <img src="{{ url_for('static', filename='brand_images/PickFlix.png') }}"> </h1>
+    <h2>Sign Up or Login</h2>
     <h3> Discover your TV show and movie playlist with playlst! Create a group, invite friends, and start matching!</h3>
   </div>
   <div class="form-group">
@@ -41,6 +41,7 @@
     color: #66aa33;
   }
   h2 {
+    text-align: center;
     padding: 5px 10px;
     border-radius: 5px;
     font-family: classic sans serif, baron;
@@ -51,6 +52,7 @@
   }
 
   h3 {
+    text-align: center;
     padding: 5px 10px;
     border-radius: 5px;
     font-family: classic sans serif, baron;
@@ -112,6 +114,11 @@
 
   .card-text {
     font-size: 16px;
+  }
+  img {
+    margin-top: -200px;
+    margin-bottom: -225px;
+    margin-right: 175px;
   }
 </style>
 {% endblock%}
