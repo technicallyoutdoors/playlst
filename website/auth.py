@@ -88,35 +88,24 @@ def movies():
     global choice
     email = request.form.get('email')
     user = User.query.filter_by(email=email).first()
-
     # gets the genre from user and selects a random movie from that genre to display
     # 500/month hard stop requests
-    users_input = request.form.get("next")
-    url1 = "https://online-movie-database.p.rapidapi.com/title/v2/get-popular-movies-by-genre"
-    querystring1 = {"genre": users_input, "limit": "100"}
-    headers = {
-        'X-RapidAPI-Key': 'ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87',
-        'X-RapidAPI-Host': 'online-movie-database.p.rapidapi.com'
+    url1 = "https://online-movie-database.p.rapidapi.com/title/get-most-popular-movies"
+    querystring1 = {"currentCountry":"US","purchaseCountry":"US","homeCountry":"US"}
+    headers1 = {
+        "X-RapidAPI-Key": "ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87",
+        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
     }
-    response1 = requests.request(
-        "GET", url1, headers=headers, params=querystring1)
-    ids = []
-    data1 = json.loads(response1.text)
+    response1 = requests.request("GET", url1, headers=headers1, params=querystring1)
+    data1 = response1.json()
+    movie_titles = []
 
-    for id in data1:
-        ids.append(id.split("/")[2])
-        # res = [sub[2:] for sub in ids]
-    choice = random.choice(ids)
+    for movie_title in data1:
+        movie_titles.append(movie_title.split("/")[2])
 
-    # uses the choice which is an IMDB titleid to asign run through this API to determine the title name, 1000 daily limit
-    url2 = "http://www.omdbapi.com/?apikey=b2e0b78b&"
-    querystring2 = {"i": choice}
-    response2 = requests.request("GET", url2, params=querystring2)
-    data2 = json.loads(response2.text)
-    Movie_Title_Name = data2['Title']
-    print(Movie_Title_Name)
+    choice = random.sample(movie_titles, 1)
 
-    # gets the image for the title ID from the url2 API only 500 requests/month
+    # gets the image for the title ID from the url2 API 
     url3 = "https://online-movie-database.p.rapidapi.com/title/get-images"
     querystring3 = {"tconst": choice, "limit": "1"}
     headers = {
@@ -148,7 +137,7 @@ def movies():
     
     
 
-    return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, Movie_Title_Name=Movie_Title_Name, plot_summary=plot_summary)
+    return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, plot_summary=plot_summary)
 
 
 @auth.route('/add_favorite_movie', methods=['GET', 'POST'])
@@ -192,14 +181,8 @@ def tvshows():
     data1 = json.loads(response5.text)
     for id in data1:
         tv_show_ids.append(id.split("/")[2])
-    choice = random.choice(tv_show_ids)
-
-    url2 = "http://www.omdbapi.com/?apikey=b2e0b78b&"
-    querystring2 = {"i": choice}
-    response2 = requests.request("GET", url2, params=querystring2)
-    data2 = json.loads(response2.text)
-    Tv_Show_Title_Name = data2['Title']
-    print(Tv_Show_Title_Name)
+        
+    choice = random.sample(tv_show_ids, 1)
 
     url3 = "https://online-movie-database.p.rapidapi.com/title/get-images"
     querystring3 = {"tconst": choice, "limit": "1"}
@@ -231,7 +214,7 @@ def tvshows():
     
     
 
-    return render_template("tvshows.html", user=current_user, tv_show_image_url=tv_show_image_url, Tv_Show_Title_Name=Tv_Show_Title_Name, plot_summary=plot_summary)
+    return render_template("tvshows.html", user=current_user, tv_show_image_url=tv_show_image_url, plot_summary=plot_summary)
 
 
 @auth.route('/add_favorite_tv_show', methods=['GET', 'POST'])
@@ -392,33 +375,6 @@ def shared_favorites():
 
 
 
-# @auth.route('/shared_favorites')
-# @login_required
-# def shared_favorites():
-#     shared_favorites = Favorite.query.join(User).join(Family).filter(
-#         Family.code == current_user.family.code,
-#         Favorite.user_id != current_user.id,
-#         Favorite.title.in_([f.title for f in current_user.favorites]),
-#         Favorite.image.in_([f.image for f in current_user.favorites])
-#     ).all()
-
-#     user = current_user
-#     family = Family.query.filter(Family.members.contains(user)).first()
-#     if family:
-#         favorites = Favorite.query.filter(Favorite.user_id == user.id).all()
-#         other_favorites = []
-#         for member in family.members:
-#             if member.id != user.id:
-#                 member_favorites = Favorite.query.filter(
-#                     Favorite.user_id == member.id).all()
-#                 other_favorites.extend(
-#                     [fav for fav in member_favorites if fav.title in [f.title for f in favorites] and fav.image in [f.image for f in favorites]])
-#         return render_template('shared_favorites.html', user=current_user, favorites=shared_favorites)
-#     else:
-#         flash("You are not a member of a family yet!", category='error')
-#         return redirect(url_for('auth.join_family'))
-
-
 @auth.route('/leave_group', methods=['POST', 'GET'])
 @login_required
 def leave_group():
@@ -444,10 +400,6 @@ def user_profile():
     if current_user.photo:
         profile_photo = current_user.photo.filepath
     return render_template('user_profile.html', user=current_user, profile_photo=profile_photo)
-
-
-# app.config['UPLOAD_FOLDER'] = os.path.join(
-#     os.path.dirname(__file__), 'static/uploads')
 
 
 @auth.route('/edit_user_profile', methods=['POST', 'GET'])
@@ -477,3 +429,43 @@ def edit_user_profile():
         flash("Profile saved!", category='success')
         return redirect(url_for('auth.user_profile'))
     return render_template("user_profile.html", user=current_user)
+
+
+@auth.route('/random_titles', methods=['POST', 'GET'])
+@login_required
+def random_titles():
+    
+    def random_title_gen():
+        global random_title
+        title_num_generation = random.randint(1000000, 7221897)
+        tt = "tt"
+        random_title = tt + str(title_num_generation)
+        return random_title
+
+
+    def get_data():
+        url = "https://online-movie-database.p.rapidapi.com/title/get-details"
+        querystring = {"tconst": random_title_gen(), "primaryCountry":"US"}
+        headers = {
+            "X-RapidAPI-Key": "ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87",
+            "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
+        }
+        response = requests.request(
+            "GET", url, headers=headers, params=querystring)
+
+        try:
+            data = json.loads(response.text)
+            if data is None:
+                raise ValueError("Invalid JSON data")
+            return data
+        except ValueError:
+            return None
+
+
+    while True:
+        data = get_data()
+        if data is not None and 'parentTitle' in data and 'title' in data['parentTitle'] and 'image' in data['parentTitle']:
+            title_poster = data['parentTitle']['image']['url']
+            title = data['parentTitle']['title']
+            break
+    return render_template("random_titles.html", user=current_user, title_poster=title_poster, title=title)

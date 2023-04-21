@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% block title %}Playlst{% endblock %}
+{% block content %}
+
+<html>
+  <h2 color="#000000" align="center">Random Titles</h2>
+ 
+  
+  <div class="text-center">
+    <h4>
+     
+
+      <img src="{{ title_poster }}" class="center" />
+    </h4>
+
+  </div>
+
+  <form method="post" action="{{ url_for('auth.random_titles') }}">
+    <div class="button-container">
+      <a data-inline="true">
+      <button name="favorites" type="submit" value="favorites">
+        Next Title
+      </button>
+    </a>
+
+      
+    </div>
+  </form>
+  
+
+</div>
+</div>
+
+<style>
+  
+  .button-container{
+    data-inline: true;
+    display: inline-block;
+  }
+  
+  .container {
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  li {
+    justify-content: center;
+    align-items: center;
+  }
+
+  
+  label {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  input {
+    padding: 12px 24px;
+    border-radius: 4px;
+    border: none;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  ul {
+    list-style-position: inside;
+  }
+  .group-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: trasparent;
+    border-radius: 5px;
+    }
+    
+    .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    }
+    
+    .info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    }
+    
+    .card {
+      width: 35%;
+      margin: 0 auto; 
+      padding: 5px;
+      margin: auto;
+      text-align: center;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+    @media (max-width: 480px) {
+      .card {
+        width: 100%; /* Set width to 100% to fill the screen */
+        margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */
+        padding: 20px; /* Maintain the same padding */
+      }
+    }
+    .card-header {
+      font-size: 24px;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+    
+    .card-body {
+      padding: 20px;
+    }
+    
+    .subtitle {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .value {
+      font-size: 14px;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+    
+    .members {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 16px;
+    }
+    
+    .members li {
+      margin-bottom: 5px;
+    }
+    
+    #change_button {
+      background-color: black;
+      border-radius: 10px;
+    }
+    img {
+      border-radius: 35px;
+      height: 500px;
+      width: 400px;
+    }
+    p {
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 0px 0;
+      color: black;
+      max-width: 400px;
+      font-family: Arial, sans-serif;
+      margin: 0 10px;
+      background-color: white;
+      border-radius: 35px;
+      margin: 0 auto;
+      padding: 1px;
+      text-align: center;     
+    }
+
+</style>
+
+</html>
+
+{% endblock %}
+
