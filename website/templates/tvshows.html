@@ -1,5 +1,5 @@
     {% extends "base.html" %}
-{% block title %}PickFlix{% endblock %}
+{% block title %}Random TV Shows{% endblock %}
 {% block content %}
 
 <html>
@@ -10,9 +10,9 @@
     <h4>
      
 
-      <img src="{{ tv_show_image_url }}" class="center" />
+      <img src="{{ full_path_random_title_image }}" class="center" />
     </h4>
-    <p>{{ plot_summary }}</p>
+    <p>{{ over_view }}</p>
   </div>
 
   <form method="post" action="{{ url_for('auth.add_favorite_tv_show') }}">
@@ -26,14 +26,14 @@
       </button>
     </a>
 
-      <input type="hidden" name="tv_show_title" value="{{ Tv_Show_Title_Name }}">
-      <input type="hidden" name="tv_show_image_url" value="{{ tv_show_image_url }}">
+      <input type="hidden" name="tv_show_title" value="{{ title }}">
+      <input type="hidden" name="tv_show_image_url" value="{{ full_path_random_title_image }}">
       <input type="hidden" name="current_user" value="{{ current_user }}">  
     </div>
   </form>
   
-<form method="post" class="button-container">
-  <a data-inline="true">
+<form method="post" action="{{ url_for('auth.tvshows') }}">
+  <a>
     <button type="submit">Next</button>
   </a>
 </form>

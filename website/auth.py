@@ -82,62 +82,35 @@ def signup():
 @auth.route('/movies', methods=['GET', 'POST'])
 @login_required
 def movies():
-    global movie_image_url
-    global Movie_Title_Name
-    global id
-    global choice
-    email = request.form.get('email')
-    user = User.query.filter_by(email=email).first()
-    # gets the genre from user and selects a random movie from that genre to display
-    # 500/month hard stop requests
-    url1 = "https://online-movie-database.p.rapidapi.com/title/get-most-popular-movies"
-    querystring1 = {"currentCountry":"US","purchaseCountry":"US","homeCountry":"US"}
-    headers1 = {
-        "X-RapidAPI-Key": "ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87",
-        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
-    }
-    response1 = requests.request("GET", url1, headers=headers1, params=querystring1)
-    data1 = response1.json()
-    movie_titles = []
-
-    for movie_title in data1:
-        movie_titles.append(movie_title.split("/")[2])
-
-    choice = random.sample(movie_titles, 1)
-
-    # gets the image for the title ID from the url2 API 
-    url3 = "https://online-movie-database.p.rapidapi.com/title/get-images"
-    querystring3 = {"tconst": choice, "limit": "1"}
-    headers = {
-        "X-RapidAPI-Key": "ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87",
-        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
-    }
-    response3 = requests.request(
-        "GET", url3, headers=headers, params=querystring3)
-    data3 = json.loads(response3.text)
-    movie_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
-    print(movie_image_url)
     
-    #gets the plot summary 
-    url4 = "https://online-movie-database.p.rapidapi.com/title/get-overview-details"
-    querystring4 = {"tconst":choice, "currentCountry":"US"}
-    headers4 = {
-        "X-RapidAPI-Key": "ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87",
-        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
-    }
-    response4 = requests.request("GET", url4, headers=headers4, params=querystring4)
-
-    data5 = json.loads(response4.text)
-    plot_summary = data5.get('plotSummary', {}).get('text')
-    if not plot_summary:
-        plot_summary = ("No summary available")
+    random_page = random.randint(0, 50)
 
 
-    # print(plot_summary)
+    url1 = "https://api.themoviedb.org/3/discover/movie?api_key=28dd9fa4c4a210cd3dc589981c8fb66a&language=en-US&region=US&sort_by=popularity.desc&include_adult=false&include_video=false&page=" + str(random_page) + "&with_watch_monetization_types=flatrate"
+    request1 = requests.get(url1)
+
+    data1 = request1.json()
+
+    titles = data1.get('results')
+    random_title = random.choice(titles)
+    random_id = random_title.get('id')
+
+    print(random_id)
+
+    random_title_image = random_title.get('poster_path')
+    url_append = "https://image.tmdb.org/t/p/original"
+    full_path_random_title_image = url_append + random_title_image
+    print(full_path_random_title_image)
+
+    over_view = random_title.get('overview')
+
+    title = random_title.get('title')
+
+    print(title)
+
+    print(over_view)
     
-    
-
-    return render_template("movies.html", user=current_user, movie_image_url=movie_image_url, plot_summary=plot_summary)
+    return render_template("movies.html", user=current_user, full_path_random_title_image=full_path_random_title_image, title=title, over_view=over_view)
 
 
 @auth.route('/add_favorite_movie', methods=['GET', 'POST'])
@@ -166,55 +139,37 @@ def add_favorite_movie():
 @auth.route('/tvshows', methods=['GET', 'POST'])
 @login_required
 def tvshows():
-    global choice
-    url1 = "https://online-movie-database.p.rapidapi.com/title/get-most-popular-tv-shows"
-    querystring1 = {"currentCountry": "US",
-                    "purchaseCountry": "US", "homeCountry": "US"}
-    headers = {
-        'X-RapidAPI-Key': 'ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87',
-        'X-RapidAPI-Host': 'online-movie-database.p.rapidapi.com'
-    }
-    response5 = requests.request(
-        "GET", url1, headers=headers, params=querystring1)
+    random_page = random.randint(0, 50)
 
-    tv_show_ids = []
-    data1 = json.loads(response5.text)
-    for id in data1:
-        tv_show_ids.append(id.split("/")[2])
-        
-    choice = random.sample(tv_show_ids, 1)
+    url2 = "https://api.themoviedb.org/3/discover/tv?api_key=28dd9fa4c4a210cd3dc589981c8fb66a&language=en-US&sort_by=popularity.desc&page=" + str(random_page) + "&timezone=America%2FNew_York&include_null_first_air_dates=false&watch_region=US&with_watch_monetization_types=flatrate&with_status=0&with_type=0"
 
-    url3 = "https://online-movie-database.p.rapidapi.com/title/get-images"
-    querystring3 = {"tconst": choice, "limit": "1"}
-    headers = {
-        "X-RapidAPI-Key": "ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87",
-        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
-    }
-    response3 = requests.request(
-        "GET", url3, headers=headers, params=querystring3)
-    data3 = json.loads(response3.text)
-    tv_show_image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
-    
-    # gets the plot summary of the title 
-    
-    url4 = "https://online-movie-database.p.rapidapi.com/title/get-overview-details"
-    querystring4 = {"tconst":choice, "currentCountry":"US"}
-    headers4 = {
-        "X-RapidAPI-Key": "ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87",
-        "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
-    }
-    response4 = requests.request("GET", url4, headers=headers4, params=querystring4)
 
-    data5 = json.loads(response4.text)
-    plot_summary = data5.get('plotSummary', {}).get('text')
-    if not plot_summary:
-        plot_summary = ("No summary available")
+    request1 = requests.get(url2)
 
-    print(plot_summary)
-    
-    
+    data1 = request1.json()
 
-    return render_template("tvshows.html", user=current_user, tv_show_image_url=tv_show_image_url, plot_summary=plot_summary)
+    titles = data1.get('results')
+    random_title = random.choice(titles)
+    random_id = random_title.get('id')
+
+    print(random_id)
+
+    random_title_image = random_title.get('poster_path')
+    url_append = "https://image.tmdb.org/t/p/original"
+    full_path_random_title_image = url_append + random_title_image
+    print(full_path_random_title_image)
+
+    over_view = random_title.get('overview')
+
+    title = random_title.get('name')
+
+
+    print(title)
+
+    print(over_view)
+
+
+    return render_template("tvshows.html", user=current_user, full_path_random_title_image=full_path_random_title_image, title=title, over_view=over_view)
 
 
 @auth.route('/add_favorite_tv_show', methods=['GET', 'POST'])
@@ -227,15 +182,14 @@ def add_favorite_tv_show():
     favorite_exists = Favorite.query.filter_by(user_id=current_user.id, title=title).first()
     if favorite_exists:
         flash('title as already been added to playlst', category='error')
-        return redirect(url_for('tvshows.html'))
+        return redirect(url_for('auth.tvshows'))
     new_favorite = Favorite(title=title, image=image, user_id=current_user.id)
     if new_favorite:
         db.session.add(new_favorite)
         db.session.commit()
         flash('Added to Playlst!', category='success')
-        return render_template('tvshows.html')
-    else:
-        favorites = current_user.favorites
+        return redirect(url_for('auth.tvshows'))
+
     return render_template('favorites.html', user=current_user, favorites=favorites)
 
 
