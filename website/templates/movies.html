@@ -2,16 +2,16 @@
 content %}
 
 <html>
-  <h1 color="#000000" align="center">Movies</h1>
+  <h1 color="#000000" align="center">Random Movies</h1>
   <h3 color="#000000" align="center"></h3>
 
     <form>
       <img
-        src="{{ movie_image_url }}"
+        src="{{ full_path_random_title_image }}"
       />
       
     </form>
-    <p> {{ plot_summary }} </p>
+    <p> {{ over_view }} </p>
     <form method="post" action="{{ url_for('auth.add_favorite_movie') }}">
       <div class="text-center">
         <a href="/" align="center">
@@ -26,14 +26,14 @@ content %}
             Add to Playlst
           </button>
         </a>
-      <input type="hidden" name="movie_title" value="{{ Movie_Title_Name }}" />
-      <input type="hidden" name="movie_image_url"value="{{ movie_image_url }}">
+      <input type="hidden" name="movie_title" value="{{ title }}" />
+      <input type="hidden" name="movie_image_url"value="{{ full_path_random_title_image }}">
       <input type="hidden" name="current_user" value="{{ current_user }}">
       
     </form>
   </div>
   <div class="text-center">
-      <form method="post">
+      <form method="post" action="{{ url_for('auth.movies') }}">
         <a>
           <button name="next" align="center" type="submit" value="next">
             Next
