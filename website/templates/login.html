@@ -2,12 +2,15 @@
 %}
 <form method="POST">
   <div>
-    <h1 align="center"> <img src="{{ url_for('static', filename='brand_images/PickFlix.png') }}"> </h1>
-    <h2>Sign Up or Login</h2>
+    <h1> Welcome to</h1>
+  </br>
+    <img src="{{ url_for('static', filename='brand_images/playlst_logo.jpeg') }}">
+   
     <h3> Discover your TV show and movie playlist with playlst! Create a group, invite friends, and start matching!</h3>
   </div>
+</br>
   <div class="form-group">
-    <label for="email"> Email Address </label>
+    <label for="email">Email Address</label>
     <input
       type="email"
       class="form-control"
@@ -18,7 +21,7 @@
   </div>
 
   <div class="form-group">
-    <label for="password"> Password </label>
+    <label for="password">Password</label>
     <input
       type="password"
       class="form-control"
@@ -29,14 +32,16 @@
   </div>
 
   <br />
+  
   <button type="submit" class="button">Login</button>
   <a href="/signup"> <button type="button" class="button">SignUp</button></a>
 </form>
 
 <style>
   h1 {
+    text-align: center;
     font-family: classic sans serif, baron;
-    font-size: 50px;
+    font-size: 75px;
     font-weight: bold;
     color: #66aa33;
   }
@@ -52,21 +57,20 @@
   }
 
   h3 {
-    text-align: center;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-family: classic sans serif, baron;
-    font-size: 24px;
-    font-weight: bold;
-    color: #66aa33;
-    padding: 1px; /* add some padding to make the background more visible */
+    font-size: 16px;
+      line-height: 1.5;
+      margin: 0px 0;
+      color: #66aa33;
+      max-width: 300px;
+      font-family: Arial, sans-serif;
+      margin: 0 250px;
+      background-color: white;
+      border-radius: 35px;
+      margin: 0 auto;
+      padding: 10px;
+      text-align: center;    /
   }
-  img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 15px;
-  }
+  
   .text-center {
     text-align: center;
   }
@@ -76,18 +80,18 @@
     background-size: cover;
     font-family: Arial, sans-serif;
   }
-  button {
+  .button {
     background-color: #66aa33;
     color: white;
     padding: 1px 30px;
-    border-radius: 4px;
+    border-radius: 35px;
     border: none;
     margin-top: 20px;
     cursor: pointer;
     font-size: 20px;
     font-weight: bold;
   }
-  button:hover {
+  .button:hover {
     background-color: #518828;
   }
   .card {
@@ -116,9 +120,15 @@
     font-size: 16px;
   }
   img {
-    margin-top: -200px;
-    margin-bottom: -225px;
-    margin-right: 175px;
+    height: 35%;
+    width: 50%;
+    margin-bottom: 0px;
+    margin-top: -25px;
+    margin-left: 115px;
+    padding: 0px;
   }
+ 
+
+ 
 </style>
 {% endblock%}
