@@ -22,7 +22,7 @@
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">
-          <img src="{{ url_for('static', filename='brand_images/PickFlix.png') }}" class="brand_logo" alt="playlst Logo">
+          <img src="{{ url_for('static', filename='brand_images/playlst_logo.jpeg') }}" class="brand_logo" alt="playlst Logo">
 
         </a>
         <a class="navbar-brand">
@@ -99,6 +99,14 @@
   </html>
 
   <style>
+    
+    html, body {
+      width: 100%;
+      height: 100%;
+      marigin: 0px;
+      padding: 0px;
+      overflow-x: hidden;
+    }
 
     /* Style the X icon */
     .fa-times::before {
@@ -110,9 +118,12 @@
     } 
     
     h1 {
-      font-family: "mycustomfont";
-      font-size: 45px;
+      text-align: center;
+      font-family: classic sans serif, baron;
+      font-size: 50px;
+      font-weight: bold;
       color: #66aa33;
+      margin-top: -20px;
     }
     h2 {
       padding: 5px 10px;
@@ -156,11 +167,15 @@
       }
 
     .brand_logo {
-      height: 50px;
-      width: 50x;
+      height: 10%;
+      width: 20%;
+      margin: 0px;
+      margin-bottom: -150px;
+      margin-top: -175px;
+      margin-left: -10px;
+      margin-right: 20px;
       padding: 0px;
       
-
     }
     .collapse navbar-collapse a {
       color: #66AA33;
@@ -169,7 +184,6 @@
     .navbar navbar-expand-lg {
       color: #66AA33;
     }
-    
   
     .avatar {
       width: 32px;
