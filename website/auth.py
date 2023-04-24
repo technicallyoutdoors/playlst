@@ -217,6 +217,7 @@ def delete_favorite():
 @auth.route('/favorites', methods=['GET', 'POST'])
 @login_required
 def favorites():
+    user = current_user
     return render_template('favorites.html', user=current_user.id, favorites=current_user.favorites)
 
 
