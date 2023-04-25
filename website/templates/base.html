@@ -43,6 +43,7 @@
             <a class="nav-item nav-link" id="user_profile" href="/user_profile">Profile</a>
             <a class="nav-item nav-link" id="current_user">{{ current_user.first_name }} {{ current_user.last_name }}</a>
             {% else %}
+            <a class="nav-item nav-link" id="login" href="/main">Playlst</a>
             <a class="nav-item nav-link" id="login" href="/login">Login</a>
             <a class="nav-item nav-link" id="signUp" href="/signup">Sign Up</a>
             {% endif %}
@@ -110,14 +111,14 @@
     .fa-times::before {
       content: "\f00d";
     }
-    @font-face { 
-      font-family: "mycustomfont"; 
-      src: url("website/fonts/BaronNeue-Regular.otf");
-    } 
+    @font-face {
+      font-family: trial;
+      src: url('fonts/BaronNeue-Regular.otf') ;
+      font-weight:bold; }
     
     h1 {
       text-align: center;
-      font-family: classic sans serif, baron;
+      font-family: trial;
       font-size: 50px;
       font-weight: bold;
       color: #66aa33;
@@ -150,7 +151,6 @@
       background-color: #66AA33;
       color: white;
       padding: 1px 10px;
-      border-radius: 4px;
       border: none;
       margin-top: 20px;
       cursor: pointer;

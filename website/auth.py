@@ -19,6 +19,9 @@ import datetime
 
 auth = Blueprint('auth', __name__)
 
+@auth.route('/main')
+def main():
+    return render_template('main.html', css_file='styles.css')
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():

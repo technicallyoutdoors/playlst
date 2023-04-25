@@ -1,8 +1,8 @@
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from __init__ import app 
+from itsdangerous import TimedSerializer as Serializer
+
 
 
 
@@ -17,8 +17,8 @@ class User(db.Model, UserMixin):
     family_id = db.Column(db.Integer, db.ForeignKey('family.id'))
     favorites = db.relationship('Favorite', lazy='dynamic')
 
-    def get_reset_token(self, expires_sec=1800):
-        s = Serializer(app.config['SECRET_KEY'], expires_sec)
+    # def get_reset_token(self, expires_sec=1800):
+    #     s = Serializer(app.config['SECRET_KEY'], expires_sec)
         
                        
 class Favorite(db.Model):
