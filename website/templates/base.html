@@ -19,37 +19,39 @@
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
-    <nav class="navbar justify-content-between">
+
+    <nav class="navbar navbar-expand-lg justify-content-between border-bottom">
       <a class="navbar-brand" href="/">
         <img src="{{ url_for('static', filename='brand_images/playlst_logo.jpeg') }}" class="brand_logo" alt="playlst Logo">
       </a>
-
-        <div>
-            {% if current_user.photo %}
-            <a class="nav-link d-inline" id="current_user">
-              <img src="{{ url_for('static', filename='uploads/' + current_user.photo.filename) }}" alt="User Avatar" class="avatar">
-            </a>
-            {% endif %}
-            <button class="navbar-toggler d-inline" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <i class="fas fa-bars"></i>
-            </button>
+      <button title="profile" class="navbar-toggler p-0" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        {% if current_user.photo %}
+        <a class="d-inline" id="current_user">
+          <img src="{{ url_for('static', filename='uploads/' + current_user.photo.filename) }}" alt="User Avatar" class="avatar">
+        </a>
+        {% else %}
+        <i class="fas fa-bars"></i>
+        {% endif %}
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="navbar-nav ml-auto">
+          {% if user.is_authenticated %}
+          <a class="nav-item nav-link" id="home" href="/">Home</a>
+          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+          <a class="nav-item nav-link" id="user_profile" href="/user_profile">Profile</a>
+          <a class="nav-item nav-link" id="current_user" href="/user_profile">{{ current_user.first_name }} {{ current_user.last_name }}</a>
+          {% if current_user.photo %}
+          <a id="current_user_nav" title="Profile" href="/user_profile">
+            <img src="{{ url_for('static', filename='uploads/' + current_user.photo.filename) }}" alt="User Avatar" class="avatar">
+          </a>
+          {% endif %}
+          {% else %}
+          <a class="nav-item nav-link" id="login" href="/login">Login</a>
+          <a class="nav-item nav-link" id="signUp" href="/signup">Sign Up</a>
+          {% endif %}
         </div>
-          
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <div class="navbar-nav ml-auto">
-            {% if user.is_authenticated %}
-            <a class="nav-item nav-link" id="home" href="/">Home</a>
-            <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-            <a class="nav-item nav-link" id="user_profile" href="/user_profile">Profile</a>
-            <a class="nav-item nav-link" id="current_user">{{ current_user.first_name }} {{ current_user.last_name }}</a>
-            {% else %}
-            <a class="nav-item nav-link" id="login" href="/login">Login</a>
-            <a class="nav-item nav-link" id="signUp" href="/signup">Sign Up</a>
-            {% endif %}
-          </div>
-        </div>
+      </div>
     </nav>
-    
   
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==
@@ -84,20 +86,19 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
-
-    <script
-
-    // Add click event listener to the navbar toggler button
-    $('.navbar-toggler').click(function() {
-      $(this).find('i').toggleClass('fa-bars fa-times');
-    });
-    
-    ></script>
   </body>
   </html>
 
   <style>
-    
+    @font-face { 
+      font-family: "BaronNeue"; 
+      src: url("static/fonts/BaronNeue-Regular.otf") format(opentype);
+    } 
+
+    body {
+      font-family: BaronNeue;
+    }
+
     html, body {
       width: 100%;
       height: 100%;
@@ -106,18 +107,11 @@
       overflow-x: hidden;
     }
 
-    /* Style the X icon */
-    .fa-times::before {
-      content: "\f00d";
-    }
-    @font-face { 
-      font-family: "mycustomfont"; 
-      src: url("website/fonts/BaronNeue-Regular.otf");
-    } 
+
     
     h1 {
       text-align: center;
-      font-family: classic sans serif, baron;
+      font-family: BaronNeue;
       font-size: 50px;
       font-weight: bold;
       color: #66aa33;
@@ -167,10 +161,6 @@
       height: 10%;
       width: 20%;
       margin: 0px;
-      margin-bottom: -150px;
-      margin-top: -175px;
-      margin-left: -10px;
-      margin-right: 20px;
       padding: 0px;
       
     }
@@ -191,6 +181,19 @@
     
     #current_user {
       cursor: pointer;
+      user-select: none;
+    }
+
+    #current_user_nav {
+      user-select: none;
+      display: flex;
+      align-items: center;
+    }
+
+    @media (max-width: 992px) {
+      #current_user_nav {
+        display: none;
+      }
     }
     
     #current_user:hover {
@@ -230,8 +233,21 @@
     #logout {
       margin-right: 1rem;
     }
-    
+
+    .navbar {
+      justify-content: unset;
+    }
+
+    .navbar-brand > img {
+      width: 91px
+    }
+
+    .nav-link {
+      color: #66AA33;
+    }
+
     .navbar-toggler {
+      margin-top: 0px;
       border: none;
       background-color: transparent;
     }
