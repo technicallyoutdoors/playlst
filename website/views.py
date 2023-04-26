@@ -10,5 +10,5 @@ views = Blueprint('views', __name__)
 
 
 @views.route('/')
-def home():
+def main():
     return render_template("main.html", user=current_user)
