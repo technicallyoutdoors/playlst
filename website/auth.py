@@ -44,6 +44,7 @@ def login():
     return render_template("login.html", user=current_user)
 
 @auth.route('/home')
+@login_required
 def home():
     return render_template('home.html', user=current_user)
 
@@ -181,7 +182,6 @@ def tvshows():
 @auth.route('/add_favorite_tv_show', methods=['GET', 'POST'])
 @login_required
 def add_favorite_tv_show():
-    # choice = request.form['favorite_id']
     title = request.form['tv_show_title']
     image = request.form['tv_show_image_url']
     user_id = request.form['current_user']

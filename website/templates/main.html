@@ -1,11 +1,11 @@
-{% block title %}{% endblock %} {% block content %}
+{% extends "base.html" %}{% block title %}{% endblock %} {% block content %}
 <!DOCTYPE html>
 <html>
   <head>
     <title>Playlst</title>
   </head>
   <body>
-    <h1>P</h1>
+    <h1>Playlst</h1>
     <div class="button-container">
         <a href="/login">
             <button name="signin" type="button" class="button2">Sign In</button>
@@ -18,15 +18,11 @@
   </body>
 </html>
 
-<style type="text/css">
-    @font-face {
-    font-family: BaronNeue;
-    src: url({{url_for('static', filename='styles.css')}});
-}
+<style>
+    
   h1 {
-    text-align: center;
-    font-family: BaronNeue;
-    font-size: 50px;
+    background-color: white;
+    color: white;
   }
 
   .button-container {

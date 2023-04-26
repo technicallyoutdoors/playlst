@@ -12,7 +12,7 @@ content %}
       <form method="post" action="{{ url_for('auth.add_favorite_movie') }}">
         <div class="text-center">
           <a>
-            <button name="favorites" align="center" type="submit" value="favorites">❤️</button>
+            <button name="favorites" align="center" type="submit" value="favorites">+Playlst</button>
           </a>
         <input type="hidden" name="movie_title" value="{{ title }}" />
         <input type="hidden" name="movie_image_url" value="{{ full_path_random_title_image }}">
@@ -39,17 +39,6 @@ content %}
       font-weight: bold;
     }
 
-    button {
-      background-color: #007bff;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 35px;
-      border: none;
-      margin-top: 20px;
-      cursor: pointer;
-      font-size: 20px;
-      font-weight: bold;
-    }
 
     button[name="next"] {
     position: fixed;
@@ -64,12 +53,12 @@ content %}
   
     button[name="favorites"] {
       position: fixed;
-      top: 600px;
+      bottom: 300px;
       right: 170px;
-      background-color: transparent;
-      font-size: 100px;
+      padding: 10px;
+
     }
-    
+
     li {
       justify-content: center;
       align-items: center;
