@@ -5,43 +5,26 @@ content %}
   <h1 color="#000000" align="center">Random Movies</h1>
   <h3 color="#000000" align="center"></h3>
 
-    <form>
-      <img
-        src="{{ full_path_random_title_image }}"
-      />
-      
-    </form>
-    <p> {{ over_view }} </p>
-    <form method="post" action="{{ url_for('auth.add_favorite_movie') }}">
-      <div class="text-center">
-        <a href="/" align="center">
-          <button align="center" type="button" color="#000000">Home</button>
-        </a>
-        <a>
-          <button
-            name="favorites"
-            align="center"
-            type="submit"
-            value="favorites">
-            Add to Playlst
-          </button>
-        </a>
-      <input type="hidden" name="movie_title" value="{{ title }}" />
-      <input type="hidden" name="movie_image_url"value="{{ full_path_random_title_image }}">
-      <input type="hidden" name="current_user" value="{{ current_user }}">
-      
-    </form>
-  </div>
-  <div class="text-center">
-      <form method="post" action="{{ url_for('auth.movies') }}">
-        <a>
-          <button name="next" align="center" type="submit" value="next">
-            Next
-          </button>
-        </a>
+
+    <img src="{{ full_path_random_title_image }}" class="movie_image"/>
+
+      <p>{{ over_view }}</p>
+      <form method="post" action="{{ url_for('auth.add_favorite_movie') }}">
+        <div class="text-center">
+          <a>
+            <button name="favorites" align="center" type="submit" value="favorites">❤️</button>
+          </a>
+        <input type="hidden" name="movie_title" value="{{ title }}" />
+        <input type="hidden" name="movie_image_url" value="{{ full_path_random_title_image }}">
+        <input type="hidden" name="current_user" value="{{ current_user }}">
       </form>
-    </div>
-    
+      <form method="post" action="{{ url_for('auth.movies') }}">
+        <div class="text-center">
+          <button name="next" align="center" type="submit" value="next">Next</button>
+        
+      </form>
+  </div>
+</div>
 
 
   <style>
@@ -68,6 +51,26 @@ content %}
       font-size: 20px;
       font-weight: bold;
     }
+
+    button[name="next"] {
+    position: fixed;
+    top: 600px;
+    right: 5px; /* adjust the value to move the button horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    }
+  
+    button[name="favorites"] {
+      position: fixed;
+      top: 600px;
+      right: 170px;
+      background-color: transparent;
+      font-size; 100px;
+    }
+    
     li {
       justify-content: center;
       align-items: center;
@@ -98,8 +101,8 @@ content %}
       max-width: 400px;
       font-family: Arial, sans-serif;
       margin: 0 10px;
-      background-color: white;
-      border-radius: 35px;
+      background-color: transparent;
+      border-radius: 5px;
       margin: 0 auto;
       padding: 1px;
       text-align: center;     
@@ -129,18 +132,6 @@ content %}
       flex-direction: column;
       align-items: flex-start;
     }
-
-    .card {
-      width: 35%;
-      margin: 0 auto;
-      padding: 20px;
-      margin: auto;
-      text-align: center;
-      background-color: #007bff;
-      color: white;
-      border-radius: 5px;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    }
     @media (max-width: 480px) {
       .card {
         width: 100%; /* Set width to 100% to fill the screen */
@@ -153,8 +144,7 @@ content %}
       padding: 10px;
       background-color: #007bff;
       color: #fff;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
+     border-radius: 35px;
     }
 
     .card-body {
@@ -173,26 +163,18 @@ content %}
       margin-bottom: 20px;
     }
 
-    .members {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      font-size: 16px;
-    }
-
-    .members li {
-      margin-bottom: 5px;
-    }
 
     #change_button {
       background-color: black;
       border-radius: 10px;
     }
-    img {
+    .movie_image {
+      cursor: pointer;
       border-radius: 35px;
       height: 500px;
-      width: 400px;
+      width: 350px;
     }
+    
   </style>
 </html>
 
