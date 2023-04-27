@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
@@ -19,55 +22,89 @@
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">
-          <img src="{{ url_for('static', filename='brand_images/playlst_logo.jpeg') }}" class="brand_logo" alt="playlst Logo">
-
-        </a>
-        <a class="navbar-brand">
+    <nav class="navbar navbar-expand-lg justify-content-between border-bottom">
+      <a class="navbar-brand" href="/home">
+        <img
+          src="{{ url_for('static', filename='brand_images/playlst_logo.jpeg') }}"
+          class="brand_logo"
+          alt="playlst Logo"
+        />
+      </a>
+      <button
+        title="profile"
+        class="navbar-toggler p-0"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         {% if current_user.photo %}
-            <a class="nav-item nav-link" id="current_user">
-              <img src="{{ url_for('static', filename='uploads/' + current_user.photo.filename) }}" alt="User Avatar" class="avatar">
-            </a>
-            {% endif %}
+        <a class="d-inline" id="current_user">
+          <img
+            src="{{ url_for('static', filename='uploads/' + current_user.photo.filename) }}"
+            alt="User Avatar"
+            class="avatar"
+          />
+        </a>
+        {% else %}
+        <i class="fas fa-bars"></i>
+        {% endif %}
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="navbar-nav ml-auto">
+          {% if user.is_authenticated %}
+          <a class="nav-item nav-link" id="home" href="/home">Home</a>
+          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+          <a class="nav-item nav-link" id="current_user" href="/group_hub"
+            >Group Hub</a
+          >
+          <a class="nav-item nav-link" id="current_user" href="/favorites"
+            >My Playlst</a
+          >
+          <a class="nav-item nav-link" id="current_user" href="/user_profile">
+            {{ current_user.first_name }} {{ current_user.last_name }}</a
+          >
+          {% if current_user.photo %}
+          <a id="current_user_nav" title="Profile" href="/user_profile">
+            <img
+              src="{{ url_for('static', filename='uploads/' + current_user.photo.filename) }}"
+              alt="User Avatar"
+              class="avatar"
+            />
           </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-          </button>
-          
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <div class="navbar-nav ml-auto">
-            {% if user.is_authenticated %}
-            <a class="nav-item nav-link" id="home" href="/">Home</a>
-            <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-            <a class="nav-item nav-link" id="user_profile" href="/user_profile">Profile</a>
-            <a class="nav-item nav-link" id="current_user">{{ current_user.first_name }} {{ current_user.last_name }}</a>
-            {% else %}
-            <a class="nav-item nav-link" id="login" href="/login">Login</a>
-            <a class="nav-item nav-link" id="signUp" href="/signup">Sign Up</a>
-            {% endif %}
-          </div>
+          {% endif %} {% else %}
+          <a class="nav-item nav-link" id="login" href="/login">Login</a>
+          <a class="nav-item nav-link" id="signUp" href="/signup">Sign Up</a>
+          {% endif %}
         </div>
       </div>
     </nav>
-    
-  
+
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==
     'error' %}
-    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+    <div class="alert alert-danger alert-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert"></button>
+    </div>
+    {% elif category == 'success' %}
+    <div
+      class="alert alert-success alert-dismissible fade show"
+      role="alert"
+      id="success-alert"
+    >
       {{ message }}
       <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times; </span>
+        <span aria-hidden="true"></span>
       </button>
     </div>
+
     {% else %}
     <div class="alert alert-success alter-dismissable fade show" role="alert">
       {{ message }}
-      <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <button type="button" class="close" data-dismiss="alert"></button>
     </div>
     {% endif %} {% endfor %} {% endif %} {% endwith %}
     <div class="container">{%block content %} {% endblock%}</div>
@@ -86,176 +123,219 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
+    <script>
+      // Get the alert element
+      var alertElement = document.querySelector(".alert");
 
-    <script
+      // Show the alert
+      alertElement.style.display = "flex";
 
-    // Add click event listener to the navbar toggler button
-    $('.navbar-toggler').click(function() {
-      $(this).find('i').toggleClass('fa-bars fa-times');
-    });
-    
-    ></script>
+      // Wait for 3 seconds and then hide the alert
+      setTimeout(function () {
+        alertElement.classList.add("hide");
+        setTimeout(function () {
+          alertElement.remove();
+        }, 500); // Wait for the transition to complete before removing the element
+      }, 1500);
+    </script>
   </body>
-  </html>
+</html>
 
-  <style>
-    
-    html, body {
-      width: 100%;
-      height: 100%;
-      marigin: 0px;
-      padding: 0px;
-      overflow-x: hidden;
-    }
+<style>
+  .fa-check-circle {
+    margin-right: 10px;
+    font-size: 24px;
+  }
+  @font-face {
+    font-family: "BaronNeue";
+    src: url("static/fonts/BaronNeue-Regular.otf") format(opentype);
+  }
 
-    /* Style the X icon */
-    .fa-times::before {
-      content: "\f00d";
-    }
-    @font-face { 
-      font-family: "mycustomfont"; 
-      src: url("website/fonts/BaronNeue-Regular.otf");
-    } 
-    
-    h1 {
-      text-align: center;
-      font-family: classic sans serif, baron;
-      font-size: 50px;
-      font-weight: bold;
-      color: #66aa33;
-      margin-top: -20px;
-    }
-    h2 {
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-family: classic sans serif, baron;
-      font-size: 24px;
-      font-weight: bold;
-      color: #66aa33;
-      padding: 1px; /* add some padding to make the background more visible */
-    }
-  
-    h3 {
-      font-family: classic sans serif, baron;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    .navbar-nav .nav-link {
-      color: #66AA33;
-      text-align: right;
-      
-    }
-    .navbar-nav .nav-link:hover {
-      color: #518828;
-      
-    }
-    button {
-      background-color: #66AA33;
-      color: white;
-      padding: 1px 10px;
-      border-radius: 4px;
-      border: none;
-      margin-top: 20px;
-      cursor: pointer;
-      font-size: 20px;
-      font-weight: bold;
-      border-radius: 35px;
-    }
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    marigin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+  }
 
-    button:hover {
-        background-color: #518828;
-      }
+  h1 {
+    text-align: center;
+    font-family: BaronNeue, classic sans serif;
+    font-size: 50px;
+    font-weight: bold;
+    color: #66aa33;
+    margin-top: 30px;
+  }
+  h2 {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-family: BaronNeue, classic sans serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #66aa33;
+    padding: 1px; /* add some padding to make the background more visible */
+  }
 
-    .brand_logo {
-      height: 10%;
-      width: 20%;
-      margin: 0px;
-      margin-bottom: -150px;
-      margin-top: -175px;
-      margin-left: -10px;
-      margin-right: 20px;
-      padding: 0px;
-      
+  h3 {
+    font-family: BaronNeue, classic sans serif;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .navbar-nav .nav-link {
+    color: #66aa33;
+    text-align: right;
+    font-family: BaronNeue, classic sans serif;
+  }
+  .navbar-nav .nav-link:hover {
+    color: #518828;
+  }
+  button {
+    background-color: #66aa33;
+    color: white;
+    padding: 1px 10px;
+    border: none;
+    margin-top: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 35px;
+    font-family: BaronNeue, classic sans serif;
+  }
+
+  button:hover {
+    background-color: #518828;
+  }
+
+  .brand_logo {
+    height: 10%;
+    width: 20%;
+    margin: 0px;
+    padding: 0px;
+  }
+  .collapse navbar-collapse a {
+    color: #66aa33;
+    font-family: BaronNeue, classic sans serif;
+  }
+
+  .navbar navbar-expand-lg {
+    color: #66aa33;
+    font-family: BaronNeue, classic sans serif;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+
+  #current_user {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  #current_user_nav {
+    user-select: none;
+    display: flex;
+    align-items: center;
+  }
+
+  @media (max-width: 992px) {
+    #current_user_nav {
+      display: none;
     }
-    .collapse navbar-collapse a {
-      color: #66AA33;
-    }
-    
-    .navbar navbar-expand-lg {
-      color: #66AA33;
-    }
-  
-    .avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      margin-right: 0.5rem;
-    }
-    
-    #current_user {
-      cursor: pointer;
-    }
-    
-    #current_user:hover {
-      text-decoration: none;
-    }
-    
-    .alert {
-      margin-top: 1rem;
-      margin-bottom: 0;
-      border-radius: 0;
-      text-align: center;
-    }
-    
-    .alert-success {
-      background-color: #28a745;
-      color: white;
-    }
-    
-    .alert-danger {
-      background-color: #dc3545;
-      color: white;
-    }
-    
-    .alert-dismissable .close {
-      right: 0;
-      color: inherit;
-    }
-    
-    #home {
-      margin-right: 1rem;
-    }
-    
-    #user_profile {
-      margin-right: 1rem;
-    }
-    
-    #logout {
-      margin-right: 1rem;
-    }
-    
-    .navbar-toggler {
-      border: none;
-      background-color: transparent;
-    }
-    .navbar-toggler:hover {
-      background-color: transparent;
-    }
-    
-    .navbar-toggler:focus,
-    .navbar-toggler:active,
-    .navbar-toggler-icon:focus {
-      outline: none;
-      box-shadow: none;
-    }
-    
-    .navbar-toggler .fas {
-      font-size: 1.5rem;
-      color: #66AA33;
-    }
-    
-    .navbar-toggler.collapsed .fas {
-      color: #66AA33;
-    }
-    
-  </style>
+  }
+
+  #current_user:hover {
+    text-decoration: none;
+  }
+
+  .alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    font-size: 18px;
+    color: white;
+    font-family: BaronNeue, classic sans serif;
+    background-color: #66aa33;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+    white-space: nowrap;
+}
+
+  .alert.hide {
+    opacity: 0;
+  }
+
+  .alert-success {
+    background-color: #66aa33;
+    color: white;
+    font-family: BaronNeue, classic sans serif;
+  }
+
+  .alert-danger {
+    background-color: red;
+    color: white;
+    font-family: BaronNeue, classic sans serif;
+  }
+
+  #home {
+    margin-right: 0;
+  }
+
+  #user_profile {
+    margin-right: 0;
+  }
+
+  #logout {
+    margin-right: 0;
+  }
+  #group_hub {
+    margin-right: 0;
+  }
+
+  .navbar {
+    justify-content: unset;
+  }
+
+  .navbar-brand > img {
+    width: 91px;
+  }
+
+  .nav-link {
+    color: #66aa33;
+  }
+
+  .navbar-toggler {
+    margin-top: 0px;
+    border: none;
+    background-color: transparent;
+  }
+  .navbar-toggler:hover {
+    background-color: transparent;
+  }
+
+  .navbar-toggler:focus,
+  .navbar-toggler:active,
+  .navbar-toggler-icon:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .navbar-toggler .fas {
+    font-size: 1.5rem;
+    color: #66aa33;
+  }
+
+  .navbar-toggler.collapsed .fas {
+    color: #66aa33;
+  }
+</style>

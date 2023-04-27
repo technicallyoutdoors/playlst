@@ -1,67 +1,5 @@
-{% extends "base.html" %} {% block title %}Edit Profile{% endblock %} {%block content
-    %}
-    
-    <!DOCTYPE html>
-    <html>
-  <head>
-    <title>User Profile</title>
-    <style>
-
-      .avatar1 {
-        width: 200px;
-        height: auto;
-        border-radius: 10%;
-        
-        object-position: center;
-      }
-
-      .container {
-        margin-top: 20px;
-        max-width: 600px;
-      }
-
-      form {
-        display: flex;
-        flex-direction: column;
-      }
-
-      label {
-        margin-top: 2px;
-        margin-bottom: 2px;
-        font-weight: bold;
-      }
-
-      input[type="text"],
-      input[type="email"],
-      input[type="file"] {
-        padding: 10px;
-        margin-bottom: 2px;
-        border-radius: 35px;
-        border-bottom: 2px solid #66AA33;
-        border-top: 2px solid #66AA33;
-        border-left: 2px solid #66AA33;
-        border-right: 2px solid #66AA33;
-      }
-
-      input[type="submit"] {
-        background-color: #66AA33;
-        color: white;
-        padding: 5px 5px;
-        border: none;
-        font-size: 20px;
-        cursor: pointer;
-        font-weight: bold;
-        border-radius: 35px;
-        cursor: pointer;
-        margin-top: 35px;
-      }
-
-      input[type="submit"]:hover {
-        background-color: #518828;
-      }
-    </style>
-  </head>
-  <body>
+{% extends "base.html" %} {% block title %}User Profile{% endblock %} {%block content%}
+    <br/>
     <h1>User Profile</h1>
     {% if current_user.photo %}
     <img src="{{ url_for('static', filename='uploads/' + current_user.photo.filename) }}" alt="User Avatar" class="avatar1">
@@ -88,13 +26,58 @@
 
       </form>
     </div>
-  </body>
-</html>
 
 
     
         <style>
+          .avatar1 {
+            width: 200px;
+            height: auto;
+            border-radius: 10%;
             
+            object-position: center;
+          }
+    
+          form {
+            display: flex;
+            flex-direction: column;
+          }
+    
+          label {
+            margin-top: 2px;
+            margin-bottom: 2px;
+            font-weight: bold;
+          }
+    
+          input[type="text"],
+          input[type="email"],
+          input[type="file"] {
+            padding: 10px;
+            margin-bottom: 2px;
+            border-radius: 35px;
+            border-bottom: 2px solid #66AA33;
+            border-top: 2px solid #66AA33;
+            border-left: 2px solid #66AA33;
+            border-right: 2px solid #66AA33;
+          }
+    
+          input[type="submit"] {
+            background-color: #66AA33;
+            color: white;
+            padding: 5px 5px;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 35px;
+            cursor: pointer;
+            margin-top: 35px;
+          }
+    
+          input[type="submit"]:hover {
+            background-color: #518828;
+          }
+
           .container {
             margin: 0 auto;
             text-align: center;

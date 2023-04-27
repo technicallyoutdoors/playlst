@@ -1,55 +1,86 @@
 {% extends "base.html" %} {% block title %} Login {% endblock %} {%block content
 %}
-<form method="POST">
-  <div>
-    <h1> Welcome to</h1>
-  </br>
-    <img src="{{ url_for('static', filename='brand_images/playlst_logo.jpeg') }}">
-   
-    <h3> Discover your TV show and movie playlist with playlst! Create a group, invite friends, and start matching!</h3>
-  </div>
-</br>
-  <div class="form-group">
-    <label for="email">Email Address</label>
-    <input
-      type="email"
-      class="form-control"
-      id="email"
-      name="email"
-      placeholder="Enter email"
-    />
+
+<div class="page-wrapper">
+  <div class="title-wrapper">
+    <div class="title-logo">
+      <h1>Welcome to</h1>
+      <img
+        src="{{ url_for('static', filename='brand_images/playlst_logo.jpeg') }}"
+      />
+    </div>
+
+    <h3>
+      Discover your TV show and movie playlist with playlst! Create a group,
+      invite friends, and start matching!
+    </h3>
   </div>
 
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input
-      type="password"
-      class="form-control"
-      id="password"
-      name="password"
-      placeholder="Enter Password"
-    />
-  </div>
+  <form method="POST">
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        placeholder="Enter email"
+      />
+    </div>
 
-  <br />
-  
-  <button type="submit" class="button">Login</button>
-  <a href="/signup"> <button type="button" class="button">SignUp</button></a>
-</form>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        placeholder="Enter Password"
+      />
+    </div>
 
+    <button type="submit" class="button">Login</button>
+    <a href="/signup"> <button type="button" class="button">SignUp</button></a>
+  </form>
+</div>
 <style>
-  h1 {
-    text-align: center;
-    font-family: classic sans serif, baron;
+  .page-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  .title-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .title-wrapper > * {
+    margin-bottom: 20px;
+  }
+
+  .title-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .title-logo > img {
+    width: 100%;
+    max-height: 80px;
+  }
+  .title-logo > h1 {
+    padding-top: 20px;
     font-size: 75px;
     font-weight: bold;
     color: #66aa33;
   }
+
   h2 {
     text-align: center;
     padding: 5px 10px;
     border-radius: 5px;
-    font-family: classic sans serif, baron;
     font-size: 24px;
     font-weight: bold;
     color: #66aa33;
@@ -58,19 +89,16 @@
 
   h3 {
     font-size: 16px;
-      line-height: 1.5;
-      margin: 0px 0;
-      color: #66aa33;
-      max-width: 300px;
-      font-family: Arial, sans-serif;
-      margin: 0 250px;
-      background-color: white;
-      border-radius: 35px;
-      margin: 0 auto;
-      padding: 10px;
-      text-align: center;    /
+    line-height: 1.5;
+    margin: 0px 0;
+    color: #66aa33;
+    margin: 0 250px;
+    background-color: white;
+    margin: 0 auto;
+    padding: 10px;
+    text-align: center;
   }
-  
+
   .text-center {
     text-align: center;
   }
@@ -78,7 +106,6 @@
     background: white;
     background-attachment: fixed;
     background-size: cover;
-    font-family: Arial, sans-serif;
   }
   .button {
     background-color: #66aa33;
@@ -119,16 +146,6 @@
   .card-text {
     font-size: 16px;
   }
-  img {
-    height: 35%;
-    width: 50%;
-    margin-bottom: 0px;
-    margin-top: -25px;
-    margin-left: 115px;
-    padding: 0px;
-  }
- 
-
- 
 </style>
+
 {% endblock%}

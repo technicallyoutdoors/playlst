@@ -10,18 +10,5 @@ views = Blueprint('views', __name__)
 
 
 @views.route('/')
-@login_required
-def home():
-    return render_template("home.html", user=current_user)
-
-
-# @views.route('/delete_favorite', methods=['POST'])
-# def delete_favorite():
-#     favorite = json.loads(request.data)
-#     favoriteTitle = data['favoriteTitle']
-#     favorite = favorite.query.get(favoriteTitle)
-#     if favorite:
-#         if favorite.user_id == current_user.id:
-#             db.session.delete(favorite)
-#             db.session.commit()
-#             return jsonify({})
+def main():
+    return render_template("main.html", user=current_user)

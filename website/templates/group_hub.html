@@ -5,7 +5,7 @@ content %}
   <head>
     <meta charset="UTF-8" />
     <br/>
-    <title>Group Playlst</title>
+    <title>Group Hub</title>
     <style>
       
       .container {
@@ -14,7 +14,6 @@ content %}
       }
 
       h1 {
-        font-family: Arial, sans-serif;
         font-size: 50px;
         font-weight: bold;
       }
@@ -39,7 +38,6 @@ content %}
         background-color: #0056b3;
       }
       label {
-        font-family: Arial, sans-serif;
         font-size: 16px;
         font-weight: bold;
       }
@@ -54,7 +52,6 @@ content %}
         margin: 0 auto;
       }
       p {
-        font-family: Arial, sans-serif;
         font-size: 16px;
         font-weight: bold;
         text: center
@@ -107,7 +104,7 @@ content %}
         }
         @media (max-width: 767px) {
           .card-header {
-            padding: 5px:
+            padding: 5px;
           }
         }
         @media (max-width: 767px) {
@@ -172,8 +169,20 @@ content %}
           flex: 1 1 auto;
           margin: 5px;
           width: 300px;
-          border-radius: 35px;
+          border-radius: 35x;
         }
+      .generic_button {
+        display: block;
+        background-color: #66AA33;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 35px;
+        border: none;
+        margin: 5px;
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: bold;
+      }
         
     </style>
   </head>
@@ -183,19 +192,18 @@ content %}
       <h3>You must create a group before changing the name</h3>
      
       <div class="button-group">
-      <a href="/"><button>Home</button></a>
+      <a href="/home"><button class="generic_button">Home🏠</button></a>
       <a href="{{ url_for('auth.generate_code') }}"
-        ><button>Create Group</button></a>
-
-      <a href="{{ url_for('auth.join_group') }}"><button>Join Group</button></a>
+        ><button class="generic_button">Create Group👥🆕</button></a>
+      <a href="{{ url_for('auth.join_group') }}"><button class="generic_button">Join Group👥</button></a>
       <a href="{{ url_for('auth.leave_group') }}"
-        ><button>Leave Group</button></a
+        ><button class="generic_button">Leave Group🚪</button></a
       >
       <a href="/shared_favorites" align="center">
-        <button align="center" type="button" color="#000000">
-          Matchlst
+        <button align="center" type="button" class="generic_button">
+          Matched Playlst 🔥
         </button> </a>
-     
+      </div>
     </div>
     <div class="center">
       {% if current_user.family %}
@@ -223,7 +231,7 @@ content %}
           <p class="subtitle">Members</p>
           <ul class="members">
             {% for member in current_user.family.members %}
-            <li>{{ member.first_name }} {{ member.last_name }}</li>
+            <li> <img src="{{ url_for('static', filename='uploads/' + member.photo.filename) }}" class="avatar"> {{ member.first_name }} {{ member.last_name }} </li>
             {% endfor %}
           </ul>    
           {% else %}
