@@ -7,7 +7,9 @@ content %}
 
 
     <img src="{{ full_path_random_title_image }}" class="movie_image"/>
-
+</br>
+</br>
+</br>
       <p>{{ over_view }}</p>
       <form method="post" action="{{ url_for('auth.add_favorite_movie') }}">
         <div class="text-center">
@@ -34,27 +36,21 @@ content %}
       text-align: center;
     }
 
-    h1 {
-      font-size: 50px;
-      font-weight: bold;
-    }
+   
 
 
     button[name="next"] {
-    position: fixed;
-    top: 600px;
-    right: 5px; /* adjust the value to move the button horizontally */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+      position: fixed;
+      bottom: 195px;
+      right: 150px;
+      padding: 10px;
 
     }
   
     button[name="favorites"] {
       position: fixed;
-      bottom: 300px;
-      right: 170px;
+      bottom: 195px;
+      right: 250px;
       padding: 10px;
 
     }

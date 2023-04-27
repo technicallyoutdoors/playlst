@@ -32,7 +32,6 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
-                flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
                 return redirect(url_for('auth.home'))
             else:
@@ -223,8 +222,9 @@ def delete_favorite():
 @auth.route('/favorites', methods=['GET', 'POST'])
 @login_required
 def favorites():
+    menu_items = ['Delete', 'Share', 'Watched']
     user = current_user
-    return render_template('favorites.html', user=current_user.id, favorites=current_user.favorites)
+    return render_template('favorites.html', user=current_user.id, favorites=current_user.favorites, menu_items=menu_items)
 
 
 @auth.route('/group_code', methods=['GET', 'POST'])

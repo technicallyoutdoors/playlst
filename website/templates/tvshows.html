@@ -3,44 +3,51 @@
 {% block content %}
 
 <html>
-  <h2 color="#000000" align="center">TV Shows</h2>
- 
-  
-  <div class="text-center">
-    <h4>
-     
+  <h1 color="#000000" align="center">TV Shows</h1>
+  <h3 color="#000000" align="center"></h3>
 
-      <img src="{{ full_path_random_title_image }}" class="center" />
-    </h4>
-    <p>{{ over_view }}</p>
+
+    <img src="{{ full_path_random_title_image }}" class="movie_image"/>
+</br>
+</br>
+</br>
+      <p>{{ over_view }}</p>
+      <form method="post" action="{{ url_for('auth.add_favorite_tv_show') }}">
+        <div class="text-center">
+          <a>
+            <button name="favorites" align="center" type="submit" value="favorites">+Playlst</button>
+          </a>
+        <input type="hidden" name="tv_show_title" value="{{ title }}" />
+        <input type="hidden" name="tv_show_image_url" value="{{ full_path_random_title_image }}">
+        <input type="hidden" name="current_user" value="{{ current_user }}">
+      </form>
+      <form method="post" action="{{ url_for('auth.tvshows') }}">
+        <div class="text-center">
+          <button name="next" align="center" type="submit">Next</button>
+        
+      </form>
   </div>
-
-  <form method="post" action="{{ url_for('auth.add_favorite_tv_show') }}">
-    <div class="button-container">
-      <a href="/home" data-inline="true">
-        <button type="button">Home</button>
-      </a>
-      <a data-inline="true">
-      <button name="favorites" type="submit" value="favorites">
-        Add to Playlst
-      </button>
-    </a>
-
-      <input type="hidden" name="tv_show_title" value="{{ title }}">
-      <input type="hidden" name="tv_show_image_url" value="{{ full_path_random_title_image }}">
-      <input type="hidden" name="current_user" value="{{ current_user }}">  
-    </div>
-  </form>
-  
-<form method="post" action="{{ url_for('auth.tvshows') }}">
-  <a>
-    <button type="submit">Next</button>
-  </a>
-</form>
-</div>
 </div>
 
+</html>
 <style>
+
+  button[name="next"] {
+    position: fixed;
+    bottom: 195px;
+    right: 150px;
+    padding: 10px;
+
+  }
+
+  button[name="favorites"] {
+    position: fixed;
+    bottom: 195px;
+    right: 250px;
+    padding: 10px;
+
+  }
+
   
   .button-container{
     data-inline: true;
@@ -179,7 +186,7 @@
 
 </style>
 
-</html>
+
 
 {% endblock %}
 
