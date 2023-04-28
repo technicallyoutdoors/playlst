@@ -57,22 +57,16 @@
           {% if user.is_authenticated %}
           <a class="nav-item nav-link" id="home" href="/home">Home</a>
           <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-          <a class="nav-item nav-link" id="current_user" href="/group_hub"
-            >Group Hub</a
-          >
-          <a class="nav-item nav-link" id="current_user" href="/favorites"
-            >My Playlst</a
-          >
+          <a class="nav-item nav-link" id="current_user" href="/group_hub">Group Hub</a>
+          <a class="nav-item nav-link" id="favorites" href="/favorites">My Playlst</a>
           <a class="nav-item nav-link" id="current_user" href="/user_profile">
-            {{ current_user.first_name }} {{ current_user.last_name }}</a
-          >
+            {{ current_user.first_name }} {{ current_user.last_name }}</a>
           {% if current_user.photo %}
           <a id="current_user_nav" title="Profile" href="/user_profile">
             <img
               src="{{ url_for('static', filename='uploads/' + current_user.photo.filename) }}"
               alt="User Avatar"
-              class="avatar"
-            />
+              class="avatar"/>
           </a>
           {% endif %} {% else %}
           <a class="nav-item nav-link" id="login" href="/login">Login</a>

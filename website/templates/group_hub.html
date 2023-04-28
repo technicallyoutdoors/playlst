@@ -171,6 +171,7 @@ content %}
           width: 300px;
           border-radius: 35x;
         }
+
       .generic_button {
         display: block;
         background-color: #66AA33;
@@ -207,11 +208,9 @@ content %}
     </div>
     <div class="center">
       {% if current_user.family %}
-      <br />
+      <br/>
       
-      
-      
-      <br />
+      <br/>
       <div class="card">
         <div class="card-header">
           Group Information
@@ -231,8 +230,14 @@ content %}
           <p class="subtitle">Members</p>
           <ul class="members">
             {% for member in current_user.family.members %}
+            {% if current_user.photo %}
             <li> <img src="{{ url_for('static', filename='uploads/' + member.photo.filename) }}" class="avatar"> {{ member.first_name }} {{ member.last_name }} </li>
+              {% else %}
+              <li> {{ member.first_name }} {{ member.last_name }} </li>
+            {% endif %}
+
             {% endfor %}
+
           </ul>    
           {% else %}
           <p class="subtitle">Members</p>

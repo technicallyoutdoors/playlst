@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% block title %}{% endblock %} {% block content %}
+{% block title %}{% endblock %} {% block content %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -19,13 +19,20 @@
 </html>
 
 <style>
-    
+  @font-face {
+    font-family: "BaronNeue";
+    src: url("static/fonts/BaronNeue-Regular.otf") format(opentype);
+  }
+
   h1 {
-    background-color: white;
+    text-align: left;
+    font-size: 132px;
+    font-family: BaronNeue;
     color: white;
   }
 
   .button-container {
+    font-family: BaronNeue;
     flex-direction: column;
     display: flex;
     justify-content: flex-end;
@@ -33,20 +40,16 @@
     margin-right: 150px;
   }
 
-  button {
-    margin-left: 10px;
-    background-color: #66aa33;
-    color: white;
-    padding: 1px 10px;
+  #sign-in {
+    font-family: BaronNeue;
+    background-color: transparent;
     border: none;
-    margin-top: 20px;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius: 35px;
+    text-decoration: underline;
+    cursor: pointer;  
   }
 
   #create-account {
+    font-family: BaronNeue;
     background-color: transparent;
     border: none;
     text-decoration: underline;
@@ -54,6 +57,7 @@
   }
 
   #create-account:hover {
+    font-family: BaronNeue;
     color: blue;
   }
 
@@ -80,24 +84,8 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#020024",endColorstr="#00d4ff",GradientType=1);
   }
 
-  img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 15px;
-    height: 50px;
-    width: 50px;
-  }
-
   .text-center {
     text-align: center;
-  }
-
-  .card {
-    border-radius: 15px;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    position: relative;
   }
 
   .card-body {

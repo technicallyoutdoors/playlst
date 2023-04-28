@@ -89,7 +89,7 @@ def signup():
 @login_required
 def movies():
     
-    random_page = random.randint(0, 50)
+    random_page = random.randint(0, 100)
 
 
     url1 = "https://api.themoviedb.org/3/discover/movie?api_key=28dd9fa4c4a210cd3dc589981c8fb66a&language=en-US&region=US&sort_by=popularity.desc&include_adult=false&include_video=false&page=" + str(random_page) + "&with_watch_monetization_types=flatrate"
@@ -145,7 +145,7 @@ def add_favorite_movie():
 @auth.route('/tvshows', methods=['GET', 'POST'])
 @login_required
 def tvshows():
-    random_page = random.randint(0, 50)
+    random_page = random.randint(0, 100)
 
     url2 = "https://api.themoviedb.org/3/discover/tv?api_key=28dd9fa4c4a210cd3dc589981c8fb66a&language=en-US&sort_by=popularity.desc&page=" + str(random_page) + "&timezone=America%2FNew_York&include_null_first_air_dates=false&watch_region=US&with_watch_monetization_types=flatrate&with_status=0&with_type=0"
 
@@ -222,9 +222,8 @@ def delete_favorite():
 @auth.route('/favorites', methods=['GET', 'POST'])
 @login_required
 def favorites():
-    menu_items = ['Delete', 'Share', 'Watched']
     user = current_user
-    return render_template('favorites.html', user=current_user.id, favorites=current_user.favorites, menu_items=menu_items)
+    return render_template('favorites.html', user=current_user.id, favorites=current_user.favorites)
 
 
 @auth.route('/group_code', methods=['GET', 'POST'])

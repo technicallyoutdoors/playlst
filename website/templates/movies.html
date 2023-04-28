@@ -1,13 +1,13 @@
-{% extends "base.html" %} {% block title %}PickFlix{% endblock %} {%block
+{% extends "base.html" %} {% block title %}Movies{% endblock %} {%block
 content %}
 
 <html>
   <h1 color="#000000" align="center">Random Movies</h1>
   <h3 color="#000000" align="center"></h3>
-
+  <div class="container">
 
     <img src="{{ full_path_random_title_image }}" class="movie_image"/>
-</br>
+
 </br>
 </br>
       <p>{{ over_view }}</p>
@@ -21,11 +21,11 @@ content %}
         <input type="hidden" name="current_user" value="{{ current_user }}">
       </form>
       <form method="post" action="{{ url_for('auth.movies') }}">
-        <div class="text-center">
+       
           <button name="next" align="center" type="submit" value="next">Next</button>
         
       </form>
-  </div>
+    </div>
 </div>
 
 
@@ -34,27 +34,23 @@ content %}
     .container {
       margin: 0 auto;
       text-align: center;
+      position: relative; /* add position relative to make absolute positioning work */
     }
-
-   
-
-
+    
     button[name="next"] {
-      position: fixed;
-      bottom: 195px;
-      right: 150px;
+      position: absolute;
+      bottom: 10%;
+      left: 70%; /* adjust the left value to move the button to the right */
       padding: 10px;
-
     }
-  
+    
     button[name="favorites"] {
-      position: fixed;
-      bottom: 195px;
-      right: 250px;
+      position: absolute;
+      bottom: 10%;
+      left: 30%;
       padding: 10px;
-
     }
-
+    
     li {
       justify-content: center;
       align-items: center;
