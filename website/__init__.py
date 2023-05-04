@@ -14,6 +14,8 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'uoihweiuhb ewfuewhfwefhewfuih'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_name}'
+    app.config['SESSION_COOKIE_SECURE'] = True
+    app.config['SESSION_COOKIE_HTTPONLY'] = True
     db.init_app(app)
 
     from .views import views
