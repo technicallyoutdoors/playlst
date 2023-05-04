@@ -46,7 +46,6 @@ def create_app():
 
     return app
 
-
 def create_database(app):
     if not path.exists('website/' + DB_name):
         with app.app_context():
