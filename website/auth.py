@@ -14,10 +14,10 @@ import string
 import time
 from werkzeug.utils import secure_filename
 import os
-from .__init__ import create_app
-import datetime
+
 
 auth = Blueprint('auth', __name__)
+
 
 @auth.after_request
 def add_header(response):
@@ -25,9 +25,13 @@ def add_header(response):
     response.headers["Cache-Control"] = "no-store, max-age=0"
     return response
 
+
 @auth.route('/main')
 def main():
+    # csrf_token = generate_csrf()
+    # session['csrf_token'] = csrf_token
     return render_template('main.html', css_file='styles.css')
+
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -48,10 +52,12 @@ def login():
 
     return render_template("login.html", user=current_user)
 
+
 @auth.route('/home')
 @login_required
 def home():
     return render_template('home.html', user=current_user)
+
 
 @auth.route('/logout')
 @login_required
@@ -94,11 +100,11 @@ def signup():
 @auth.route('/movies', methods=['GET', 'POST'])
 @login_required
 def movies():
-    
+
     random_page = random.randint(0, 100)
 
-
-    url1 = "https://api.themoviedb.org/3/discover/movie?api_key=28dd9fa4c4a210cd3dc589981c8fb66a&language=en-US&region=US&sort_by=popularity.desc&include_adult=false&include_video=false&page=" + str(random_page) + "&with_watch_monetization_types=flatrate"
+    url1 = "https://api.themoviedb.org/3/discover/movie?api_key=28dd9fa4c4a210cd3dc589981c8fb66a&language=en-US&region=US&sort_by=popularity.desc&include_adult=false&include_video=false&page=" + \
+        str(random_page) + "&with_watch_monetization_types=flatrate"
     request1 = requests.get(url1)
 
     data1 = request1.json()
@@ -121,7 +127,7 @@ def movies():
     print(title)
 
     print(over_view)
-    
+
     return render_template("movies.html", user=current_user, full_path_random_title_image=full_path_random_title_image, title=title, over_view=over_view)
 
 
@@ -131,7 +137,8 @@ def add_favorite_movie():
     title = request.form['movie_title']
     image = request.form['movie_image_url']
     user_id = request.form['current_user']
-    favorite_exists = Favorite.query.filter_by(user_id=current_user.id, title=title).first()
+    favorite_exists = Favorite.query.filter_by(
+        user_id=current_user.id, title=title).first()
     if favorite_exists:
         flash('title as already been added to playlst', category='error')
         return redirect(url_for('auth.movies'))
@@ -143,7 +150,6 @@ def add_favorite_movie():
         db.session.commit()
         flash('Added to Watchlist!', category='success')
         return redirect(url_for('auth.movies'))
-    
 
     return render_template('favorites.html', user=current_user, favorites=favorites)
 
@@ -153,8 +159,8 @@ def add_favorite_movie():
 def tvshows():
     random_page = random.randint(0, 50)
 
-    url2 = "https://api.themoviedb.org/3/discover/tv?api_key=28dd9fa4c4a210cd3dc589981c8fb66a&language=en-US&sort_by=popularity.desc&page=" + str(random_page) + "&timezone=America%2FNew_York&include_null_first_air_dates=false&watch_region=US&with_watch_monetization_types=flatrate&with_status=0&with_type=0"
-
+    url2 = "https://api.themoviedb.org/3/discover/tv?api_key=28dd9fa4c4a210cd3dc589981c8fb66a&language=en-US&sort_by=popularity.desc&page=" + \
+        str(random_page) + "&timezone=America%2FNew_York&include_null_first_air_dates=false&watch_region=US&with_watch_monetization_types=flatrate&with_status=0&with_type=0"
 
     request1 = requests.get(url2)
 
@@ -175,11 +181,9 @@ def tvshows():
 
     title = random_title.get('name')
 
-
     print(title)
 
     print(over_view)
-
 
     return render_template("tvshows.html", user=current_user, full_path_random_title_image=full_path_random_title_image, title=title, over_view=over_view)
 
@@ -190,7 +194,8 @@ def add_favorite_tv_show():
     title = request.form['tv_show_title']
     image = request.form['tv_show_image_url']
     user_id = request.form['current_user']
-    favorite_exists = Favorite.query.filter_by(user_id=current_user.id, title=title).first()
+    favorite_exists = Favorite.query.filter_by(
+        user_id=current_user.id, title=title).first()
     if favorite_exists:
         flash('title as already been added to playlst', category='error')
         return redirect(url_for('auth.tvshows'))
@@ -296,11 +301,10 @@ def join_group():
     return render_template('join_group.html', user=current_user)
 
 
-
 @auth.route('/shared_favorites')
 @login_required
 def shared_favorites():
-    current_user 
+    current_user
     family = Family.query.filter(Family.members.contains(current_user)).first()
     if not family:
         flash("You are not a member of a family yet!", category='error')
@@ -320,9 +324,8 @@ def shared_favorites():
         shared_favorites = set()
 
     # Filter favorites to only include shared favorites
-    favorites = current_user.favorites.filter(Favorite.title.in_(shared_favorites)).all()
-
-
+    favorites = current_user.favorites.filter(
+        Favorite.title.in_(shared_favorites)).all()
 
     # Convert InstrumentedList objects to regular lists before calling intersection
     favorites_titles = list(set([f.title for f in favorites]))
@@ -335,10 +338,7 @@ def shared_favorites():
         Favorite.image.in_(favorites_images)
     ).all()
 
-
     return render_template('shared_favorites.html', user=current_user, favorites=shared_favorites)
-
-
 
 
 @auth.route('/leave_group', methods=['POST', 'GET'])
@@ -400,7 +400,7 @@ def edit_user_profile():
 @auth.route('/random_titles', methods=['POST', 'GET'])
 @login_required
 def random_titles():
-    
+
     def random_title_gen():
         global random_title
         title_num_generation = random.randint(1000000, 7221897)
@@ -408,10 +408,9 @@ def random_titles():
         random_title = tt + str(title_num_generation)
         return random_title
 
-
     def get_data():
         url = "https://online-movie-database.p.rapidapi.com/title/get-details"
-        querystring = {"tconst": random_title_gen(), "primaryCountry":"US"}
+        querystring = {"tconst": random_title_gen(), "primaryCountry": "US"}
         headers = {
             "X-RapidAPI-Key": "ed1e6a5735mshdcb3f871a40c3abp18177ajsn0bb3cfaa8b87",
             "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
@@ -427,7 +426,6 @@ def random_titles():
         except ValueError:
             return None
 
-
     while True:
         data = get_data()
         if data is not None and 'parentTitle' in data and 'title' in data['parentTitle'] and 'image' in data['parentTitle']:
@@ -435,5 +433,3 @@ def random_titles():
             title = data['parentTitle']['title']
             break
     return render_template("random_titles.html", user=current_user, title_poster=title_poster, title=title)
-
-
