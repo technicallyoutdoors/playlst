@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app
+from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app, session
 from .models import User, FamilyMember, Photo
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
@@ -18,6 +18,12 @@ from .__init__ import create_app
 import datetime
 
 auth = Blueprint('auth', __name__)
+
+@auth.after_request
+def add_header(response):
+    session.permanent = False
+    response.headers["Cache-Control"] = "no-store, max-age=0"
+    return response
 
 @auth.route('/main')
 def main():
@@ -51,7 +57,7 @@ def home():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('auth.main'))
 
 
 @auth.route('/signup', methods=['GET', 'POST'])
@@ -429,3 +435,5 @@ def random_titles():
             title = data['parentTitle']['title']
             break
     return render_template("random_titles.html", user=current_user, title_poster=title_poster, title=title)
+
+
