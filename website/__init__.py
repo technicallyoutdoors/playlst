@@ -16,6 +16,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_name}'
     app.config['SESSION_COOKIE_SECURE'] = True
     app.config['SESSION_COOKIE_HTTPONLY'] = True
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 
     db.init_app(app)
 
     from .views import views
