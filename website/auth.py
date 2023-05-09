@@ -433,3 +433,5 @@ def random_titles():
             title = data['parentTitle']['title']
             break
     return render_template("random_titles.html", user=current_user, title_poster=title_poster, title=title)
+
+

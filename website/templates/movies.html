@@ -1,161 +1,120 @@
-{% extends "base.html" %} {% block title %}Movies{% endblock %} {%block
-content %}
+{% extends "base.html" %}
+{% block title %}Random TV Shows{% endblock %}
+{% block content %}
 
 <html>
   <h1 color="#000000" align="center">Movies</h1>
-  <h3 color="#000000" align="center"></h3>
+
   <div class="container">
-
-    <img src="{{ full_path_random_title_image }}" class="movie_image"/>
-
-</br>
-</br>
+    <div class="image-container">
+      <img src="{{ full_path_random_title_image }}" class="movie_image"/>
       <p>{{ over_view }}</p>
+    </div>
+    
+    <div class="button-container">
       <form method="post" action="{{ url_for('auth.add_favorite_movie') }}">
-        <div class="text-center">
-          <a>
-            <button name="favorites" align="center" type="submit" value="favorites">+Playlst</button>
-          </a>
-        <input type="hidden" name="movie_title" value="{{ title }}" />
-        <input type="hidden" name="movie_image_url" value="{{ full_path_random_title_image }}">
+        <button name="favorites" type="submit" value="favorites">+Playlist</button>
+        <input type="hidden" name="tv_show_title" value="{{ title }}" />
+        <input type="hidden" name="tv_show_image_url" value="{{ full_path_random_title_image }}">
         <input type="hidden" name="current_user" value="{{ current_user }}">
       </form>
+      
       <form method="post" action="{{ url_for('auth.movies') }}">
-       
-          <button name="next" align="center" type="submit" value="next">Next</button>
-        
+        <button name="next" type="submit">Next</button>
       </form>
     </div>
-</div>
+  </div>
 
+</html>
 
-  <style>
-   
-    .container {
-      margin: 0 auto;
-      text-align: center;
-      position: relative; /* add position relative to make absolute positioning work */
-    }
-    
-    button[name="next"] {
-      position: absolute;
-      bottom: 10%;
-      left: 70%; /* adjust the left value to move the button to the right */
-      padding: 10px;
-    }
-    
+<style>
+  h1 {
+    text-align: center;
+    font-family: BaronNeue, classic sans serif;
+    font-size: 50px;
+    font-weight: bold;
+    color: #66aa33;
+    margin-top: 0px;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .image-container {
+    position: relative;
+  }
+  
+  .movie_image {
+    border-radius: 35px;
+    height: 500px;
+    width: 400px;
+  }
+  
+  p {
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0px 0;
+    color: black;
+    max-width: 400px;
+    font-family: Arial, sans-serif;
+    margin: 0 10px;
+    background-color: white;
+    border-radius: 35px;
+    margin: 0 auto;
+    padding: 1px;
+    text-align: center;     
+  }
+  
+  .button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  button[name="next"], button[name="favorites"] {
+    margin: 0 10px;
+    padding: 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    background-color: #66aa33;
+    position: absolute;
+    bottom: -25px;
+    transform: translateX(-50%);
+  }
+  
+  button[name="next"] {
+    left: 65%;
+    bottom: 10px;
+  }
+  
+  button[name="favorites"] {
+    right: 30%;
+    bottom: 10px;
+  }
+  @media screen and (max-width: 767px) {
+    button[name="next"],
+    left: 65%;
     button[name="favorites"] {
-      position: absolute;
-      bottom: 10%;
-      left: 30%;
-      padding: 10px;
-    }
-    
-    li {
-      justify-content: center;
-      align-items: center;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-    label {
-      font-family: Arial, sans-serif;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    input {
-      padding: 12px 24px;
-      border-radius: 4px;
-      border: none;
-      margin-top: 20px;
-      cursor: pointer;
-      font-size: 20px;
-      font-weight: bold;
+      right: 30%;
+      position: relative;
+      margin: 0 auto;
+      display: block;
+      bottom: 0;
     }
     p {
-      font-size: 12px;
-      line-height: 1.5;
-      margin: 0px 0;
-      color: black;
-      max-width: 400px;
-      font-family: Arial, sans-serif;
-      margin: 0 10px;
-      background-color: transparent;
-      border-radius: 5px;
-      margin: 0 auto;
-      padding: 1px;
-      text-align: center;     
+      margin-bottom: 60px;
     }
-
-    ul {
-      list-style-position: inside;
-    }
-    .group-info {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background-color: trasparent;
-      border-radius: 5px;
-    }
-
-    .title {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .info {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    @media (max-width: 480px) {
-      .card {
-        width: 100%; /* Set width to 100% to fill the screen */
-        margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */
-        padding: 20px; /* Maintain the same padding */
-      }
-    }
-    .card-header {
-      font-size: 24px;
-      padding: 10px;
-      background-color: #007bff;
-      color: #fff;
-     border-radius: 35px;
-    }
-
-    .card-body {
-      padding: 20px;
-    }
-
-    .subtitle {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .value {
-      font-size: 14px;
-      margin-top: 0;
-      margin-bottom: 20px;
-    }
-
-
-    #change_button {
-      background-color: black;
-      border-radius: 10px;
-    }
-    .movie_image {
-      cursor: pointer;
-      border-radius: 35px;
-      height: 500px;
-      width: 350px;
-    }
-    
-  </style>
-</html>
+  }
+  
+</style>
 
 {% endblock %}

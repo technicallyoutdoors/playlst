@@ -1,192 +1,120 @@
-    {% extends "base.html" %}
+{% extends "base.html" %}
 {% block title %}Random TV Shows{% endblock %}
 {% block content %}
 
 <html>
   <h1 color="#000000" align="center">Streaming</h1>
-  <h3 color="#000000" align="center"></h3>
 
-
-    <img src="{{ full_path_random_title_image }}" class="movie_image"/>
-</br>
-</br>
-</br>
+  <div class="container">
+    <div class="image-container">
+      <img src="{{ full_path_random_title_image }}" class="movie_image"/>
       <p>{{ over_view }}</p>
+    </div>
+    
+    <div class="button-container">
       <form method="post" action="{{ url_for('auth.add_favorite_tv_show') }}">
-        <div class="text-center">
-          <a>
-            <button name="favorites" align="center" type="submit" value="favorites">+Playlst</button>
-          </a>
+        <button name="favorites" type="submit" value="favorites">+Playlist</button>
         <input type="hidden" name="tv_show_title" value="{{ title }}" />
         <input type="hidden" name="tv_show_image_url" value="{{ full_path_random_title_image }}">
         <input type="hidden" name="current_user" value="{{ current_user }}">
       </form>
+      
       <form method="post" action="{{ url_for('auth.tvshows') }}">
-        <div class="text-center">
-          <button name="next" align="center" type="submit">Next</button>
-        
+        <button name="next" type="submit">Next</button>
       </form>
+    </div>
   </div>
-</div>
 
 </html>
+
 <style>
-
-  button[name="next"] {
-    position: absolute;
-    bottom: 250px;
-    left: 450px;
-    padding: 10px;
-
-  }
-
-  button[name="favorites"] {
-    position: absolute;
-    bottom: 250px;
-    right: 400px;
-    padding: 10px;
-
-  }
-
-  
-  .button-container{
-    data-inline: true;
-    display: inline-block;
-  }
-  
-  .container {
-    margin: 0 auto;
+  h1 {
     text-align: center;
+    font-family: BaronNeue, classic sans serif;
+    font-size: 50px;
+    font-weight: bold;
+    color: #66aa33;
+    margin-top: 0px;
   }
 
-  li {
-    justify-content: center;
+  .container {
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    margin-top: 10px;
   }
-
   
-  label {
+  .image-container {
+    position: relative;
+  }
+  
+  .movie_image {
+    border-radius: 35px;
+    height: 500px;
+    width: 400px;
+  }
+  
+  p {
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0px 0;
+    color: black;
+    max-width: 400px;
     font-family: Arial, sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  input {
-    padding: 12px 24px;
-    border-radius: 4px;
-    border: none;
-    margin-top: 20px;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: bold;
+    margin: 0 10px;
+    background-color: white;
+    border-radius: 35px;
+    margin: 0 auto;
+    padding: 1px;
+    text-align: center;     
   }
   
-  ul {
-    list-style-position: inside;
-  }
-  .group-info {
+  .button-container {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    background-color: trasparent;
-    border-radius: 5px;
-    }
-    
-    .title {
-    font-size: 24px;
+    margin-top: 10px;
+  }
+  
+  button[name="next"], button[name="favorites"] {
+    margin: 0 10px;
+    padding: 10px;
     font-weight: bold;
-    margin-bottom: 10px;
-    }
-    
-    .info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    }
-    
-    .card {
-      width: 35%;
-      margin: 0 auto; 
-      padding: 5px;
-      margin: auto;
-      text-align: center;
-      background-color: #007bff;
-      color: white;
-      border-radius: 5px;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    }
-    @media (max-width: 480px) {
-      .card {
-        width: 100%; /* Set width to 100% to fill the screen */
-        margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */
-        padding: 20px; /* Maintain the same padding */
-      }
-    }
-    .card-header {
-      font-size: 24px;
-      padding: 10px;
-      background-color: #007bff;
-      color: #fff;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
-    }
-    
-    .card-body {
-      padding: 20px;
-    }
-    
-    .subtitle {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    
-    .value {
-      font-size: 14px;
-      margin-top: 0;
-      margin-bottom: 20px;
-    }
-    
-    .members {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      font-size: 16px;
-    }
-    
-    .members li {
-      margin-bottom: 5px;
-    }
-    
-    #change_button {
-      background-color: black;
-      border-radius: 10px;
-    }
-    img {
-      border-radius: 35px;
-      height: 500px;
-      width: 400px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    background-color: #66aa33;
+    position: absolute;
+    bottom: -25px;
+    transform: translateX(-50%);
+  }
+  
+  button[name="next"] {
+    left: 65%;
+    bottom: 10px;
+  }
+  
+  button[name="favorites"] {
+    right: 30%;
+    bottom: 10px;
+  }
+  @media screen and (max-width: 767px) {
+    button[name="next"],
+    left: 65%;
+    button[name="favorites"] {
+      right: 30%;
+      position: relative;
+      margin: 0 auto;
+      display: block;
+      bottom: 0;
     }
     p {
-      font-size: 12px;
-      line-height: 1.5;
-      margin: 0px 0;
-      color: black;
-      max-width: 400px;
-      font-family: Arial, sans-serif;
-      margin: 0 10px;
-      background-color: white;
-      border-radius: 35px;
-      margin: 0 auto;
-      padding: 1px;
-      text-align: center;     
+      margin-bottom: 60px;
     }
-
+  }
+  
 </style>
 
-
-
 {% endblock %}
-
