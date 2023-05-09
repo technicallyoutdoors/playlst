@@ -14,8 +14,8 @@
     <div class="button-container">
       <form method="post" action="{{ url_for('auth.add_favorite_movie') }}">
         <button name="favorites" type="submit" value="favorites">+Playlist</button>
-        <input type="hidden" name="tv_show_title" value="{{ title }}" />
-        <input type="hidden" name="tv_show_image_url" value="{{ full_path_random_title_image }}">
+        <input type="hidden" name="movie_title" value="{{ title }}" />
+        <input type="hidden" name="movie_image_url" value="{{ full_path_random_title_image }}">
         <input type="hidden" name="current_user" value="{{ current_user }}">
       </form>
       
@@ -92,12 +92,12 @@
   }
   
   button[name="next"] {
-    left: 65%;
+    left: 55%;
     bottom: 10px;
   }
   
   button[name="favorites"] {
-    right: 30%;
+    right: 45%;
     bottom: 10px;
   }
   @media screen and (max-width: 767px) {
