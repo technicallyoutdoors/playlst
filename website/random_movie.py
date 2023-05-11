@@ -1,89 +1,53 @@
+import random 
 import requests
 import json
-import random
-from tmdbv3api import TMDb
-from tmdb_api_key import api_key
-from tmdbv3api import Movie
-
-
-users_input = input("What genre of movie do you want to find? ")
-
-url1 = "https://online-movie-database.p.rapidapi.com/title/v2/get-popular-movies-by-genre"
-
-querystring1 = {"genre": users_input, "limit": "100"}
-
-headers = {
-    "X-RapidAPI-Key": "20719788e5msh46d7f8c7ed9abd9p1d8da2jsnb3f8e9ee7b85",
-    "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
-}
-
-
-response1 = requests.request("GET", url1, headers=headers, params=querystring1)
-
-
-ids = []
-
-data1 = json.loads(response1.text)
-
-
-for id in data1:
-    ids.append(id.split("/")[2])
-    # res = [sub[2:] for sub in ids]
-
-choice = random.choice(ids)
-
-
-url2 = "http://www.omdbapi.com/?apikey=b2e0b78b&"
-
-
-querystring2 = {"i": choice}
-
-response2 = requests.request("GET", url2, params=querystring2)
-
-data2 = json.loads(response2.text)
-
-Title_Name = data2['Title']
-
-print(Title_Name)
-
-url3 = "https://online-movie-database.p.rapidapi.com/title/get-images"
-
-querystring3 = {"tconst": choice, "limit": "1"}
-
-headers = {
-    "X-RapidAPI-Key": "20719788e5msh46d7f8c7ed9abd9p1d8da2jsnb3f8e9ee7b85",
-    "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
-}
-
-response3 = requests.request("GET", url3, headers=headers, params=querystring3)
-
-
-data3 = json.loads(response3.text)
-
-image_url = data3["images"][0]["relatedTitles"][0]["image"]["url"]
-
-
-print(image_url)
 
 
 
-# image_url = data3['image']
+random_page = random.randint(0, 100)
 
+url1 = "https://api.themoviedb.org/3/discover/movie?api_key=28dd9fa4c4a210cd3dc589981c8fb66a&language=en-US&region=US&sort_by=popularity.desc&include_adult=false&include_video=false&page=" + \
+    str(random_page) + "&with_watch_providers=netflix%2C%20hulu%2C%20amazon&with_watch_monetization_types=flatrate"
+    
+request1 = requests.get(url1)
 
-# url = "https://online-movie-database.p.rapidapi.com/title/v2/find"
+data1 = request1.json()
 
-# querystring = {"title": "adventure", "limit": "20",
-#                "sortArg": "moviemeter,asc", "genre": }
+titles = data1.get('results')
+random_title = random.choice(titles)
+random_id = random_title.get('id')
 
-# headers = {
-#     "X-RapidAPI-Key": "20719788e5msh46d7f8c7ed9abd9p1d8da2jsnb3f8e9ee7b85",
-#     "X-RapidAPI-Host": "online-movie-database.p.rapidapi.com"
-# }
+url2 = "https://api.themoviedb.org/3/movie/" + str(random_id) + "?api_key=28dd9fa4c4a210cd3dc589981c8fb66a&language=en-US"
 
-# response = requests.request("GET", url, headers=headers, params=querystring)
+request2 = requests.get(url2)
 
-# # print(response.text)
+data2 = request2.json()
 
-# data = json.loads(response.text)
+print(data2)
 
-# print(data)
+print(random_id)
+
+random_title_image = random_title.get('poster_path')
+url_append = "https://image.tmdb.org/t/p/original"
+full_path_random_title_image = url_append + random_title_image
+print(full_path_random_title_image)
+over_view = random_title.get('overview')
+
+title = random_title.get('title')
+
+print(title)
+
+print(over_view)
+
+    
+    
+# url2 = "https://api.themoviedb.org/3/watch/providers/movie?api_key=28dd9fa4c4a210cd3dc589981c8fb66a&language=en-US&watch_region=US"
+
+# request2 = requests.get(url2)
+
+# data2 = request2.json()
+
+# print(data2)
+    
+    
+    

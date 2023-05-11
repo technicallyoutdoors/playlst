@@ -1,30 +1,34 @@
-{% extends "base.html" %}
-{% block title %}Random TV Shows{% endblock %}
-{% block content %}
+{% extends "base.html" %} {% block title %}Random TV Shows{% endblock %} {%
+block content %}
 
 <html>
   <h1 color="#000000" align="center">Streaming</h1>
 
   <div class="container">
     <div class="image-container">
-      <img src="{{ full_path_random_title_image }}" class="movie_image"/>
+      <img src="{{ full_path_random_title_image }}" class="movie_image" />
       <p>{{ over_view }}</p>
     </div>
-    
+
     <div class="button-container">
       <form method="post" action="{{ url_for('auth.add_favorite_tv_show') }}">
-        <button name="favorites" type="submit" value="favorites">+Playlist</button>
+        <button name="favorites" type="submit" value="favorites">
+          +Playlist
+        </button>
         <input type="hidden" name="tv_show_title" value="{{ title }}" />
-        <input type="hidden" name="tv_show_image_url" value="{{ full_path_random_title_image }}">
-        <input type="hidden" name="current_user" value="{{ current_user }}">
+        <input
+          type="hidden"
+          name="tv_show_image_url"
+          value="{{ full_path_random_title_image }}"
+        />
+        <input type="hidden" name="current_user" value="{{ current_user }}" />
       </form>
-      
+
       <form method="post" action="{{ url_for('auth.tvshows') }}">
         <button name="next" type="submit">Next</button>
       </form>
     </div>
   </div>
-
 </html>
 
 <style>
@@ -35,6 +39,7 @@
     font-weight: bold;
     color: #66aa33;
     margin-top: 0px;
+    margin-bottom: 0px;
   }
 
   .container {
@@ -42,19 +47,19 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 10px;
+    margin-top: 0px;
   }
-  
+
   .image-container {
     position: relative;
   }
-  
+
   .movie_image {
     border-radius: 35px;
     height: 500px;
     width: 400px;
   }
-  
+
   p {
     font-size: 12px;
     line-height: 1.5;
@@ -67,16 +72,16 @@
     border-radius: 35px;
     margin: 0 auto;
     padding: 1px;
-    text-align: center;     
+    text-align: center;
   }
-  
+
   .button-container {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 10px;
   }
-  
+
   button[name="next"], button[name="favorites"] {
     margin: 0 10px;
     padding: 10px;
@@ -87,20 +92,21 @@
     color: white;
     background-color: #66aa33;
     position: absolute;
-    bottom: -25px;
+
+    top:
     transform: translateX(-50%);
   }
-  
+
   button[name="next"] {
     left: 55%;
-    bottom: 10px;
+    bottom: 100px;
   }
-  
+
   button[name="favorites"] {
     right: 45%;
-    bottom: 10px;
+    bottom: 100px;
   }
-  
+
   @media screen and (max-width: 767px) {
     button[name="next"],
     left: 65%;
@@ -115,7 +121,6 @@
       margin-bottom: 60px;
     }
   }
-  
 </style>
 
 {% endblock %}

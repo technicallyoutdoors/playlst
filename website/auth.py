@@ -108,11 +108,9 @@ def movies():
     request1 = requests.get(url1)
 
     data1 = request1.json()
-
     titles = data1.get('results')
     random_title = random.choice(titles)
     random_id = random_title.get('id')
-
     print(random_id)
 
     random_title_image = random_title.get('poster_path')
@@ -121,14 +119,18 @@ def movies():
     print(full_path_random_title_image)
 
     over_view = random_title.get('overview')
+    full_overview = over_view[:20000]
+    short_over_view = over_view[:135]
 
+    
+    
     title = random_title.get('title')
 
     print(title)
 
     print(over_view)
 
-    return render_template("movies.html", user=current_user, full_path_random_title_image=full_path_random_title_image, title=title, over_view=over_view)
+    return render_template("movies.html", user=current_user, full_path_random_title_image=full_path_random_title_image, title=title, over_view=over_view, full_overview=full_overview, short_over_view=short_over_view)
 
 
 @auth.route('/add_favorite_movie', methods=['GET', 'POST'])
@@ -184,6 +186,8 @@ def tvshows():
     print(title)
 
     print(over_view)
+    
+    
 
     return render_template("tvshows.html", user=current_user, full_path_random_title_image=full_path_random_title_image, title=title, over_view=over_view)
 
