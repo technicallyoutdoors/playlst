@@ -188,11 +188,12 @@ content %}
     </style>
   </head>
   <body>
-    <div class="container">
+    
       <h1>Group Hub</h1>
       <h3>You must create a group before changing the name</h3>
      
       <div class="button-group">
+        <div class="text-center">
       <a href="/home"><button class="generic_button">Home🏠</button></a>
       <a href="{{ url_for('auth.generate_code') }}"
         ><button class="generic_button">Create Group👥🆕</button></a>
@@ -205,6 +206,7 @@ content %}
           Matched Playlst 🔥
         </button> </a>
       </div>
+     
     </div>
     <div class="center">
       {% if current_user.family %}
