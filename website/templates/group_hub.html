@@ -232,10 +232,10 @@ content %}
           <p class="subtitle">Members</p>
           <ul class="members">
             {% for member in current_user.family.members %}
-            {% if current_user.photo %}
+            {% if member.photo %}
             <li> <img src="{{ url_for('static', filename='uploads/' + member.photo.filename) }}" class="avatar"> {{ member.first_name }} {{ member.last_name }} </li>
               {% else %}
-              <li> {{ member.first_name }} {{ member.last_name }} </li>
+              <li> {{ member.first_name }} {{ member.last_name }}  </li>
             {% endif %}
 
             {% endfor %}

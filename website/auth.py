@@ -252,8 +252,9 @@ def group_code():
 @auth.route('/group_hub', methods=['GET', 'POST'])
 @login_required
 def group_hub():
+    member_photo = current_user.photo
     family = Family.query.filter_by().first()
-    return render_template('group_hub.html', user=current_user, family=family)
+    return render_template('group_hub.html', user=current_user, family=family, member_photo=member_photo)
 
 
 @auth.route('/generate_code', methods=['POST', 'GET'])
