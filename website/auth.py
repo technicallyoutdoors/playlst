@@ -142,7 +142,7 @@ def add_favorite_movie():
     favorite_exists = Favorite.query.filter_by(
         user_id=current_user.id, title=title).first()
     if favorite_exists:
-        flash('title as already been added to playlst', category='error')
+        flash('title as already been added to Playlst', category='error')
         return redirect(url_for('auth.movies'))
     global favorites
     new_favorite = Favorite(title=title,
@@ -150,7 +150,7 @@ def add_favorite_movie():
     if new_favorite:
         db.session.add(new_favorite)
         db.session.commit()
-        flash('Added to Watchlist!', category='success')
+        flash('Added to PLaylst!', category='success')
         return redirect(url_for('auth.movies'))
 
     return render_template('favorites.html', user=current_user, favorites=favorites)
