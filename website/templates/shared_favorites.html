@@ -1,10 +1,12 @@
 {% extends "base.html" %} {% block content %}
+<html>
 <br />
 <h1 class="text-center">Matches 🔥</h1>
 {% if favorites %}
 <ul>
-  {% for favorite in favorites %}
+  
   <div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
+    {% for favorite in favorites %}
   <div class="col-6">
     <div class="card">
       <form method="post" action="{{ url_for('auth.delete_favorite') }}">
@@ -13,7 +15,7 @@
         <input type="hidden" name="current_user" value="{{ current_user }}" />
       </form>
   
-  <li>
+  
     {{ favorite.title }} {{ favorite.user.username }}
     <img
       src="{{ favorite.image }}"
@@ -21,15 +23,16 @@
       width="400"
       height="400"
     />
-  </li>
+    <h5>{{ favorite.title }}</h5>
+  </div>
+</div>
+
   {% endfor %}
-</ul>
+</div>
 {% else %}
 <p>No matches yet ☹️ come back later when you add more to your Playlst!</p>
 {% endif %}
-</div>
-</div>
-</div>
+</html>
 
 <style>
   h2 {

@@ -2,7 +2,36 @@
 {% block title %}My Playlist{% endblock %} 
 {% block content %}
 <html>
-  <style>
+  
+  
+  <h1 color="#000000" align="center"></h1>
+  <h1>My Playlist</h1>
+  <div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
+    {% for favorite in favorites %}
+    <div class="col-6">
+      <div class="card">
+        <form method="post" action="{{ url_for('auth.delete_favorite') }}">
+          <input type="hidden" name="title" value="{{ favorite.title }}" />
+          <input type="hidden" name="image" value="{{ favorite.image }}" />
+          <input type="hidden" name="current_user" value="{{ current_user }}"/>
+          <button class="delete-btn" type="submit">❌</button>
+        </form>
+        
+        <img
+          src="{{ favorite.image }}"
+          alt="{{ favorite.title }}"
+          style="height: 100%; width: 100%; object-fit: cover;"
+          class="title_image"
+        />
+        <h5>{{ favorite.title }}</h5>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+{% endblock %}
+</html>
+
+<style>
     h2 {
       margin-top: 30px;
       border-radius: 5px;
@@ -61,29 +90,3 @@
       border-top-right-radius: 35px;
     }
   </style>
-  
-  <h1 color="#000000" align="center"></h1>
-  <h1>My Playlist</h1>
-  <div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
-    {% for favorite in favorites %}
-    <div class="col-6">
-      <div class="card">
-        <form method="post" action="{{ url_for('auth.delete_favorite') }}">
-          <input type="hidden" name="title" value="{{ favorite.title }}" />
-          <input type="hidden" name="image" value="{{ favorite.image }}" />
-          <input type="hidden" name="current_user" value="{{ current_user }}"/>
-          <button class="delete-btn" type="submit">❌</button>
-        </form>
-        
-        <img
-          src="{{ favorite.image }}"
-          alt="{{ favorite.title }}"
-          style="height: 100%; width: 100%; object-fit: cover;"
-          class="title_image"
-        />
-        <h5>{{ favorite.title }}</h5>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-{% endblock %}
