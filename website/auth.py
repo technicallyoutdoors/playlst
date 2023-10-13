@@ -122,8 +122,6 @@ def movies():
     full_overview = over_view[:20000]
     short_over_view = over_view[:135]
 
-    
-    
     title = random_title.get('title')
 
     print(title)
@@ -142,7 +140,7 @@ def add_favorite_movie():
     favorite_exists = Favorite.query.filter_by(
         user_id=current_user.id, title=title).first()
     if favorite_exists:
-        flash('title as already been added to Playlst', category='error')
+        flash('title as already been added to your Playlst', category='error')
         return redirect(url_for('auth.movies'))
     global favorites
     new_favorite = Favorite(title=title,
@@ -186,8 +184,6 @@ def tvshows():
     print(title)
 
     print(over_view)
-    
-    
 
     return render_template("tvshows.html", user=current_user, full_path_random_title_image=full_path_random_title_image, title=title, over_view=over_view)
 
@@ -438,5 +434,3 @@ def random_titles():
             title = data['parentTitle']['title']
             break
     return render_template("random_titles.html", user=current_user, title_poster=title_poster, title=title)
-
-
