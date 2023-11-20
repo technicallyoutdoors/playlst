@@ -23,6 +23,7 @@ auth = Blueprint('auth', __name__)
 def add_header(response):
     session.permanent = False
     response.headers["Cache-Control"] = "no-store, max-age=0"
+    
     return response
 
 
