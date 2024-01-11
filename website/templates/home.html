@@ -27,7 +27,16 @@
       <button class="generic_button" align="center" type="button" color="#000000">
         Matched Playlst 🔥
       </button> </a>
+
+
+    <div class="search-bar">
+      <form action="{{ url_for('auth.search_title') }}" method="post">
+          <input type="text" name="search_query" placeholder="Search...">
+          <button type="submit" name="Search">Search</button>
+      </form>
+  </div>
 </form>
+
 
     </div>
 
