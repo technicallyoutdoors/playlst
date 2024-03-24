@@ -32,7 +32,8 @@
     <div class="search-bar">
       <form action="{{ url_for('auth.search_title') }}" method="post">
           <input type="text" name="search_query" placeholder="Search...">
-          <button type="submit" name="Search">Search</button>
+          <a href="/home">
+          <button class="generic_button" type="button" name="Search">Search</button> <a>
       </form>
   </div>
 </form>

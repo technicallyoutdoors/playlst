@@ -290,7 +290,8 @@ def add_member():
     if family:
         family.members.append(user)
         db.session.commit()
-        flash('You have joined the group!', category='success')
+        flash('You have joined the group! Now start making your PLAYLST',
+              category='success')
         return redirect(url_for('auth.group_hub'))
     else:
         flash('Invalid code. Please try again.', category='error')
@@ -325,7 +326,7 @@ def shared_favorites():
     current_user
     family = Family.query.filter(Family.members.contains(current_user)).first()
     if not family:
-        flash("You are not a member of a family yet!", category='error')
+        flash("You are not a member of a group yet!", category='error')
         return redirect(url_for('auth.join_family'))
 
 # Get shared favorites for each member
