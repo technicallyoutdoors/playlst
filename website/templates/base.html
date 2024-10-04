@@ -22,7 +22,6 @@
     <title>{% block title %}Home{% endblock %}</title>
   </head>
 
-
   <body>
     <nav class="navbar navbar-expand-lg justify-content-between border-bottom">
       <a class="navbar-brand" href="/home">
@@ -59,16 +58,22 @@
           {% if current_user.is_authenticated %}
           <a class="nav-item nav-link" id="home" href="/home">Home</a>
           <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-          <a class="nav-item nav-link" id="current_user" href="/group_hub">Group Hub</a>
-          <a class="nav-item nav-link" id="favorites" href="/favorites">My Playlst</a>
+          <a class="nav-item nav-link" id="current_user" href="/group_hub"
+            >Group Hub</a
+          >
+          <a class="nav-item nav-link" id="favorites" href="/favorites"
+            >My Playlst</a
+          >
           <a class="nav-item nav-link" id="current_user" href="/user_profile">
-            {{ current_user.first_name }} {{ current_user.last_name }}</a>
+            {{ current_user.first_name }} {{ current_user.last_name }}</a
+          >
           {% if current_user.photo %}
           <a id="current_user_nav" title="Profile" href="/user_profile">
             <img
               src="{{ url_for('static', filename='uploads/' + current_user.photo.filename) }}"
               alt="User Avatar"
-              class="avatar"/>
+              class="avatar"
+            />
           </a>
           {% endif %} {% else %}
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
@@ -83,7 +88,12 @@
     'error' %}
     <div class="alert alert-danger alert-dismissable fade show" role="alert">
       {{ message }}
-      <button type="button" class="close" data-dismiss="alert"></button>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      ></button>
     </div>
     {% elif category == 'success' %}
     <div
@@ -257,7 +267,6 @@
     align-items: center;
     justify-content: center;
     padding: 8px;
-    font-size: 18px;
     color: white;
     font-family: BaronNeue, classic sans serif;
     background-color: #66aa33;
@@ -265,10 +274,12 @@
     opacity: 1;
     transition: opacity 0.5s ease-out;
     white-space: nowrap;
-}
+    text-transform: none;
+  }
 
   .alert.hide {
     opacity: 0;
+    text-transform: none;
   }
 
   .alert-success {
@@ -278,9 +289,13 @@
   }
 
   .alert-danger {
-    background-color: red;
+    background-color: #ff8383;
     color: white;
     font-family: BaronNeue, classic sans serif;
+    text-transform: lowercase;
+  }
+  .alert-danger::first-letter {
+    text-transform: uppercase;
   }
 
   #home {
