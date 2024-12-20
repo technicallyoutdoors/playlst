@@ -304,20 +304,20 @@ def join_group():
     return render_template('join_group.html', user=current_user)
 
 
-@auth.route('/', methods=['GET', 'POST'])
+@auth.route('/search', methods=['GET', 'POST']) #puts this search function at the home screen 
 @login_required
 def search_title():
-    new_title = request.form['']
-    url = "https://api.themoviedb.org/3/search/movie?query=i%20am%20legend&include_adult=false&language=en-US&page=1"
+    
+    url = "https://api.themoviedb.org/3/search/keyword?page=1" # need to figure out if page 1 means anything specific 
     headers = {
         "accept": "application/json",
         "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyOGRkOWZhNGM0YTIxMGNkM2RjNTg5OTgxYzhmYjY2YSIsInN1YiI6IjYzZjE5NDdmMTUzNzZjMDA3ODE4NTgwYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.DoEbvMREv7aWrYhHPGj63oKG4a2BjrmlQBg90sD2TWs"
     }
     response = requests.get(url, headers=headers)
     # figure out how to get a variable plugged into the query search or however to do that
-    print(response.text)
+  
 
-    return redirect(url_for('auth.searchresults'))
+    return render_template('search.html', user=current_user)
 
 
 @auth.route('/shared_favorites')
