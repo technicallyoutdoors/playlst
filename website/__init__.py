@@ -85,12 +85,14 @@ def create_app():
     return app
 
 def create_database(app):
-    uri = app.config['SQLALCHEMY_DATABASE_URI']
-    if uri.startswith('sqlite') and path.exists('website/' + DB_name):
-        return
-    # create_all is a no-op for tables that already exist, so this is safe
-    # to run on every startup against Postgres
+    # Multiple gunicorn workers boot concurrently and all run create_all;
+    # losers of the race see "table already exists" — harmless, ignore it
+    from sqlalchemy.exc import OperationalError, ProgrammingError
     with app.app_context():
-        db.create_all()
-        print('Created the database!')
+        try:
+            db.create_all()
+            print('Created the database!')
+        except (OperationalError, ProgrammingError) as e:
+            if 'already exists' not in str(e):
+                raise
 #made another change 
