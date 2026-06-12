@@ -86,13 +86,14 @@ def create_app():
 
 def create_database(app):
     # Multiple gunicorn workers boot concurrently and all run create_all;
-    # losers of the race see "table already exists" — harmless, ignore it
-    from sqlalchemy.exc import OperationalError, ProgrammingError
+    # a worker must never die here — losers of the create race can rely on
+    # the winner's tables, and real DB problems will surface on first use
+    import traceback
     with app.app_context():
         try:
             db.create_all()
             print('Created the database!')
-        except (OperationalError, ProgrammingError) as e:
-            if 'already exists' not in str(e):
-                raise
+        except Exception:
+            print('create_all failed (continuing — another worker likely created the tables):')
+            traceback.print_exc()
 #made another change 
