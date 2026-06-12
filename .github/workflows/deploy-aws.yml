@@ -1,4 +1,4 @@
-name: Deploy to AWS App Runner
+name: Deploy to Amazon ECS Express Mode
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
 env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: pickflix
+  SERVICE_NAME: pickflix
 
 jobs:
   build-and-deploy:
@@ -39,3 +40,20 @@ jobs:
                        -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+      - name: Deploy to ECS Express Mode
+        uses: aws-actions/amazon-ecs-deploy-express-service@v1
+        with:
+          service-name: ${{ env.SERVICE_NAME }}
+          image: ${{ steps.ecr-login.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          execution-role-arn: ${{ secrets.ECS_EXECUTION_ROLE_ARN }}
+          infrastructure-role-arn: ${{ secrets.ECS_INFRASTRUCTURE_ROLE_ARN }}
+          container-port: '8080'
+          health-check-path: /login
+          environment-variables: >-
+            [
+              {"name": "SECRET_KEY", "value": "${{ secrets.FLASK_SECRET_KEY }}"},
+              {"name": "GOOGLE_CLIENT_ID", "value": "${{ secrets.GOOGLE_CLIENT_ID }}"},
+              {"name": "GOOGLE_CLIENT_SECRET", "value": "${{ secrets.GOOGLE_CLIENT_SECRET }}"},
+              {"name": "DATABASE_URL", "value": "${{ secrets.DATABASE_URL }}"}
+            ]
