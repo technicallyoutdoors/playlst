@@ -1,262 +1,147 @@
-{% extends "base.html" %} {% block title %} Group Playlst {% endblock %} {%block
-content %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <br/>
-    <title>Group</title>
-    <style>
-      
-      .container {
-        margin: 0 auto;
-        text-align: center;
-      }
+{% extends "base.html" %}
+{% block title %}Group Hub{% endblock %}
+{% block content %}
 
-      h1 {
-        font-size: 50px;
-        font-weight: bold;
-      }
+<div class="page" style="max-width:560px;">
+  <h1>Group Hub 👥</h1>
 
-      button {
-        background-color: #007bff;
-        color: white;
-        padding: 12px 24px;
-        border-radius: 4px;
-        border: none;
-        margin-top: 20px;
-        cursor: pointer;
-        font-size: 20px;
-        font-weight: bold;
-      }
-      li {
-        justify-content: center;
-        align-items: center;
-      }
+  <div class="action-tiles">
+    <a href="{{ url_for('auth.generate_code') }}" class="action-tile">
+      <span>🆕</span> Create Group
+    </a>
+    <a href="{{ url_for('auth.join_group') }}" class="action-tile">
+      <span>🔑</span> Join Group
+    </a>
+    <a href="/shared_favorites" class="action-tile action-tile--fire">
+      <span>🔥</span> Matched Playlst
+    </a>
+    <a href="{{ url_for('auth.leave_group') }}" class="action-tile action-tile--ghost">
+      <span>🚪</span> Leave Group
+    </a>
+  </div>
 
-      button:hover {
-        background-color: #0056b3;
-      }
-      label {
-        font-size: 16px;
-        font-weight: bold;
-      }
-      input {
-        padding: 12px 24px;
-        border-radius: 4px;
-        border: none;
-        margin-top: 20px;
-        cursor: pointer;
-        font-size: 20px;
-        font-weight: bold;
-        margin: 0 auto;
-      }
-      p {
-        font-size: 16px;
-        font-weight: bold;
-        text: center
-      }
-      ul {
-        list-style-position: inside;
-      }
-      .group-info {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        background-color: trasparent;
-        border-radius: 5px;
-        }
-        
-        .title {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        }
-        
-        .info {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        }
-        
-        .card {
-          width: 35%;
-          margin: 0 auto; 
-          padding: 20px;
-          margin: auto;
-          text-align: center;
-          background-color: #66AA33;
-          color: white;
-          border-radius: 5px;
-          box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-          max-width: 600px;
-          border-radius: 35px;   
-        }
-        @media (max-width: 767px) {
-          .card {
-            width: 300px; /* Set width to 100% to fill the screen */
-            margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */
-            padding: 10px; /* Maintain the same padding */
-            margin: 0 auto;
-          }
-        }
-        @media (max-width: 767px) {
-          .card-header {
-            padding: 5px;
-          }
-        }
-        @media (max-width: 767px) {
-          input {
-            width: 200px; /* Set width to 100% to fill the screen */
-           
-            padding: 10px; /* Maintain the same padding */
-            margin: 0 auto;
-          }
-        }
-        .card-header {
-          font-size: 24px;
-          padding: 10px;
-          background-color: #66AA33;
-          color: #fff;
-          border-top-left-radius: 5px;
-          border-top-right-radius: 5px;
-          
-        }
-        
-        .card-body {
-          padding: 0px;
-          
-        }
-        
-        .subtitle {
-          font-size: 18px;
-          font-weight: bold;
-          margin-bottom: 5px;
-        }
-        
-        .value {
-          font-size: 14px;
-          margin-top: 0;
-          margin-bottom: 20px;
-        }
-        
-        .members {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-          font-size: 16px;
-        }
-        
-        .members li {
-          margin-bottom: 5px;
-        }
-        
-        #change_button {
-          background-color: black;
-          border-radius: 10px;
-        }
-        .button-group {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          align-items: center;
-          text-align: center;
-        }
-        
-        .button-group button {
-          flex: 1 1 auto;
-          margin: 5px;
-          width: 300px;
-          border-radius: 35x;
-        }
-
-      .generic_button {
-        display: block;
-        background-color: #66AA33;
-        color: white;
-        padding: 12px 24px;
-        border-radius: 35px;
-        border: none;
-        margin: 5px;
-        cursor: pointer;
-        font-size: 20px;
-        font-weight: bold;
-      }
-        
-    </style>
-  </head>
-  <body>
-    
-      <h1>Group Hub</h1>
-      <h3>You must create a group before changing the name</h3>
-     
-      <div class="button-group">
-        <div class="text-center">
-      <a href="/home"><button class="generic_button">Home🏠</button></a>
-      <a href="{{ url_for('auth.generate_code') }}"
-        ><button class="generic_button">Create Group👥🆕</button></a>
-      <a href="{{ url_for('auth.join_group') }}"><button class="generic_button">Join Group👥</button></a>
-      <a href="{{ url_for('auth.leave_group') }}"
-        ><button class="generic_button">Leave Group🚪</button></a
-      >
-      <a href="/shared_favorites" align="center">
-        <button align="center" type="button" class="generic_button">
-          Matched Playlst 🔥
-        </button> </a>
-      </div>
-     
+  {% if current_user.family %}
+  <div class="card mt-24">
+    <div class="group-card-header">
+      <span>Group Info</span>
+      {% if current_user.family.code %}
+      <span class="group-code">{{ current_user.family.code }}</span>
+      {% endif %}
     </div>
-    <div class="center">
-      {% if current_user.family %}
-      <br/>
-      
-      <br/>
-      <div class="card">
-        <div class="card-header">
-          Group Information
-          <div class="card-body">
-          <p class="subtitle">Group Name</p>
-          <p class="value">{{ current_user.family.name }}</p>
-          {% if current_user.family.code %}
-          <p class="subtitle">Group Code</p>
-          <p class="value">{{ current_user.family.code }}</p>
-          {% else %}
-          <p class="subtitle">Group Code</p>
-        
-          <p class="value">No code for this group</p>
-          
-          {% endif %}
-          {% if current_user.family.members %}
-          <p class="subtitle">Members</p>
-          <ul class="members">
-            {% for member in current_user.family.members %}
-            {% if member.photo %}
-            <li> <img src="{{ url_for('static', filename='uploads/' + member.photo.filename) }}" class="avatar"> {{ member.first_name }} {{ member.last_name }} </li>
-              {% else %}
-              <li> {{ member.first_name }} {{ member.last_name }}  </li>
-            {% endif %}
+    <div class="card-body">
+      {% if current_user.family.name %}
+      <p class="group-name">{{ current_user.family.name }}</p>
+      {% endif %}
 
-            {% endfor %}
-
-          </ul>    
+      {% if current_user.family.members %}
+      <p class="members-label">Members</p>
+      <ul class="members-list">
+        {% for member in current_user.family.members %}
+        <li class="member-item">
+          {% if member.photo %}
+          <img src="{{ url_for('static', filename='uploads/' + member.photo.filename) }}" class="avatar-sm" alt="{{ member.first_name }}" />
           {% else %}
-          <p class="subtitle">Members</p>
-          <p class="value">No members in this group yet</p>
+          <span class="avatar-placeholder">{{ member.first_name[0] }}</span>
           {% endif %}
-          {% endif %}
-        </div>
-      </div>
-      <div class="container">
-        <form action="{{ url_for('auth.generate_code') }}" method="POST">
-          <div class="center">
-            <input type="text" id="group_name" name="group_name" required placeholder="Enter group name">
-            <button type="submit" id="change_button">Change</button>
-          </div>
-        </form>
-      </div>
+          <span>{{ member.first_name }} {{ member.last_name }}</span>
+          {% if member.id == current_user.id %}<span class="you-badge">you</span>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <div class="divider"></div>
+      <p class="members-label">Rename group</p>
+      <form action="{{ url_for('auth.generate_code') }}" method="POST" style="display:flex;gap:10px;">
+        <input type="text" id="group_name" name="group_name" placeholder="Enter group name" required style="flex:1;" />
+        <button type="submit" class="btn btn-primary btn-sm" style="margin:0;white-space:nowrap;">Save</button>
+      </form>
     </div>
-  </body>
-</html>
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <span class="empty-icon">👥</span>
+    <h3>No group yet</h3>
+    <p>Create a group to get a shareable code, then invite friends to join.</p>
+  </div>
+  {% endif %}
+</div>
+
+<style>
+  .action-tiles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .action-tile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 18px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+    box-shadow: var(--shadow-sm);
+    transition: border-color .15s, box-shadow .15s, transform .15s;
+  }
+  .action-tile:hover {
+    border-color: var(--green);
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+    color: var(--green-dark);
+  }
+  .action-tile--fire { background: #fff8f0; border-color: #fde68a; color: #92400e; }
+  .action-tile--fire:hover { border-color: #f59e0b; color: #78350f; }
+  .action-tile--ghost { color: var(--text-muted); }
+  .action-tile span:first-child { font-size: 20px; }
+
+  .group-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: var(--green-light);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--green-dark);
+    border-bottom: 1px solid var(--border);
+  }
+  .group-code {
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: 800;
+    background: var(--green);
+    color: #fff;
+    padding: 2px 12px;
+    border-radius: var(--radius-pill);
+    letter-spacing: 3px;
+  }
+  .group-name { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+  .members-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text-muted); margin-bottom: 10px; }
+  .members-list { display: flex; flex-direction: column; gap: 8px; }
+  .member-item { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; }
+  .avatar-placeholder {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--green-light);
+    color: var(--green-dark);
+    font-weight: 800; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid var(--green);
+  }
+  .you-badge {
+    font-size: 11px; font-weight: 700;
+    background: var(--green-light); color: var(--green-dark);
+    padding: 1px 8px; border-radius: var(--radius-pill);
+  }
+  .empty-state {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; padding: 40px 24px; gap: 8px;
+  }
+  .empty-icon { font-size: 40px; }
+  .empty-state h3 { font-size: 18px; font-weight: 700; color: var(--text); }
+</style>
+
 {% endblock %}

@@ -1,93 +1,70 @@
-{% extends "base.html" %} 
-{% block title %}My Playlist{% endblock %} 
-{% block content %}  
-  
-  <h1 color="#000000" align="center"></h1>
-  <h1>My Playlist</h1>
-  <div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
+{% extends "base.html" %}
+{% block title %}My Playlst{% endblock %}
+{% block content %}
+
+<div class="page">
+  <h1>My Playlst ❤️</h1>
+
+  {% if favorites %}
+  <div class="grid-2">
     {% for favorite in favorites %}
-    <div class="col-6">
-      <div class="card">
-        <form method="post" action="{{ url_for('auth.delete_favorite') }}">
+    <div class="poster-card">
+      <div style="position:relative;">
+        <img src="{{ favorite.image }}" alt="{{ favorite.title }}" />
+        <form method="post" action="{{ url_for('auth.delete_favorite') }}" style="position:absolute;top:8px;right:8px;">
           <input type="hidden" name="title" value="{{ favorite.title }}" />
           <input type="hidden" name="image" value="{{ favorite.image }}" />
-          <input type="hidden" name="current_user" value="{{ current_user }}"/>
-          <button class="delete-btn" type="submit">❌</button>
+          <input type="hidden" name="current_user" value="{{ current_user }}" />
+          <button type="submit" class="delete-btn" title="Remove">✕</button>
         </form>
-        
-        <img
-          src="{{ favorite.image }}"
-          alt="{{ favorite.title }}"
-          style="height: 100%; width: 100%; object-fit: cover;"
-          class="title_image"
-        />
+      </div>
+      <div class="poster-card-body">
         <h5>{{ favorite.title }}</h5>
       </div>
     </div>
     {% endfor %}
   </div>
-
-
+  {% else %}
+  <div class="empty-state">
+    <span class="empty-icon">🎬</span>
+    <h3>Nothing saved yet</h3>
+    <p>Browse movies and TV shows, then tap <strong>+ Playlst</strong> to save them here.</p>
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:20px;">
+      <a href="/movies"><button class="btn btn-primary">Movies</button></a>
+      <a href="/tvshows"><button class="btn btn-outline">TV Shows</button></a>
+    </div>
+  </div>
+  {% endif %}
+</div>
 
 <style>
-    h2 {
-      margin-top: 30px;
-      border-radius: 5px;
-      font-family: BaronNeue, classic sans serif;
-      font-size: 24px;
-      font-weight: bold;
-      color: #66aa33;
-    }
-    .card {
-      border-radius: 35px;
-      background-color: white;
-      position: relative;
-      padding-bottom: 0px;
-      padding-top: 0px;
-    }
-    .card-header {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 10px;
-      background-color: rgba(255,255,255,0.7);
-      z-index: 1;
-    }
-    .card-body {
-      padding: 30px;
-    }
-    .col {
-      margin-bottom: 20px;
-      margin-left: 5px;
-    }
-    .card-text {
-      font-size: 16px;
-    }
-    .delete-btn {
-      position: absolute;
-      top: -10px;
-      right: 5px;
-      background-color: transparent;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      font-size: 20px;
-      line-height: 20px;
-      text-align: center;
-      padding: 0;
-      cursor: pointer;
-    }
-    .card {
-      position: relative;
-    }
-    .title_image {
-      border-top-left-radius: 35px;
-      border-top-right-radius: 35px;
-    }
-  </style>
-
+  .delete-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 50%;
+    background: rgba(0,0,0,.55);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .delete-btn:hover { background: #dc2626; }
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 60px 24px;
+    gap: 10px;
+  }
+  .empty-icon { font-size: 48px; }
+  .empty-state h3 { font-size: 20px; font-weight: 700; color: var(--text); margin-top: 8px; }
+</style>
 
 {% endblock %}

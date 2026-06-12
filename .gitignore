@@ -1,2 +1,4 @@
 tmdb_api_key.py
 database.db
+
+.env

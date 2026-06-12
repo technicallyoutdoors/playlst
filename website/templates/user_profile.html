@@ -1,204 +1,81 @@
-{% extends "base.html" %} {% block title %}User Profile{% endblock %} {%block content%}
-    <br/>
-    <h1>User Profile</h1>
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+
+<div class="page-narrow">
+  <h1>Your Profile</h1>
+
+  <div class="profile-avatar-wrap">
     {% if current_user.photo %}
-    <img src="{{ url_for('static', filename='uploads/' + current_user.photo.filename) }}" alt="User Avatar" class="avatar1">
+    <img src="{{ url_for('static', filename='uploads/' + current_user.photo.filename) }}" alt="Avatar" class="profile-avatar" />
     {% else %}
-    <img src="{{ url_for('static', filename='default_profile.png') }}" alt="User Avatar" class="avatar">
+    <div class="profile-avatar-placeholder">{{ current_user.first_name[0] }}{{ current_user.last_name[0] }}</div>
     {% endif %}
-    <h2>{{ user.username }}</h2>
-    <div class="container">
+    <p style="margin-top:8px;font-weight:700;font-size:18px;color:var(--text);">
+      {{ current_user.first_name }} {{ current_user.last_name }}
+    </p>
+    <p style="font-size:13px;">{{ current_user.email }}</p>
+  </div>
+
+  <div class="card mt-24">
+    <div class="card-body">
+      <h2 style="margin-bottom:20px;">Edit Profile</h2>
       <form action="{{ url_for('auth.edit_user_profile') }}" method="POST" enctype="multipart/form-data">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" value="{{ user.email }}" required>
-
-        <label for="first_name">First Name</label>
-        <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}" required>
-
-        <label for="last_name">Last Name</label>
-        <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}" required>
-
-        <label for="profile_picture">Profile Picture</label>
-        <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
-
-        <input type="submit" name="edit_profile" value="Save Changes">
-      
-
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" value="{{ current_user.email }}" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name" value="{{ current_user.first_name }}" required />
+          </div>
+          <div class="form-group">
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" value="{{ current_user.last_name }}" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="profile_picture">Profile Photo</label>
+          <input type="file" id="profile_picture" name="profile_picture" accept="image/*" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mt-16">Save Changes</button>
       </form>
     </div>
+  </div>
+</div>
 
+<style>
+  .profile-avatar-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 8px;
+    gap: 4px;
+  }
+  .profile-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--green);
+    box-shadow: var(--shadow);
+  }
+  .profile-avatar-placeholder {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: var(--green-light);
+    color: var(--green-dark);
+    font-size: 32px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--green);
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 380px) { .form-row { grid-template-columns: 1fr; } }
+</style>
 
-    
-        <style>
-          .avatar1 {
-            width: 200px;
-            height: auto;
-            border-radius: 10%;
-            
-            object-position: center;
-          }
-    
-          form {
-            display: flex;
-            flex-direction: column;
-          }
-    
-          label {
-            margin-top: 2px;
-            margin-bottom: 2px;
-            font-weight: bold;
-          }
-    
-          input[type="text"],
-          input[type="email"],
-          input[type="file"] {
-            padding: 10px;
-            margin-bottom: 2px;
-            border-radius: 35px;
-            border-bottom: 2px solid #66AA33;
-            border-top: 2px solid #66AA33;
-            border-left: 2px solid #66AA33;
-            border-right: 2px solid #66AA33;
-          }
-    
-          input[type="submit"] {
-            background-color: #66AA33;
-            color: white;
-            padding: 5px 5px;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 35px;
-            cursor: pointer;
-            margin-top: 35px;
-          }
-    
-          input[type="submit"]:hover {
-            background-color: #518828;
-          }
-
-          .container {
-            margin: 0 auto;
-            text-align: center;
-          }
-        
-          h1 {
-            font-family: Arial, sans-serif;
-            font-size: 50px;
-            font-weight: bold;
-          }
-        
-          li {
-            justify-content: center;
-            align-items: center;
-          }
-        
-         
-          label {
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-            font-weight: bold;
-          }
-          input {
-            padding: 12px 24px;
-            border-radius: 4px;
-            border: none;
-            margin-top: 20px;
-            cursor: pointer;
-            font-size: 20px;
-            font-weight: bold;
-          }
-          p {
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-            font-weight: bold;
-            text: center
-          }
-          ul {
-            list-style-position: inside;
-          }
-          .group-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background-color: trasparent;
-            border-radius: 5px;
-            }
-            
-            .title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            }
-            
-            .info {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            }
-            
-            .card {
-              width: 35%;
-              margin: 0 auto; 
-              padding: 20px;
-              margin: auto;
-              text-align: center;
-              background-color: #007bff;
-              color: white;
-              border-radius: 5px;
-              box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-            }
-            @media (max-width: 767px) {
-              .card {
-                width: 100%; /* Set width to 100% to fill the screen */
-                margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */
-                padding: 20px; /* Maintain the same padding */
-              }
-            }
-            .card-header {
-              font-size: 24px;
-              padding: 10px;
-              background-color: #007bff;
-              color: #fff;
-              border-top-left-radius: 5px;
-              border-top-right-radius: 5px;
-            }
-            
-            .card-body {
-              padding: 20px;
-            }
-            
-            .subtitle {
-              font-size: 18px;
-              font-weight: bold;
-              margin-bottom: 5px;
-            }
-            
-            .value {
-              font-size: 14px;
-              margin-top: 0;
-              margin-bottom: 20px;
-            }
-            
-            .members {
-              list-style: none;
-              margin: 0;
-              padding: 0;
-              font-size: 16px;
-            }
-            
-            .members li {
-              margin-bottom: 5px;
-            }
-            
-            #change_button {
-              background-color: black;
-              border-radius: 10px;
-            }
-        </style>
-
-    </div> 
-        {% endblock %}
+{% endblock %}

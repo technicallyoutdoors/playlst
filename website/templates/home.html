@@ -1,211 +1,82 @@
-{% extends "base.html" %} {% block title %} Home {% endblock %} {%block content%}
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
 
-<br/>
-<h1 align="center">Playlst</h1>
-<p>Discover your TV show and movie playlist with playlst! Create a group, invite friends, and start matching!</p>
-<br/>
-<br/>
-<div class="button-group">
-<a href="/movies" align="center">
-  <div class="text-center">
-  <button class="generic_button" align="center" type="button" color="#000000">
-    Movies 🎥
-  </button> </a>
-  <a href="/tvshows" align="center">
-    <button class="generic_button" align="center" type="button" color="#000000">
-    TV Shows 📺
-  </button> </a>
-  <a href="/favorites" align="center">
-    <button  class="generic_button" align="center" type="button" color="#000000">
-      Playlst <img src="{{ url_for('static', filename='brand_images/playlst_icon.png') }}" class="brand_icon">
-    </button> </a> 
-    <a href="/group_hub"> 
-      <form method="post" action="/group_hub">
-        <button class="generic_button" align="center" type="submit">Group Hub 👥</button>
-        </a> 
-    <a href="/shared_favorites" align="center">
-      <button class="generic_button" align="center" type="button" color="#000000">
-        Matched Playlst 🔥
-      </button> </a>
+<div class="page" style="max-width:560px;">
+  <h1>Hey, {{ current_user.first_name }} 👋</h1>
+  <p class="text-center" style="margin-bottom:32px;">What do you want to do today?</p>
 
-
-   
-       <a href="search">
-          <button class="generic_button" type="button" name="Search">Search</button> <a>
-
-
-   
+  <div class="home-grid">
+    <a href="/movies" class="home-tile">
+      <span class="tile-icon">🎥</span>
+      <span class="tile-label">Movies</span>
+    </a>
+    <a href="/tvshows" class="home-tile">
+      <span class="tile-icon">📺</span>
+      <span class="tile-label">TV Shows</span>
+    </a>
+    <a href="/genre" class="home-tile">
+      <span class="tile-icon">🎭</span>
+      <span class="tile-label">Browse Genre</span>
+    </a>
+    <a href="/search" class="home-tile">
+      <span class="tile-icon">🔍</span>
+      <span class="tile-label">Search</span>
+    </a>
+    <a href="/favorites" class="home-tile">
+      <span class="tile-icon">❤️</span>
+      <span class="tile-label">My Playlst</span>
+    </a>
+    <a href="/group_hub" class="home-tile">
+      <span class="tile-icon">👥</span>
+      <span class="tile-label">Group Hub</span>
+    </a>
+    <a href="/watch" class="home-tile">
+      <span class="tile-icon">▶️</span>
+      <span class="tile-label">Watch</span>
+    </a>
+    <a href="/shared_favorites" class="home-tile home-tile--fire">
+      <span class="tile-icon">🔥</span>
+      <span class="tile-label">Matched Playlst</span>
+    </a>
+  </div>
+</div>
 
 <style>
-  
-  .container {
-    margin: 0 auto;
+  .home-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  @media (min-width: 480px) {
+    .home-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .home-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 28px 16px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    color: var(--text);
+    font-weight: 700;
+    transition: box-shadow .15s, transform .15s, border-color .15s;
     text-align: center;
   }
-
-  .brand_icon {
-    height: 20px;
-    width: 20px;
-    margin: 2px;
+  .home-tile:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+    border-color: var(--green);
+    color: var(--green-dark);
   }
-
-  .generic_button {
-    display: block;
-    background-color: #66AA33;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 35px;
-    border: none;
-    margin: 5px;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: bold;
-  }
-  
-  li {
-    justify-content: center;
-    align-items: center;
-  }
-
- 
-
-  label {
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  input {
-    padding: 12px 24px;
-    border-radius: 4px;
-    border: none;
-    margin-top: 20px;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: bold;
-  }
-
-  ul {
-    list-style-position: inside;
-  }
-
-  .group-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background-color: trasparent;
-    border-radius: 35px;
-    }
-    
-    .title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    }
-    
-    .info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    }
-    
-    .card {
-      width: 35%;
-      margin: 0 auto; 
-      padding: 20px;
-      margin: auto;
-      text-align: center;
-      background-color: #66AA33;
-      color: white;
-      border-radius: 5px;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    }
-    @media (max-width: 480px) {
-      .card {
-        width: 100%; /* Set width to 100% to fill the screen */
-        margin: 20px 0; /* Set top and bottom margin to 20px, and remove horizontal margin */
-        padding: 20px; /* Maintain the same padding */
-      }
-    }
-    .card-header {
-      font-size: 24px;
-      padding: 10px;
-      background-color: #66AA33;
-      color: #fff;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
-    }
-    
-    .card-body {
-      padding: 20px;
-    }
-    
-    .subtitle {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    
-    .value {
-      font-size: 14px;
-      margin-top: 0;
-      margin-bottom: 20px;
-    }
-    
-    .members {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      font-size: 16px;
-    }
-    
-    .members li {
-      margin-bottom: 5px;
-    }
-    
-    #change_button {
-      background-color: white;
-      border-radius: 10px;
-    }
-    p {
-      font-size: 16px;
-      line-height: 1.5;
-      margin: 0px 0;
-      color: black;
-      max-width: 300px;
-      font-family: BaronNeue, classic sans serif;
-      margin: 0 250px;
-      background-color: white;
-      border-radius: 35px;
-      margin: 0 auto;
-      padding: 10px;
-      text-align: center;     
-    }
-    
-    @media (max-width: 480px) {
-      p {
-        font-size: 16px;
-        margin: 0 auto;
-      }
-    }
-
-    .button-group {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-    
-    .button-group button {
-      flex: 1 1 auto;
-      margin: 10px;
-      width: 300px;
-      border-radius: 35x;
-    }
-
-
+  .home-tile--fire { grid-column: span 2; }
+  @media (min-width: 480px) { .home-tile--fire { grid-column: span 1; } }
+  .tile-icon { font-size: 32px; line-height: 1; }
+  .tile-label { font-size: 14px; font-weight: 700; }
 </style>
 
 {% endblock %}

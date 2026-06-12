@@ -304,60 +304,62 @@ def join_group():
     return render_template('join_group.html', user=current_user)
 
 
-@auth.route('/search', methods=['GET', 'POST']) #puts this search function at the home screen 
+@auth.route('/search', methods=['GET', 'POST'])
 @login_required
 def search_title():
-    
-    url = "https://api.themoviedb.org/3/search/keyword?page=1" # need to figure out if page 1 means anything specific 
-    headers = {
-        "accept": "application/json",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyOGRkOWZhNGM0YTIxMGNkM2RjNTg5OTgxYzhmYjY2YSIsInN1YiI6IjYzZjE5NDdmMTUzNzZjMDA3ODE4NTgwYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.DoEbvMREv7aWrYhHPGj63oKG4a2BjrmlQBg90sD2TWs"
-    }
-    response = requests.get(url, headers=headers)
-    # figure out how to get a variable plugged into the query search or however to do that
-  
+    query = request.form.get('query', '').strip()
+    results = []
 
-    return render_template('search.html', user=current_user)
+    if query:
+        url = "https://api.themoviedb.org/3/search/multi"
+        params = {
+            "api_key": "28dd9fa4c4a210cd3dc589981c8fb66a",
+            "query": query,
+            "language": "en-US",
+            "page": 1,
+            "include_adult": "false"
+        }
+        response = requests.get(url, params=params)
+        data = response.json()
+        image_base = "https://image.tmdb.org/t/p/w500"
+        for item in data.get('results', []):
+            media_type = item.get('media_type')
+            if media_type not in ('movie', 'tv'):
+                continue
+            poster = item.get('poster_path')
+            if not poster:
+                continue
+            results.append({
+                'title': item.get('title') or item.get('name', ''),
+                'image': image_base + poster,
+                'overview': item.get('overview', ''),
+                'media_type': media_type,
+            })
+
+    return render_template('search.html', user=current_user, results=results, query=query)
 
 
 @auth.route('/shared_favorites')
 @login_required
 def shared_favorites():
-    current_user
-    family = Family.query.filter(Family.members.contains(current_user)).first()
+    family = current_user.family
     if not family:
         flash("You are not a member of a group yet!", category='error')
-        return redirect(url_for('auth.join_family'))
+        return redirect(url_for('auth.join_group'))
 
-# Get shared favorites for each member
-    shared_favorites = []
-    for member in family.members:
-        if member.id != current_user.id:
-            member_favorites = set([fav.title for fav in member.favorites])
-            shared_favorites.append(member_favorites)
+    other_members = [m for m in family.members if m.id != current_user.id]
+    if not other_members:
+        flash("Your group only has one member so far — invite someone to see matches!", category='error')
+        return redirect(url_for('auth.group_hub'))
 
-    # Find the intersection of shared favorites
-    if shared_favorites:
-        shared_favorites = set.intersection(*shared_favorites)
-    else:
-        shared_favorites = set()
+    my_titles = set(fav.title for fav in current_user.favorites)
+    shared_titles = my_titles
+    for member in other_members:
+        shared_titles = shared_titles & set(fav.title for fav in member.favorites)
 
-    # Filter favorites to only include shared favorites
-    favorites = current_user.favorites.filter(
-        Favorite.title.in_(shared_favorites)).all()
+    favorites = [fav for fav in current_user.favorites if fav.title in shared_titles]
 
-    # Convert InstrumentedList objects to regular lists before calling intersection
-    favorites_titles = list(set([f.title for f in favorites]))
-    favorites_images = list(set([f.image for f in favorites]))
-
-    shared_favorites = Favorite.query.join(User).join(Family).filter(
-        Family.code == current_user.family.code,
-        Favorite.user_id != current_user.id,
-        Favorite.title.in_(favorites_titles),
-        Favorite.image.in_(favorites_images)
-    ).all()
-
-    return render_template('shared_favorites.html', user=current_user, favorites=shared_favorites)
+    return render_template('shared_favorites.html', user=current_user, favorites=favorites)
 
 
 @auth.route('/leave_group', methods=['POST', 'GET'])
@@ -414,6 +416,54 @@ def edit_user_profile():
         flash("Profile saved!", category='success')
         return redirect(url_for('auth.user_profile'))
     return render_template("user_profile.html", user=current_user)
+
+
+@auth.route('/watch')
+@login_required
+def watch():
+    return render_template('watch.html', user=current_user)
+
+
+TMDB_GENRES = {
+    'Action': 28,
+    'Comedy': 35,
+    'Drama': 18,
+    'Horror': 27,
+    'Romance': 10749,
+    'Sci-Fi': 878,
+    'Thriller': 53,
+    'Animation': 16,
+    'Documentary': 99,
+    'Fantasy': 14,
+}
+
+@auth.route('/genre', methods=['GET', 'POST'])
+@login_required
+def genre():
+    selected_genre = request.form.get('genre') or request.args.get('genre')
+    result = None
+
+    if selected_genre and selected_genre in TMDB_GENRES:
+        genre_id = TMDB_GENRES[selected_genre]
+        random_page = random.randint(1, 10)
+        url = (
+            "https://api.themoviedb.org/3/discover/movie"
+            f"?api_key=28dd9fa4c4a210cd3dc589981c8fb66a"
+            f"&with_genres={genre_id}&language=en-US&sort_by=popularity.desc"
+            f"&include_adult=false&page={random_page}&with_watch_monetization_types=flatrate"
+        )
+        data = requests.get(url).json()
+        titles = [t for t in data.get('results', []) if t.get('poster_path')]
+        if titles:
+            pick = random.choice(titles)
+            result = {
+                'title': pick.get('title', ''),
+                'image': "https://image.tmdb.org/t/p/original" + pick['poster_path'],
+                'overview': pick.get('overview', ''),
+            }
+
+    return render_template('genre.html', user=current_user, genres=list(TMDB_GENRES.keys()),
+                           selected_genre=selected_genre, result=result)
 
 
 @auth.route('/random_titles', methods=['POST', 'GET'])
