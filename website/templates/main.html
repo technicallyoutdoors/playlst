@@ -1,136 +1,88 @@
-{% block title %}{% endblock %} {% block content %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Playlst</title>
-  </head>
-  <body>
-    <h1>Playlst</h1>
-    <div class="button-container">
-      <a href="/signup">
-        <button name="signup" type="button" class="button1">
-          Create Account
-        </button>
-      </a>
-      <a href="/login">
-        <button name="signin" type="button" class="button2">Sign In</button>
-      </a>
+{% extends "base.html" %}
+{% block title %}Playlst{% endblock %}
+{% block content %}
+
+<div class="landing">
+  <div class="landing-hero">
+    <h1 class="landing-title">Playlst</h1>
+    <p class="landing-sub">Discover movies & shows with your people.<br>Match your favorites, find what to watch tonight.</p>
+    <div class="landing-actions">
+      <a href="/signup"><button class="btn btn-lg" style="background:#fff;color:var(--green);font-size:18px;">Create Account</button></a>
+      <a href="/login"><button class="btn btn-lg btn-outline-white" style="background:transparent;color:#fff;border:2px solid rgba(255,255,255,.6);font-size:18px;">Sign In</button></a>
     </div>
-  </body>
-</html>
+  </div>
+
+  <div class="landing-features">
+    <div class="feature-card">
+      <span class="feature-icon">🎲</span>
+      <h3>Discover</h3>
+      <p>Get random movie &amp; TV picks from what's streaming right now.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">❤️</span>
+      <h3>Save</h3>
+      <p>Build your personal Playlst of titles you want to watch.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔥</span>
+      <h3>Match</h3>
+      <p>Create a group with friends or family and find your shared picks.</p>
+    </div>
+  </div>
+</div>
 
 <style>
-  @font-face {
-    font-family: "BaronNeue";
-    src: url("static/fonts/BaronNeue-Regular.otf") format(opentype);
-  }
+  body { background: var(--bg); }
 
-  h1 {
-    text-align: left;
-    font-size: 110px;
-    font-family: BaronNeue;
-    color: white;
-  }
+  .landing { display: flex; flex-direction: column; min-height: calc(100vh - 60px); }
 
-  .button-container {
-    font-family: BaronNeue;
-    flex-direction: column;
+  .landing-hero {
+    background: linear-gradient(145deg, #1a2e0d 0%, #2d5a14 40%, var(--green) 100%);
+    color: #fff;
     display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-    margin-right: 150px;
-  }
-
-  #sign-in {
-    font-family: BaronNeue;
-    background-color: transparent;
-    border: none;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-
-  #create-account {
-    font-family: BaronNeue;
-    background-color: transparent;
-    border: none;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-
-  #create-account:hover {
-    font-family: BaronNeue;
-    color: blue;
-  }
-
-  body {
-    background: rgb(2, 0, 36);
-    background: -moz-linear-gradient(
-      90deg,
-      rgba(2, 0, 36, 1) 0%,
-      rgba(102, 170, 51, 1) 35%,
-      rgba(0, 212, 255, 1) 100%
-    );
-    background: -webkit-linear-gradient(
-      90deg,
-      rgba(2, 0, 36, 1) 0%,
-      rgba(102, 170, 51, 1) 35%,
-      rgba(0, 212, 255, 1) 100%
-    );
-    background: linear-gradient(
-      90deg,
-      rgba(2, 0, 36, 1) 0%,
-      rgba(102, 170, 51, 1) 35%,
-      rgba(0, 212, 255, 1) 100%
-    );
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#020024",endColorstr="#00d4ff",GradientType=1);
-  }
-
-  .text-center {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px 72px;
     text-align: center;
   }
-
-  .card-body {
-    padding: 0;
+  .landing-title {
+    font-size: clamp(56px, 12vw, 96px);
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -2px;
+    margin: 0 0 16px;
   }
-
-  .col {
-    margin-bottom: 20px;
+  .landing-sub {
+    font-size: clamp(16px, 2.5vw, 20px);
+    color: rgba(255,255,255,.85);
+    max-width: 480px;
+    line-height: 1.6;
+    margin-bottom: 40px;
   }
+  .landing-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .landing-actions button { min-width: 160px; }
 
-  .card-title {
-    position: absolute;
-    bottom: 0;
-    left: 0;
+  .landing-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    padding: 48px 32px;
+    max-width: 840px;
+    margin: 0 auto;
     width: 100%;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.7);
+  }
+  .feature-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 28px 24px;
     text-align: center;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
   }
-
-  .card-text {
-    font-size: 16px;
-  }
-
-  .button1 {
-    background-color: #66aa33;
-    color: white;
-    padding: 50px 50px;
-    border: none;
-    cursor: pointer;
-    font-size: 40px;
-    font-weight: bold;
-    border-radius: 35px;
-  }
-
-  .button2 {
-    background-color: transparent;
-    color: white;
-    padding: 50px 50px;
-    border: none;
-    cursor: pointer;
-    font-size: 40px;
-    font-weight: bold;
-    border-radius: 35px;
-  }
+  .feature-icon { font-size: 36px; display: block; margin-bottom: 12px; }
+  .feature-card h3 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .feature-card p { font-size: 14px; color: var(--text-muted); }
 </style>
+
 {% endblock %}

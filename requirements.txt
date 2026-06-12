@@ -2,4 +2,6 @@ flask
 flask_sqlalchemy
 flask_login
 requests
+authlib
+psycopg2-binary
 

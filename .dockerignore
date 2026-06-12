@@ -1,0 +1,15 @@
+.git
+.github
+.claude
+.env
+.DS_Store
+**/.DS_Store
+__pycache__
+**/__pycache__
+*.pyc
+instance/
+website/database.db
+website/static/uploads/*
+development_notes.txt
+startup.txt
+README.md

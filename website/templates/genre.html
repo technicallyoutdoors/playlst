@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Browse by Genre{% endblock %}
+{% block content %}
+
+<div class="page" style="max-width:520px;">
+  <h1>Browse by Genre 🎭</h1>
+
+  <form method="post" action="{{ url_for('auth.genre') }}">
+    <div class="genre-pills">
+      {% for g in genres %}
+      <button type="submit" name="genre" value="{{ g }}"
+              class="genre-pill {% if g == selected_genre %}active{% endif %}">
+        {{ g }}
+      </button>
+      {% endfor %}
+    </div>
+  </form>
+
+  {% if selected_genre and not result %}
+  <p class="text-center mt-24">Nothing found for <strong>{{ selected_genre }}</strong> — try again!</p>
+  {% endif %}
+
+  {% if result %}
+  <div class="poster-wrap mt-24">
+    <img src="{{ result.image }}" alt="{{ result.title }}" class="poster-img" />
+    <div class="poster-meta">
+      <h2 class="poster-title">{{ result.title }}</h2>
+      <p class="poster-overview">{{ result.overview }}</p>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <form method="post" action="{{ url_for('auth.add_favorite_movie') }}">
+      <input type="hidden" name="movie_title" value="{{ result.title }}" />
+      <input type="hidden" name="movie_image_url" value="{{ result.image }}" />
+      <input type="hidden" name="current_user" value="{{ current_user.id }}" />
+      <button type="submit" class="btn btn-outline">+ Playlst</button>
+    </form>
+    <form method="post" action="{{ url_for('auth.genre') }}">
+      <input type="hidden" name="genre" value="{{ selected_genre }}" />
+      <button type="submit" class="btn btn-primary">Next ›</button>
+    </form>
+  </div>
+  {% endif %}
+</div>
+
+<style>
+  .genre-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  .genre-pill {
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+    margin: 0;
+  }
+  .genre-pill:hover, .genre-pill.active {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+  .poster-wrap {
+    background: var(--surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .poster-img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
+  .poster-meta { padding: 16px 18px 20px; }
+  .poster-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+  .poster-overview {
+    font-size: 13px; color: var(--text-muted); line-height: 1.6;
+    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .action-row { display: flex; gap: 12px; margin-top: 16px; justify-content: center; }
+  .action-row form { margin: 0; }
+</style>
+
+{% endblock %}
