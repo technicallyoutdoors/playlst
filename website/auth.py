@@ -299,7 +299,9 @@ def delete_favorite():
 @login_required
 def favorites():
     user = current_user
-    return render_template('favorites.html', user=current_user.id, favorites=current_user.favorites)
+    # .all() materializes the dynamic relationship to a list so the template's
+    # {% if favorites %} empty-state check works (a query object is always truthy)
+    return render_template('favorites.html', user=current_user.id, favorites=current_user.favorites.all())
 
 
 @auth.route('/group_code', methods=['GET', 'POST'])
