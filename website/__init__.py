@@ -28,7 +28,7 @@ def get_database_uri():
     import os
     # Set DATABASE_URL (e.g. postgresql://user:pass@host:5432/dbname) to use
     # RDS/Postgres; falls back to local SQLite when unset.
-    url = os.environ.get('DATABASE_URL')
+    url = (os.environ.get('DATABASE_URL') or '').strip()
     if url:
         # SQLAlchemy requires the postgresql:// scheme; some providers hand
         # out the legacy postgres:// form
