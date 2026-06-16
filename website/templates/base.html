@@ -28,7 +28,8 @@
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
       html, body { width: 100%; min-height: 100%; overflow-x: clip; }
       body {
-        background: var(--bg);
+        background: linear-gradient(160deg, #1a2e0d 0%, #28501a 50%, #2d5a14 100%);
+        background-attachment: fixed;
         color: var(--text);
         font-family: var(--font);
         font-size: 15px;
@@ -38,6 +39,8 @@
         min-height: 100vh;
       }
       #main-content { flex: 1; }
+      /* Text that sits directly on the gradient (outside white cards) stays light */
+      .page > p, .page-narrow > p, .poster-screen > p { color: rgba(255,255,255,.85); }
       a { color: var(--green); text-decoration: none; }
       a:hover { color: var(--green-dark); }
       img { display: block; max-width: 100%; }
@@ -47,7 +50,7 @@
       h1 {
         font-size: clamp(28px, 5vw, 46px);
         font-weight: 800;
-        color: var(--green);
+        color: #fff;
         letter-spacing: -.5px;
         text-align: center;
         margin: 24px 0 16px;
@@ -369,7 +372,7 @@
       .swipe-hint {
         text-align: center;
         font-size: 12px;
-        color: var(--text-muted);
+        color: rgba(255,255,255,.8);
         margin-top: 2px;
         user-select: none;
       }
