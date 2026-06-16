@@ -2,7 +2,7 @@
 {% block title %}Movies{% endblock %}
 {% block content %}
 
-<div class="page" style="max-width:480px;">
+<div class="poster-screen">
   <h1>Movies 🎥</h1>
 
   <div class="poster-wrap">
@@ -25,44 +25,5 @@
     </form>
   </div>
 </div>
-
-<style>
-  .poster-wrap {
-    background: var(--surface);
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-  }
-  .poster-img {
-    width: 100%;
-    aspect-ratio: 2/3;
-    object-fit: cover;
-    display: block;
-  }
-  .poster-meta { padding: 16px 18px 20px; }
-  .poster-title {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--text);
-    margin-bottom: 8px;
-  }
-  .poster-overview {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.6;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .action-row {
-    display: flex;
-    gap: 12px;
-    margin-top: 16px;
-    justify-content: center;
-  }
-  .action-row form { margin: 0; }
-</style>
 
 {% endblock %}

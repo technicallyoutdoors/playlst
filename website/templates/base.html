@@ -339,6 +339,50 @@
       }
       .footer-links a:hover { color: #fff; }
 
+      /* ── Immersive poster screen (movies / tv / genre) ── */
+      .poster-screen {
+        max-width: 480px;
+        margin: 0 auto;
+        padding: 20px 16px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .poster-screen h1 { margin: 8px 0 0; }
+      .poster-wrap {
+        background: var(--surface);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+      }
+      .poster-img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
+      .poster-meta { padding: 16px 18px 20px; }
+      .poster-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+      .poster-overview {
+        font-size: 13px; color: var(--text-muted); line-height: 1.6;
+        display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+      }
+      .action-row { display: flex; gap: 12px; justify-content: center; }
+      .action-row form { margin: 0; flex: 1; }
+      .action-row .btn { width: 100%; }
+
+      /* Fit the whole poster screen in one viewport on phones / short screens */
+      @media (max-width: 640px), (max-height: 820px) {
+        .poster-screen {
+          height: calc(100dvh - 60px);
+          padding: 10px 14px 14px;
+          gap: 10px;
+        }
+        .poster-screen h1 { font-size: 26px; margin: 2px 0; }
+        .poster-wrap { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+        .poster-img { aspect-ratio: auto; flex: 1 1 auto; min-height: 0; height: 100%; }
+        .poster-meta { flex-shrink: 0; padding: 10px 14px 12px; }
+        .poster-title { font-size: 17px; margin-bottom: 4px; }
+        .poster-overview { -webkit-line-clamp: 2; font-size: 12px; }
+        .action-row { flex-shrink: 0; }
+      }
+
       /* ── Utility ── */
       .text-center { text-align: center; }
       .text-muted { color: var(--text-muted); }

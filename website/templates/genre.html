@@ -2,10 +2,10 @@
 {% block title %}Browse by Genre{% endblock %}
 {% block content %}
 
-<div class="page" style="max-width:520px;">
+<div class="poster-screen">
   <h1>Browse by Genre 🎭</h1>
 
-  <form method="post" action="{{ url_for('auth.genre') }}">
+  <form method="post" action="{{ url_for('auth.genre') }}" class="genre-form">
     <div class="genre-pills">
       {% for g in genres %}
       <button type="submit" name="genre" value="{{ g }}"
@@ -17,11 +17,11 @@
   </form>
 
   {% if selected_genre and not result %}
-  <p class="text-center mt-24">Nothing found for <strong>{{ selected_genre }}</strong> — try again!</p>
+  <p class="text-center">Nothing found for <strong>{{ selected_genre }}</strong> — try again!</p>
   {% endif %}
 
   {% if result %}
-  <div class="poster-wrap mt-24">
+  <div class="poster-wrap">
     <img src="{{ result.image }}" alt="{{ result.title }}" class="poster-img" />
     <div class="poster-meta">
       <h2 class="poster-title">{{ result.title }}</h2>
@@ -45,46 +45,22 @@
 </div>
 
 <style>
+  .genre-form { margin: 0; flex-shrink: 0; }
   .genre-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    margin-top: 8px;
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
   }
   .genre-pill {
-    padding: 8px 18px;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: var(--radius-pill);
-    border: 1.5px solid var(--border);
-    background: var(--surface);
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: background .15s, border-color .15s, color .15s;
-    margin: 0;
+    padding: 7px 16px; font-size: 14px; font-weight: 600;
+    border-radius: var(--radius-pill); border: 1.5px solid var(--border);
+    background: var(--surface); color: var(--text-muted); cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s; margin: 0;
   }
   .genre-pill:hover, .genre-pill.active {
-    background: var(--green);
-    border-color: var(--green);
-    color: #fff;
+    background: var(--green); border-color: var(--green); color: #fff;
   }
-  .poster-wrap {
-    background: var(--surface);
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
+  @media (max-width: 640px) {
+    .genre-pill { padding: 6px 13px; font-size: 13px; }
   }
-  .poster-img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
-  .poster-meta { padding: 16px 18px 20px; }
-  .poster-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
-  .poster-overview {
-    font-size: 13px; color: var(--text-muted); line-height: 1.6;
-    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
-  }
-  .action-row { display: flex; gap: 12px; margin-top: 16px; justify-content: center; }
-  .action-row form { margin: 0; }
 </style>
 
 {% endblock %}

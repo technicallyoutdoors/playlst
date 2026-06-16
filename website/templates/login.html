@@ -44,6 +44,10 @@
 <style>
   .auth-logo { display: flex; justify-content: center; }
   .auth-logo img { height: 48px; width: auto; }
+  @media (max-width: 640px) {
+    .page-narrow { padding: 20px 16px 32px; }
+    .auth-logo { display: none; } /* navbar already shows the logo */
+  }
   .oauth-divider {
     display: flex;
     align-items: center;
