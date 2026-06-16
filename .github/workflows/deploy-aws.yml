@@ -55,5 +55,8 @@ jobs:
               {"name": "SECRET_KEY", "value": "${{ secrets.FLASK_SECRET_KEY }}"},
               {"name": "GOOGLE_CLIENT_ID", "value": "${{ secrets.GOOGLE_CLIENT_ID }}"},
               {"name": "GOOGLE_CLIENT_SECRET", "value": "${{ secrets.GOOGLE_CLIENT_SECRET }}"},
-              {"name": "DATABASE_URL", "value": "${{ secrets.DATABASE_URL }}"}
+              {"name": "DATABASE_URL", "value": "${{ secrets.DATABASE_URL }}"},
+              {"name": "SMTP_USER", "value": "${{ secrets.SMTP_USER }}"},
+              {"name": "SMTP_PASSWORD", "value": "${{ secrets.SMTP_PASSWORD }}"},
+              {"name": "SMTP_FROM", "value": "${{ secrets.SMTP_FROM }}"}
             ]

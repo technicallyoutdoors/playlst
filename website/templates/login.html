@@ -22,6 +22,10 @@
         <button type="submit" class="btn btn-primary btn-block btn-lg mt-16">Login</button>
       </form>
 
+      <p class="text-center mt-16" style="font-size:14px;">
+        <a href="{{ url_for('auth.forgot_password') }}" style="font-weight:700;">Forgot password?</a>
+      </p>
+
       <div class="oauth-divider"><span>or continue with</span></div>
       <div class="oauth-buttons">
         <a href="{{ url_for('oauth_bp.google_login') }}" class="oauth-btn">
