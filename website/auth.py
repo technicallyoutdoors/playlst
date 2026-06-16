@@ -14,9 +14,73 @@ import string
 import time
 from werkzeug.utils import secure_filename
 import os
+from .email_utils import generate_reset_token, verify_reset_token, send_email
 
 
 auth = Blueprint('auth', __name__)
+
+
+@auth.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        email = request.form.get('email', '').strip()
+        user = User.query.filter_by(email=email).first()
+        if user:
+            token = generate_reset_token(user.email)
+            reset_url = url_for('auth.reset_password', token=token, _external=True)
+            text = (
+                f"Hi {user.first_name},\n\n"
+                f"We received a request to reset your Playlst password. "
+                f"Click the link below to choose a new one (it expires in 1 hour):\n\n"
+                f"{reset_url}\n\n"
+                f"If you didn't request this, you can safely ignore this email."
+            )
+            html = (
+                f"<p>Hi {user.first_name},</p>"
+                f"<p>We received a request to reset your Playlst password. "
+                f"Click the button below to choose a new one (expires in 1 hour):</p>"
+                f"<p><a href=\"{reset_url}\" style=\"background:#66aa33;color:#fff;"
+                f"padding:10px 24px;border-radius:999px;text-decoration:none;"
+                f"font-weight:bold;display:inline-block\">Reset Password</a></p>"
+                f"<p>Or paste this link into your browser:<br>{reset_url}</p>"
+                f"<p>If you didn't request this, you can safely ignore this email.</p>"
+            )
+            send_email(user.email, "Reset your Playlst password", text, html)
+        # Always show the same message — don't reveal whether the email exists
+        flash("If an account exists for that email, we've sent a reset link.",
+              category='success')
+        return redirect(url_for('auth.login'))
+
+    return render_template('forgot_password.html', user=current_user)
+
+
+@auth.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    email = verify_reset_token(token)
+    if not email:
+        flash("That reset link is invalid or has expired. Please request a new one.",
+              category='error')
+        return redirect(url_for('auth.forgot_password'))
+
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        flash("Account not found.", category='error')
+        return redirect(url_for('auth.forgot_password'))
+
+    if request.method == 'POST':
+        password1 = request.form.get('password1')
+        password2 = request.form.get('password2')
+        if not password1 or password1 != password2:
+            flash("Passwords do not match.", category='error')
+        elif len(password1) < 7:
+            flash("Password must be more than 7 characters.", category='error')
+        else:
+            user.password = generate_password_hash(password1, method='pbkdf2:sha256')
+            db.session.commit()
+            flash("Your password has been updated. Please log in.", category='success')
+            return redirect(url_for('auth.login'))
+
+    return render_template('reset_password.html', user=current_user, token=token)
 
 
 @auth.after_request
