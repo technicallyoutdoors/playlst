@@ -37,7 +37,7 @@ def _login_or_create_user(email, first_name, last_name):
             first_name=first_name or email.split('@')[0],
             last_name=last_name or '',
             # OAuth users never use this password; random so it can't be guessed
-            password=generate_password_hash(secrets.token_urlsafe(32), method='sha256'),
+            password=generate_password_hash(secrets.token_urlsafe(32), method='pbkdf2:sha256'),
         )
         db.session.add(user)
         db.session.commit()
