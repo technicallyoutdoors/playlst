@@ -21,7 +21,7 @@
   {% endif %}
 
   {% if result %}
-  <div class="poster-wrap">
+  <div class="poster-wrap" data-swipe>
     <img src="{{ result.image }}" alt="{{ result.title }}" class="poster-img" />
     <div class="poster-meta">
       <h2 class="poster-title">{{ result.title }}</h2>
@@ -34,13 +34,15 @@
       <input type="hidden" name="movie_title" value="{{ result.title }}" />
       <input type="hidden" name="movie_image_url" value="{{ result.image }}" />
       <input type="hidden" name="current_user" value="{{ current_user.id }}" />
-      <button type="submit" class="btn btn-outline">+ Playlst</button>
-    </form>
-    <form method="post" action="{{ url_for('auth.genre') }}">
-      <input type="hidden" name="genre" value="{{ selected_genre }}" />
-      <button type="submit" class="btn btn-primary">Next ›</button>
+      <button type="submit" class="btn btn-primary">+ Playlst</button>
     </form>
   </div>
+  <p class="swipe-hint">← Swipe the poster for another {{ selected_genre }} pick →</p>
+
+  <!-- Submitted by the swipe gesture -->
+  <form method="post" action="{{ url_for('auth.genre') }}" data-next-form hidden>
+    <input type="hidden" name="genre" value="{{ selected_genre }}" />
+  </form>
   {% endif %}
 </div>
 

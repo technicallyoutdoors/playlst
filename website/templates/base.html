@@ -366,6 +366,14 @@
       .action-row { display: flex; gap: 12px; justify-content: center; }
       .action-row form { margin: 0; flex: 1; }
       .action-row .btn { width: 100%; }
+      .swipe-hint {
+        text-align: center;
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 2px;
+        user-select: none;
+      }
+      [data-swipe] { will-change: transform; }
 
       /* Fit the whole poster screen in one viewport on phones / short screens */
       @media (max-width: 640px), (max-height: 820px) {
@@ -474,5 +482,58 @@
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
+
+    <!-- Swipe-to-skip for poster browsing (movies / tv / genre) -->
+    <script>
+      (function () {
+        var card = document.querySelector('[data-swipe]');
+        var nextForm = document.querySelector('[data-next-form]');
+        if (!card || !nextForm) return;
+
+        var startX = 0, dx = 0, dragging = false;
+        var vw = function () { return window.innerWidth; };
+
+        card.style.touchAction = 'pan-y';   // allow vertical scroll, capture horizontal
+        card.style.cursor = 'grab';
+        card.querySelectorAll('img').forEach(function (i) { i.draggable = false; });
+
+        function down(e) {
+          dragging = true;
+          startX = e.clientX;
+          card.style.transition = 'none';
+          card.style.cursor = 'grabbing';
+          if (card.setPointerCapture) { try { card.setPointerCapture(e.pointerId); } catch (_) {} }
+        }
+        function move(e) {
+          if (!dragging) return;
+          dx = e.clientX - startX;
+          var rot = dx / 22;
+          card.style.transform = 'translateX(' + dx + 'px) rotate(' + rot + 'deg)';
+          card.style.opacity = String(1 - Math.min(Math.abs(dx) / (vw() * 0.9), 0.55));
+        }
+        function up() {
+          if (!dragging) return;
+          dragging = false;
+          card.style.cursor = 'grab';
+          var threshold = Math.min(120, vw() * 0.28);
+          if (Math.abs(dx) > threshold) {
+            var dir = dx > 0 ? 1 : -1;
+            card.style.transition = 'transform .3s ease, opacity .3s ease';
+            card.style.transform = 'translateX(' + (dir * vw() * 1.3) + 'px) rotate(' + (dir * 22) + 'deg)';
+            card.style.opacity = '0';
+            setTimeout(function () { nextForm.submit(); }, 270);
+          } else {
+            card.style.transition = 'transform .25s ease, opacity .25s ease';
+            card.style.transform = '';
+            card.style.opacity = '';
+          }
+          dx = 0;
+        }
+        card.addEventListener('pointerdown', down);
+        card.addEventListener('pointermove', move);
+        card.addEventListener('pointerup', up);
+        card.addEventListener('pointercancel', up);
+      })();
+    </script>
   </body>
 </html>

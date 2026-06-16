@@ -5,7 +5,7 @@
 <div class="poster-screen">
   <h1>TV Shows 📺</h1>
 
-  <div class="poster-wrap">
+  <div class="poster-wrap" data-swipe>
     <img src="{{ full_path_random_title_image }}" alt="{{ title }}" class="poster-img" />
     <div class="poster-meta">
       <h2 class="poster-title">{{ title }}</h2>
@@ -18,12 +18,13 @@
       <input type="hidden" name="tv_show_title" value="{{ title }}" />
       <input type="hidden" name="tv_show_image_url" value="{{ full_path_random_title_image }}" />
       <input type="hidden" name="current_user" value="{{ current_user.id }}" />
-      <button type="submit" class="btn btn-outline">+ Playlst</button>
-    </form>
-    <form method="post" action="{{ url_for('auth.tvshows') }}">
-      <button type="submit" class="btn btn-primary">Next ›</button>
+      <button type="submit" class="btn btn-primary">+ Playlst</button>
     </form>
   </div>
+  <p class="swipe-hint">← Swipe the poster to see the next title →</p>
+
+  <!-- Submitted by the swipe gesture -->
+  <form method="post" action="{{ url_for('auth.tvshows') }}" data-next-form hidden></form>
 </div>
 
 {% endblock %}
