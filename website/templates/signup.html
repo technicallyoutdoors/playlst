@@ -54,6 +54,10 @@
 <style>
   .auth-logo { display: flex; justify-content: center; }
   .auth-logo img { height: 48px; width: auto; }
+  @media (max-width: 640px) {
+    .page-narrow { padding: 16px 16px 28px; }
+    .auth-logo { display: none; } /* navbar already shows the logo */
+  }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   @media (max-width: 380px) { .form-row { grid-template-columns: 1fr; } }
   .oauth-divider {

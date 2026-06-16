@@ -83,6 +83,23 @@
   .feature-icon { font-size: 36px; display: block; margin-bottom: 12px; }
   .feature-card h3 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
   .feature-card p { font-size: 14px; color: var(--text-muted); }
+
+  /* Mobile: compact hero + 3-up feature row so it feels like one screen */
+  @media (max-width: 640px) {
+    .landing-hero { padding: 44px 20px 40px; }
+    .landing-sub { margin-bottom: 28px; }
+    .landing-actions { width: 100%; }
+    .landing-actions a, .landing-actions button { width: 100%; }
+    .landing-features {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 20px 12px 28px;
+    }
+    .feature-card { padding: 16px 8px; border-radius: 12px; }
+    .feature-icon { font-size: 26px; margin-bottom: 6px; }
+    .feature-card h3 { font-size: 14px; margin-bottom: 4px; }
+    .feature-card p { font-size: 11px; line-height: 1.4; }
+  }
 </style>
 
 {% endblock %}
