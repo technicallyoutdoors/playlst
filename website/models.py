@@ -12,7 +12,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150))
     photo = db.relationship('Photo', uselist=False)
-    password = db.Column(db.String(60), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
     code = db.Column(db.String(6), unique=True, nullable=True)
     family_id = db.Column(db.Integer, db.ForeignKey('family.id'))
     favorites = db.relationship('Favorite', lazy='dynamic')
@@ -23,8 +23,8 @@ class User(db.Model, UserMixin):
                        
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    image = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(255), nullable=False)
+    image = db.Column(db.String(500), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', overlaps="favorites")
 
