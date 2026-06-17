@@ -414,7 +414,7 @@
 
     <!-- Navbar -->
     <nav class="navbar">
-      <a class="navbar-brand" href="/">
+      <a class="navbar-brand" href="{{ '/home' if current_user.is_authenticated else '/' }}">
         <img src="{{ url_for('static', filename='brand_images/playlst_logo.png') }}" alt="Playlst" />
       </a>
       <button class="navbar-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
