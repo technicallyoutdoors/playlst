@@ -11,10 +11,10 @@
     {% else %}
     <div class="profile-avatar-placeholder">{{ current_user.first_name[0] }}{{ current_user.last_name[0] }}</div>
     {% endif %}
-    <p style="margin-top:8px;font-weight:700;font-size:18px;color:var(--text);">
+    <p style="margin-top:8px;font-weight:700;font-size:18px;color:#fff;">
       {{ current_user.first_name }} {{ current_user.last_name }}
     </p>
-    <p style="font-size:13px;">{{ current_user.email }}</p>
+    <p style="font-size:13px;color:rgba(255,255,255,.8);">{{ current_user.email }}</p>
   </div>
 
   <div class="card mt-24">
