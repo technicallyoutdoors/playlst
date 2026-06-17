@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app, session
+from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app, session, jsonify
 from .models import User, FamilyMember, Photo
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
@@ -122,6 +122,59 @@ def login():
 @login_required
 def home():
     return render_template('home.html', user=current_user)
+
+
+TMDB_API_KEY = "28dd9fa4c4a210cd3dc589981c8fb66a"
+
+
+@auth.route('/api/random_pick')
+@login_required
+def api_random_pick():
+    """Return a random movie OR TV show (any genre) as JSON for the swipe deck."""
+    media = random.choice(['movie', 'tv'])
+    page = random.randint(1, 20)
+    if media == 'movie':
+        url = ("https://api.themoviedb.org/3/discover/movie"
+               f"?api_key={TMDB_API_KEY}&language=en-US&sort_by=popularity.desc"
+               f"&include_adult=false&page={page}"
+               "&with_watch_monetization_types=flatrate&watch_region=US")
+    else:
+        url = ("https://api.themoviedb.org/3/discover/tv"
+               f"?api_key={TMDB_API_KEY}&language=en-US&sort_by=popularity.desc"
+               f"&page={page}&watch_region=US&with_watch_monetization_types=flatrate")
+    try:
+        data = requests.get(url, timeout=10).json()
+    except Exception:
+        return jsonify({'ok': False, 'error': 'tmdb unavailable'}), 502
+
+    results = [t for t in data.get('results', []) if t.get('poster_path')]
+    if not results:
+        return jsonify({'ok': False, 'error': 'no results'}), 404
+    pick = random.choice(results)
+    return jsonify({
+        'ok': True,
+        'title': pick.get('title') or pick.get('name', ''),
+        'image': 'https://image.tmdb.org/t/p/w500' + pick['poster_path'],
+        'overview': pick.get('overview', ''),
+        'media_type': media,
+    })
+
+
+@auth.route('/api/save_favorite', methods=['POST'])
+@login_required
+def api_save_favorite():
+    """Add a title to the current user's Playlst (used by swipe-right). JSON."""
+    data = request.get_json(silent=True) or {}
+    title = (data.get('title') or '').strip()
+    image = (data.get('image') or '').strip()
+    if not title or not image:
+        return jsonify({'ok': False, 'error': 'missing title/image'}), 400
+    exists = Favorite.query.filter_by(user_id=current_user.id, title=title).first()
+    if exists:
+        return jsonify({'ok': True, 'duplicate': True})
+    db.session.add(Favorite(title=title, image=image, user_id=current_user.id))
+    db.session.commit()
+    return jsonify({'ok': True})
 
 
 @auth.route('/logout')

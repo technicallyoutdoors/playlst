@@ -427,8 +427,9 @@
       <div class="navbar-links">
         {% if current_user.is_authenticated %}
           <a href="/home">Home</a>
+          <a href="/search">Search</a>
           <a href="/favorites">My Playlst</a>
-          <a href="/shared_favorites">Matched Playlst</a>
+          <a href="/shared_favorites">Matchedlst</a>
           <a href="/group_hub">Group Hub</a>
           <a href="/user_profile">{{ current_user.first_name }}</a>
           <a href="/logout">Logout</a>
@@ -480,7 +481,7 @@
         <a href="/home">Home</a>
         <a href="/favorites">My Playlst</a>
         <a href="/group_hub">Group Hub</a>
-        <a href="/shared_favorites">Matched</a>
+        <a href="/shared_favorites">Matchedlst</a>
       </div>
       {% endif %}
     </footer>
