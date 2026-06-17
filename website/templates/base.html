@@ -414,7 +414,7 @@
 
     <!-- Navbar -->
     <nav class="navbar">
-      <a class="navbar-brand" href="/">
+      <a class="navbar-brand" href="{{ '/home' if current_user.is_authenticated else '/' }}">
         <img src="{{ url_for('static', filename='brand_images/playlst_logo.png') }}" alt="Playlst" />
       </a>
       <button class="navbar-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
@@ -428,7 +428,7 @@
         {% if current_user.is_authenticated %}
           <a href="/home">Home</a>
           <a href="/favorites">My Playlst</a>
-          <a href="/shared_favorites">Matched 🔥</a>
+          <a href="/shared_favorites">Matched Playlst</a>
           <a href="/group_hub">Group Hub</a>
           <a href="/user_profile">{{ current_user.first_name }}</a>
           <a href="/logout">Logout</a>
