@@ -6,13 +6,17 @@
   <div class="deck-stage" id="deckStage">
     <div class="deck-card" id="deckCard" data-deck-card>
       <img class="deck-img" id="deckImg" alt="" />
-      <div class="deck-overlay deck-overlay--like" id="likeBadge">SAVE</div>
-      <div class="deck-overlay deck-overlay--nope" id="nopeBadge">SKIP</div>
       <div class="deck-meta">
         <span class="deck-type" id="deckType"></span>
         <h2 class="deck-title" id="deckTitle">Loading…</h2>
         <p class="deck-overview" id="deckOverview"></p>
       </div>
+    </div>
+    <div class="deck-overlay deck-overlay--like" id="likeBadge" aria-label="Save">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+    <div class="deck-overlay deck-overlay--nope" id="nopeBadge" aria-label="Skip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </div>
     <div class="deck-empty" id="deckEmpty" hidden>
       <span class="deck-empty-icon">🍿</span>
@@ -23,10 +27,12 @@
 </div>
 
 <style>
+  /* Immersive deck: fill the screen, no footer/scroll on this page */
+  .footer { display: none; }
   .deck-screen {
     max-width: 460px;
     margin: 0 auto;
-    padding: 16px 16px 24px;
+    padding: 14px 16px 10px;
     display: flex;
     flex-direction: column;
     height: calc(100dvh - 60px);
@@ -74,19 +80,23 @@
   }
   .deck-overlay {
     position: absolute;
-    top: 22px;
-    font-size: 28px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    padding: 6px 14px;
-    border-radius: 10px;
-    border: 4px solid;
+    top: 20px;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
     opacity: 0;
-    transition: opacity .1s;
+    transition: opacity .12s;
     pointer-events: none;
+    box-shadow: 0 2px 12px rgba(0,0,0,.3);
+    z-index: 3;
   }
-  .deck-overlay--like { right: 18px; color: #2e9e4f; border-color: #2e9e4f; transform: rotate(12deg); }
-  .deck-overlay--nope { left: 18px; color: #e05252; border-color: #e05252; transform: rotate(-12deg); }
+  .deck-overlay svg { width: 38px; height: 38px; }
+  .deck-overlay--like { right: 20px; background: #2e9e4f; }
+  .deck-overlay--nope { left: 20px; background: #e0414e; }
   .deck-hint {
     text-align: center;
     font-size: 12px;
