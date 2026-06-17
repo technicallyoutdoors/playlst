@@ -123,9 +123,17 @@
 
     function fetchPick(tries) {
       tries = tries == null ? 3 : tries;
-      return fetch('/api/random_pick', { headers: { 'Accept': 'application/json' } })
-        .then(function (r) { return r.json(); })
+      return fetch('/api/random_pick', { credentials: 'same-origin', headers: { 'Accept': 'application/json' } })
+        .then(function (r) {
+          // Session expired -> the API redirected us to the login page (HTML).
+          // Send the user to log in instead of silently failing.
+          if (r.redirected && r.url.indexOf('/login') > -1) { window.location.href = '/login'; return { __redirect: true }; }
+          var ct = r.headers.get('content-type') || '';
+          if (ct.indexOf('application/json') === -1) { window.location.href = '/login'; return { __redirect: true }; }
+          return r.json();
+        })
         .then(function (d) {
+          if (d && d.__redirect) return null;
           if (d && d.ok) return d;
           return tries > 1 ? fetchPick(tries - 1) : null;
         })
