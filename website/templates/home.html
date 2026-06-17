@@ -100,6 +100,8 @@
     gap: 10px; text-align: center; cursor: pointer;
     background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border);
   }
+  /* the hidden attribute must beat display:flex, or the overlay covers the card */
+  .deck-empty[hidden] { display: none; }
   .deck-empty-icon { font-size: 44px; }
   .deck-empty p { color: var(--text-muted); font-size: 14px; }
 </style>
