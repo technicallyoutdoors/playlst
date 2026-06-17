@@ -132,8 +132,17 @@
         .catch(function () { return tries > 1 ? fetchPick(tries - 1) : null; });
     }
 
+    var retryTimer = null;
     function render(d) {
-      if (!d) { emptyEl.hidden = false; card.style.display = 'none'; return; }
+      if (!d) {
+        emptyEl.hidden = false;
+        card.style.display = 'none';
+        // self-heal: auto-retry a few seconds later so a transient miss isn't a dead end
+        if (retryTimer) clearTimeout(retryTimer);
+        retryTimer = setTimeout(function () { busy = false; advance(); }, 3000);
+        return;
+      }
+      if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
       emptyEl.hidden = true;
       card.style.display = 'flex';
       img.src = d.image;
