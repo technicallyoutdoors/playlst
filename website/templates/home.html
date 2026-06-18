@@ -29,6 +29,7 @@
 <style>
   /* Immersive deck: fill the screen, no footer/scroll on this page */
   .footer { display: none; }
+  html, body { overflow: hidden; overscroll-behavior: none; height: 100%; }
   .deck-screen {
     max-width: 460px;
     margin: 0 auto;
@@ -165,19 +166,31 @@
       if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
       emptyEl.hidden = true;
       card.style.display = 'flex';
+      // snap instantly to center, invisible — no transition so it doesn't slide back in
+      card.style.transition = 'none';
+      card.style.transform = 'none';
+      card.style.opacity = '0';
+      likeBadge.style.opacity = '0';
+      nopeBadge.style.opacity = '0';
+      // load new content
       img.src = d.image;
       img.alt = d.title;
       typeEl.textContent = d.media_type === 'tv' ? 'TV Show' : 'Movie';
       titleEl.textContent = d.title;
       overviewEl.textContent = d.overview || '';
-      card.style.transition = 'none';
-      card.style.transform = '';
+      // force reflow so the reset above paints before we re-enable transitions
+      void card.offsetWidth;
+      // fade in at center (no slide)
+      card.style.transition = 'opacity .18s ease';
       card.style.opacity = '1';
-      likeBadge.style.opacity = '0';
-      nopeBadge.style.opacity = '0';
     }
 
-    function prefetch() { fetchPick().then(function (d) { nextData = d; }); }
+    function prefetch() {
+      fetchPick().then(function (d) {
+        nextData = d;
+        if (d && d.image) { var im = new Image(); im.src = d.image; } // preload so the next card is instant
+      });
+    }
 
     function advance() {
       busy = true;
@@ -234,7 +247,7 @@
     }
     card.addEventListener('pointerup', release);
     card.addEventListener('pointercancel', release);
-    card.style.touchAction = 'pan-y';
+    card.style.touchAction = 'none';
     card.querySelectorAll('img').forEach(function (i) { i.draggable = false; });
 
     emptyEl.addEventListener('click', advance);
