@@ -88,6 +88,7 @@ def create_database(app):
     # Multiple gunicorn workers boot concurrently and all run create_all;
     # a worker must never die here — losers of the create race can rely on
     # the winner's tables, and real DB problems will surface on first use
+    import os
     import traceback
     with app.app_context():
         try:
@@ -96,4 +97,20 @@ def create_database(app):
         except Exception:
             print('create_all failed (continuing — another worker likely created the tables):')
             traceback.print_exc()
-#made another change 
+
+        # Lightweight auto-migration: create_all() never ALTERs existing tables,
+        # so add columns introduced after the table existed. Idempotent
+        # (ADD COLUMN IF NOT EXISTS) and Postgres-only; local SQLite is recreated.
+        uri = app.config.get('SQLALCHEMY_DATABASE_URI', '')
+        if not uri.startswith('sqlite'):
+            from sqlalchemy import text
+            migrations = [
+                "ALTER TABLE favorite ADD COLUMN IF NOT EXISTS media_type varchar(20)",
+                "ALTER TABLE favorite ADD COLUMN IF NOT EXISTS genre varchar(150)",
+            ]
+            for stmt in migrations:
+                try:
+                    db.session.execute(text(stmt))
+                    db.session.commit()
+                except Exception:
+                    db.session.rollback() 
