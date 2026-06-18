@@ -7,10 +7,6 @@
     <div class="deck-card" id="deckCard" data-deck-card>
       <img class="deck-img" id="deckImg" alt="" />
       <div class="deck-meta">
-        <div class="deck-badges">
-          <span class="deck-type" id="deckType"></span>
-          <span class="deck-genre" id="deckGenre" hidden></span>
-        </div>
         <h2 class="deck-title" id="deckTitle">Loading…</h2>
         <div class="deck-submeta" id="deckSubmeta"></div>
         <p class="deck-overview" id="deckOverview"></p>
@@ -72,21 +68,9 @@
     flex-direction: column;
     gap: 6px;
   }
-  .deck-badges { display: flex; flex-wrap: wrap; gap: 6px; }
-  .deck-type, .deck-genre {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .5px;
-    border-radius: var(--radius-pill);
-    padding: 2px 10px;
-  }
-  .deck-type { color: var(--green-dark); background: var(--green-light); }
-  .deck-genre { color: var(--text-muted); background: #eef1ec; border: 1px solid var(--border); }
-  .deck-genre[hidden] { display: none; }
   .deck-title { font-size: 19px; font-weight: 800; color: var(--text); line-height: 1.2; }
-  .deck-submeta { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+  .deck-submeta { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+  .deck-type-text { color: var(--green-dark); font-weight: 800; text-transform: uppercase; letter-spacing: .3px; }
   .deck-overview {
     font-size: 13.5px; color: var(--text-muted); line-height: 1.55;
     overflow: hidden;
@@ -134,8 +118,6 @@
   (function () {
     var card = document.getElementById('deckCard');
     var img = document.getElementById('deckImg');
-    var typeEl = document.getElementById('deckType');
-    var genreEl = document.getElementById('deckGenre');
     var submetaEl = document.getElementById('deckSubmeta');
     var titleEl = document.getElementById('deckTitle');
     var overviewEl = document.getElementById('deckOverview');
@@ -190,14 +172,14 @@
       // load new content
       img.src = d.image;
       img.alt = d.title;
-      typeEl.textContent = d.media_type === 'tv' ? 'TV Show' : 'Movie';
-      if (d.genre) { genreEl.textContent = d.genre; genreEl.hidden = false; }
-      else { genreEl.hidden = true; }
       titleEl.textContent = d.title;
       var bits = [];
+      if (d.genre) bits.push(d.genre);
       if (d.year) bits.push(d.year);
       if (d.rating) bits.push('★ ' + d.rating);
-      submetaEl.textContent = bits.join('  ·  ');
+      var typeLabel = d.media_type === 'tv' ? 'TV Show' : 'Movie';
+      submetaEl.innerHTML = '<span class="deck-type-text">' + typeLabel + '</span>'
+        + (bits.length ? '  ·  ' + bits.join('  ·  ') : '');
       overviewEl.textContent = d.overview || '';
       // force reflow so the reset above paints before we re-enable transitions
       void card.offsetWidth;
@@ -226,7 +208,7 @@
       fetch('/api/save_favorite', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: d.title, image: d.image })
+        body: JSON.stringify({ title: d.title, image: d.image, media_type: d.media_type, genre: d.genre })
       }).catch(function () {});
     }
 

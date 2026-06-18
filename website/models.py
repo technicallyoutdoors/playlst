@@ -25,6 +25,8 @@ class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     image = db.Column(db.String(500), nullable=False)
+    media_type = db.Column(db.String(20))   # 'movie' or 'tv'
+    genre = db.Column(db.String(150))       # e.g. 'Horror, Thriller'
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', overlaps="favorites")
 
