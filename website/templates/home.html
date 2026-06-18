@@ -59,15 +59,14 @@
   }
   .deck-img {
     width: 100%;
-    flex: 0 0 50%;       /* smaller poster -> more room for text */
+    flex: 1 1 auto;       /* poster grows to fill space the text doesn't use */
     min-height: 0;
     object-fit: cover;
     display: block;
     pointer-events: none;
   }
   .deck-meta {
-    flex: 1 1 auto;
-    min-height: 0;
+    flex: 0 0 auto;       /* size to content -> no empty white space below text */
     padding: 12px 16px 14px;
     display: flex;
     flex-direction: column;
@@ -90,8 +89,8 @@
   .deck-submeta { font-size: 12px; font-weight: 600; color: var(--text-muted); }
   .deck-overview {
     font-size: 13.5px; color: var(--text-muted); line-height: 1.55;
-    flex: 1 1 auto; min-height: 0; overflow: hidden;
-    display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical;
+    overflow: hidden;
+    display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical;
   }
   .deck-overlay {
     position: absolute;

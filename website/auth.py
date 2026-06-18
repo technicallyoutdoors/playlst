@@ -146,16 +146,17 @@ TV_GENRES = {
 def api_random_pick():
     """Return a random movie OR TV show (any genre) as JSON for the swipe deck."""
     media = random.choice(['movie', 'tv'])
-    page = random.randint(1, 20)
+    # sort by vote_count.desc + page 1-100 keeps us within the ~2000 most-rated
+    # (i.e. famous) titles, so obscure stuff doesn't show up
+    page = random.randint(1, 100)
     if media == 'movie':
         url = ("https://api.themoviedb.org/3/discover/movie"
-               f"?api_key={TMDB_API_KEY}&language=en-US&sort_by=popularity.desc"
-               f"&include_adult=false&page={page}"
-               "&with_watch_monetization_types=flatrate&watch_region=US")
+               f"?api_key={TMDB_API_KEY}&language=en-US&sort_by=vote_count.desc"
+               f"&include_adult=false&vote_count.gte=300&page={page}")
     else:
         url = ("https://api.themoviedb.org/3/discover/tv"
-               f"?api_key={TMDB_API_KEY}&language=en-US&sort_by=popularity.desc"
-               f"&page={page}&watch_region=US&with_watch_monetization_types=flatrate")
+               f"?api_key={TMDB_API_KEY}&language=en-US&sort_by=vote_count.desc"
+               f"&vote_count.gte=100&page={page}")
     try:
         data = requests.get(url, timeout=10).json()
     except Exception:
@@ -164,7 +165,10 @@ def api_random_pick():
     results = [t for t in data.get('results', []) if t.get('poster_path')]
     if not results:
         return jsonify({'ok': False, 'error': 'no results'}), 404
-    pick = random.choice(results)
+    # don't show titles already in the user's Playlst
+    owned = set(f.title for f in current_user.favorites)
+    fresh = [t for t in results if (t.get('title') or t.get('name', '')) not in owned]
+    pick = random.choice(fresh or results)
     gmap = MOVIE_GENRES if media == 'movie' else TV_GENRES
     genres = [gmap[g] for g in pick.get('genre_ids', []) if g in gmap][:2]
     return jsonify({
@@ -460,6 +464,7 @@ def search_title():
         response = requests.get(url, params=params)
         data = response.json()
         image_base = "https://image.tmdb.org/t/p/w500"
+        owned = set(f.title for f in current_user.favorites)
         for item in data.get('results', []):
             media_type = item.get('media_type')
             if media_type not in ('movie', 'tv'):
@@ -467,11 +472,13 @@ def search_title():
             poster = item.get('poster_path')
             if not poster:
                 continue
+            title = item.get('title') or item.get('name', '')
             results.append({
-                'title': item.get('title') or item.get('name', ''),
+                'title': title,
                 'image': image_base + poster,
                 'overview': item.get('overview', ''),
                 'media_type': media_type,
+                'already': title in owned,
             })
 
     return render_template('search.html', user=current_user, results=results, query=query)

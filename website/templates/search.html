@@ -29,12 +29,11 @@
         {% if item.overview %}
         <p class="overview">{{ item.overview[:120] }}{% if item.overview|length > 120 %}…{% endif %}</p>
         {% endif %}
-        <form method="post" action="{{ url_for('auth.add_favorite_movie') }}">
-          <input type="hidden" name="movie_title" value="{{ item.title }}">
-          <input type="hidden" name="movie_image_url" value="{{ item.image }}">
-          <input type="hidden" name="current_user" value="{{ current_user.id }}">
-          <button type="submit" class="add-btn">+ Playlst</button>
-        </form>
+        <button type="button" class="add-btn js-add{% if item.already %} added{% endif %}"
+                data-title="{{ item.title }}" data-image="{{ item.image }}"
+                {% if item.already %}disabled{% endif %}>
+          {% if item.already %}✓ Added{% else %}+ Playlst{% endif %}
+        </button>
       </div>
     </div>
   </div>
@@ -124,6 +123,32 @@
     color: #888;
     margin-top: 30px;
   }
+  .add-btn.added {
+    background: var(--green-light);
+    color: var(--green-dark);
+    cursor: default;
+  }
 </style>
+
+<script>
+  document.querySelectorAll('.js-add').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (btn.classList.contains('added')) return;
+      btn.disabled = true;
+      fetch('/api/save_favorite', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: btn.dataset.title, image: btn.dataset.image })
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d && d.ok) { btn.classList.add('added'); btn.textContent = '✓ Added'; }
+          else { btn.disabled = false; }
+        })
+        .catch(function () { btn.disabled = false; });
+    });
+  });
+</script>
 
 {% endblock %}
