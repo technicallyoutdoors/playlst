@@ -20,6 +20,11 @@
       </div>
       <div class="poster-card-body">
         <h5>{{ favorite.title }}</h5>
+        {% if favorite.media_type or favorite.genre %}
+        <div class="poster-meta-line">
+          <span class="type-text">{{ 'TV Show' if favorite.media_type == 'tv' else 'Movie' }}</span>{% if favorite.genre %} · {{ favorite.genre }}{% endif %}
+        </div>
+        {% endif %}
       </div>
     </div>
     {% endfor %}

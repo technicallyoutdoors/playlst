@@ -190,12 +190,15 @@ def api_save_favorite():
     data = request.get_json(silent=True) or {}
     title = (data.get('title') or '').strip()
     image = (data.get('image') or '').strip()
+    media_type = (data.get('media_type') or '').strip()[:20]
+    genre = (data.get('genre') or '').strip()[:150]
     if not title or not image:
         return jsonify({'ok': False, 'error': 'missing title/image'}), 400
     exists = Favorite.query.filter_by(user_id=current_user.id, title=title).first()
     if exists:
         return jsonify({'ok': True, 'duplicate': True})
-    db.session.add(Favorite(title=title, image=image, user_id=current_user.id))
+    db.session.add(Favorite(title=title, image=image, media_type=media_type,
+                            genre=genre, user_id=current_user.id))
     db.session.commit()
     return jsonify({'ok': True})
 
@@ -285,7 +288,7 @@ def add_favorite_movie():
         return redirect(url_for('auth.movies'))
     global favorites
     new_favorite = Favorite(title=title,
-                            user_id=current_user.id, image=image)
+                            user_id=current_user.id, image=image, media_type='movie')
     if new_favorite:
         db.session.add(new_favorite)
         db.session.commit()
@@ -340,7 +343,7 @@ def add_favorite_tv_show():
     if favorite_exists:
         flash('title as already been added to playlst', category='error')
         return redirect(url_for('auth.tvshows'))
-    new_favorite = Favorite(title=title, image=image, user_id=current_user.id)
+    new_favorite = Favorite(title=title, image=image, user_id=current_user.id, media_type='tv')
     if new_favorite:
         db.session.add(new_favorite)
         db.session.commit()
@@ -473,11 +476,14 @@ def search_title():
             if not poster:
                 continue
             title = item.get('title') or item.get('name', '')
+            gmap = MOVIE_GENRES if media_type == 'movie' else TV_GENRES
+            genres = [gmap[g] for g in item.get('genre_ids', []) if g in gmap][:2]
             results.append({
                 'title': title,
                 'image': image_base + poster,
                 'overview': item.get('overview', ''),
                 'media_type': media_type,
+                'genre': ', '.join(genres),
                 'already': title in owned,
             })
 
