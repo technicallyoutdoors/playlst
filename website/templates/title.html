@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}{{ info.title }}{% endblock %}
+{% block content %}
+
+<div class="page" style="max-width:560px;">
+  <a href="javascript:history.back()" class="back-link">‹ Back</a>
+
+  <div class="detail-card">
+    {% if info.backdrop %}
+    <div class="detail-backdrop" style="background-image:url('{{ info.backdrop }}')"></div>
+    {% endif %}
+    <div class="detail-head">
+      {% if info.poster %}<img class="detail-poster" src="{{ info.poster }}" alt="{{ info.title }}" />{% endif %}
+      <div class="detail-headinfo">
+        <h1 class="detail-title">{{ info.title }}</h1>
+        <div class="detail-sub">
+          <span class="type-text">{{ 'TV Show' if info.media_type == 'tv' else 'Movie' }}</span>
+          {% if info.genres %} · {{ info.genres }}{% endif %}
+        </div>
+        <div class="detail-sub2">
+          {% if info.year %}{{ info.year }}{% endif %}
+          {% if info.extra %} · {{ info.extra }}{% endif %}
+          {% if info.rating %} · ★ {{ info.rating }}{% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-body">
+      {% if info.tagline %}<p class="detail-tagline">“{{ info.tagline }}”</p>{% endif %}
+      <p class="detail-overview">{{ info.overview or 'No description available.' }}</p>
+
+      <h3 class="watch-heading">Where to watch</h3>
+      {% if providers %}
+      <div class="provider-grid">
+        {% for p in providers %}
+        <a href="{{ watch_link }}" target="_blank" rel="noopener" class="provider" title="{{ p.name }}">
+          <img src="{{ p.logo }}" alt="{{ p.name }}" />
+        </a>
+        {% endfor %}
+      </div>
+      {% if watch_link %}
+      <a href="{{ watch_link }}" target="_blank" rel="noopener" class="btn btn-primary watch-btn">View all watch options ›</a>
+      {% endif %}
+      {% else %}
+      <p class="no-providers">
+        No US streaming info found for this title.
+        {% if watch_link %}<a href="{{ watch_link }}" target="_blank" rel="noopener">Check JustWatch ›</a>{% endif %}
+      </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .back-link { display:inline-block; color:rgba(255,255,255,.9); font-weight:700; margin-bottom:12px; }
+  .detail-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .detail-backdrop {
+    height: 160px;
+    background-size: cover;
+    background-position: center;
+  }
+  .detail-head { display: flex; gap: 14px; padding: 16px; }
+  .detail-backdrop + .detail-head { margin-top: -50px; }
+  .detail-poster {
+    width: 96px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    flex-shrink: 0;
+    align-self: flex-start;
+    border: 2px solid #fff;
+  }
+  .detail-headinfo { padding-top: 54px; min-width: 0; }
+  .detail-backdrop ~ .detail-head .detail-headinfo { padding-top: 54px; }
+  .detail-title { text-align: left; font-size: 22px; color: var(--text); margin: 0 0 6px; }
+  .detail-sub { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+  .detail-sub .type-text { color: var(--green-dark); font-weight: 800; text-transform: uppercase; letter-spacing: .3px; }
+  .detail-sub2 { font-size: 12.5px; font-weight: 600; color: var(--text-muted); margin-top: 2px; }
+  .detail-body { padding: 0 16px 18px; }
+  .detail-tagline { font-style: italic; color: var(--text-muted); margin-bottom: 8px; }
+  .detail-overview { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .watch-heading { font-size: 14px; font-weight: 800; color: var(--text); margin: 18px 0 10px; text-transform: uppercase; letter-spacing: .5px; }
+  .provider-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+  .provider img {
+    width: 52px; height: 52px; border-radius: 12px; display: block;
+    box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+    transition: transform .12s;
+  }
+  .provider:hover img { transform: scale(1.06); }
+  .watch-btn { display: inline-block; margin-top: 14px; }
+  .no-providers { font-size: 14px; color: var(--text-muted); }
+</style>
+
+{% endblock %}

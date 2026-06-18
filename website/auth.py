@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app, session, jsonify
+from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app, session, jsonify, abort
 from .models import User, FamilyMember, Photo
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
@@ -165,14 +165,15 @@ def api_random_pick():
     results = [t for t in data.get('results', []) if t.get('poster_path')]
     if not results:
         return jsonify({'ok': False, 'error': 'no results'}), 404
-    # don't show titles already in the user's Playlst
-    owned = set(f.title for f in current_user.favorites)
-    fresh = [t for t in results if (t.get('title') or t.get('name', '')) not in owned]
+    # don't show titles already in the user's Playlst (match by TMDB id)
+    owned_ids = set(f.tmdb_id for f in current_user.favorites if f.tmdb_id)
+    fresh = [t for t in results if t.get('id') not in owned_ids]
     pick = random.choice(fresh or results)
     gmap = MOVIE_GENRES if media == 'movie' else TV_GENRES
     genres = [gmap[g] for g in pick.get('genre_ids', []) if g in gmap][:2]
     return jsonify({
         'ok': True,
+        'id': pick.get('id'),
         'title': pick.get('title') or pick.get('name', ''),
         'image': 'https://image.tmdb.org/t/p/w500' + pick['poster_path'],
         'overview': pick.get('overview', ''),
@@ -181,6 +182,59 @@ def api_random_pick():
         'year': (pick.get('release_date') or pick.get('first_air_date') or '')[:4],
         'rating': round(pick.get('vote_average') or 0, 1),
     })
+
+
+@auth.route('/title/<media_type>/<int:tmdb_id>')
+@login_required
+def title_detail(media_type, tmdb_id):
+    """Detail page for a movie/TV show, incl. where-to-watch providers (US)."""
+    if media_type not in ('movie', 'tv'):
+        abort(404)
+    url = (f"https://api.themoviedb.org/3/{media_type}/{tmdb_id}"
+           f"?api_key={TMDB_API_KEY}&language=en-US&append_to_response=watch/providers")
+    try:
+        data = requests.get(url, timeout=10).json()
+    except Exception:
+        flash("Couldn't load details right now. Try again.", category='error')
+        return redirect(url_for('auth.favorites'))
+    if not data or data.get('success') is False or 'id' not in data:
+        flash("Title not found.", category='error')
+        return redirect(url_for('auth.favorites'))
+
+    info = {
+        'title': data.get('title') or data.get('name', ''),
+        'overview': data.get('overview', ''),
+        'tagline': data.get('tagline', ''),
+        'poster': ('https://image.tmdb.org/t/p/w500' + data['poster_path']) if data.get('poster_path') else '',
+        'backdrop': ('https://image.tmdb.org/t/p/w780' + data['backdrop_path']) if data.get('backdrop_path') else '',
+        'genres': ', '.join(g['name'] for g in data.get('genres', [])),
+        'year': (data.get('release_date') or data.get('first_air_date') or '')[:4],
+        'rating': round(data.get('vote_average') or 0, 1),
+        'media_type': media_type,
+    }
+    if media_type == 'movie':
+        rt = data.get('runtime') or 0
+        info['extra'] = f"{rt} min" if rt else ''
+    else:
+        s = data.get('number_of_seasons') or 0
+        info['extra'] = (f"{s} season" + ('s' if s != 1 else '')) if s else ''
+
+    # where to watch (US region)
+    wp = (data.get('watch/providers') or {}).get('results', {}).get('US', {})
+    watch_link = wp.get('link', '')
+    providers, seen = [], set()
+    for kind in ('flatrate', 'free', 'ads', 'rent', 'buy'):
+        for p in wp.get(kind, []) or []:
+            name = p.get('provider_name')
+            if name and name not in seen and p.get('logo_path'):
+                seen.add(name)
+                providers.append({
+                    'name': name,
+                    'logo': 'https://image.tmdb.org/t/p/original' + p['logo_path'],
+                })
+
+    return render_template('title.html', user=current_user, info=info,
+                           providers=providers, watch_link=watch_link)
 
 
 @auth.route('/api/save_favorite', methods=['POST'])
@@ -192,13 +246,21 @@ def api_save_favorite():
     image = (data.get('image') or '').strip()
     media_type = (data.get('media_type') or '').strip()[:20]
     genre = (data.get('genre') or '').strip()[:150]
+    try:
+        tmdb_id = int(data.get('tmdb_id')) if data.get('tmdb_id') else None
+    except (ValueError, TypeError):
+        tmdb_id = None
     if not title or not image:
         return jsonify({'ok': False, 'error': 'missing title/image'}), 400
-    exists = Favorite.query.filter_by(user_id=current_user.id, title=title).first()
+    # dedup by TMDB id when we have it (titles aren't unique), else fall back to title
+    if tmdb_id:
+        exists = Favorite.query.filter_by(user_id=current_user.id, tmdb_id=tmdb_id).first()
+    else:
+        exists = Favorite.query.filter_by(user_id=current_user.id, title=title).first()
     if exists:
         return jsonify({'ok': True, 'duplicate': True})
     db.session.add(Favorite(title=title, image=image, media_type=media_type,
-                            genre=genre, user_id=current_user.id))
+                            genre=genre, tmdb_id=tmdb_id, user_id=current_user.id))
     db.session.commit()
     return jsonify({'ok': True})
 
@@ -467,7 +529,7 @@ def search_title():
         response = requests.get(url, params=params)
         data = response.json()
         image_base = "https://image.tmdb.org/t/p/w500"
-        owned = set(f.title for f in current_user.favorites)
+        owned_ids = set(f.tmdb_id for f in current_user.favorites if f.tmdb_id)
         for item in data.get('results', []):
             media_type = item.get('media_type')
             if media_type not in ('movie', 'tv'):
@@ -479,12 +541,13 @@ def search_title():
             gmap = MOVIE_GENRES if media_type == 'movie' else TV_GENRES
             genres = [gmap[g] for g in item.get('genre_ids', []) if g in gmap][:2]
             results.append({
+                'id': item.get('id'),
                 'title': title,
                 'image': image_base + poster,
                 'overview': item.get('overview', ''),
                 'media_type': media_type,
                 'genre': ', '.join(genres),
-                'already': title in owned,
+                'already': item.get('id') in owned_ids,
             })
 
     return render_template('search.html', user=current_user, results=results, query=query)

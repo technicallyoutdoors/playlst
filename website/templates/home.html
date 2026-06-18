@@ -208,7 +208,7 @@
       fetch('/api/save_favorite', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: d.title, image: d.image, media_type: d.media_type, genre: d.genre })
+        body: JSON.stringify({ title: d.title, image: d.image, media_type: d.media_type, genre: d.genre, tmdb_id: d.id })
       }).catch(function () {});
     }
 

@@ -27,6 +27,7 @@ class Favorite(db.Model):
     image = db.Column(db.String(500), nullable=False)
     media_type = db.Column(db.String(20))   # 'movie' or 'tv'
     genre = db.Column(db.String(150))       # e.g. 'Horror, Thriller'
+    tmdb_id = db.Column(db.Integer)         # TMDB id — unique per title, used for dedup
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship('User', overlaps="favorites")
 

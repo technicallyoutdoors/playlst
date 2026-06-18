@@ -30,6 +30,7 @@
       <button type="button" class="add-btn js-add{% if item.already %} added{% endif %}"
               data-title="{{ item.title }}" data-image="{{ item.image }}"
               data-media-type="{{ item.media_type }}" data-genre="{{ item.genre }}"
+              data-tmdb-id="{{ item.id }}"
               {% if item.already %}disabled{% endif %}>
         {% if item.already %}✓ Added{% else %}+ Playlst{% endif %}
       </button>
@@ -97,7 +98,7 @@
         method: 'POST',
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: btn.dataset.title, image: btn.dataset.image, media_type: btn.dataset.mediaType, genre: btn.dataset.genre })
+        body: JSON.stringify({ title: btn.dataset.title, image: btn.dataset.image, media_type: btn.dataset.mediaType, genre: btn.dataset.genre, tmdb_id: btn.dataset.tmdbId })
       })
         .then(function (r) { return r.json(); })
         .then(function (d) {
