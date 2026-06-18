@@ -66,12 +66,13 @@
         justify-content: space-between;
         padding: 0 20px;
         height: 60px;
-        background: linear-gradient(145deg, #1a2e0d 0%, #2d5a14 40%, var(--green) 100%);
-        border-bottom: none;
+        /* solid, darker than the page gradient so the bar reads as separate */
+        background: #0f1f07;
+        border-bottom: 1px solid rgba(255,255,255,.10);
         position: sticky;
         top: 0;
         z-index: 100;
-        box-shadow: var(--shadow);
+        box-shadow: 0 3px 14px rgba(0,0,0,.45);
       }
       .navbar-brand {
         display: inline-flex;
@@ -108,12 +109,27 @@
         transition: background .15s, color .15s;
       }
       .navbar-links a:hover { background: rgba(255,255,255,.15); color: #fff; }
+      .navbar-links a .fas { font-size: 17px; }
+      .nav-profile { padding: 2px !important; display: inline-flex; align-items: center; }
       .avatar-sm {
         width: 32px;
         height: 32px;
         border-radius: 50%;
         object-fit: cover;
         border: 2px solid var(--green);
+      }
+      .avatar-initial {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--green);
+        color: #fff;
+        font-weight: 800;
+        font-size: 15px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid rgba(255,255,255,.5);
       }
       @media (max-width: 640px) {
         .navbar-toggle { display: block; }
@@ -426,18 +442,19 @@
       </button>
       <div class="navbar-links">
         {% if current_user.is_authenticated %}
-          <a href="/home">Home</a>
-          <a href="/search">Search</a>
+          <a href="/home" title="Home" aria-label="Home"><i class="fas fa-house"></i></a>
+          <a href="/search" title="Search" aria-label="Search"><i class="fas fa-magnifying-glass"></i></a>
           <a href="/favorites">My Playlst</a>
           <a href="/shared_favorites">Matchedlst</a>
           <a href="/group_hub">Group Hub</a>
-          <a href="/user_profile">{{ current_user.first_name }}</a>
           <a href="/logout">Logout</a>
-          {% if current_user.photo %}
-            <a href="/user_profile">
+          <a href="/user_profile" class="nav-profile" title="Profile">
+            {% if current_user.photo %}
               <img src="{{ url_for('static', filename='uploads/' + current_user.photo.filename) }}" class="avatar-sm" alt="profile" />
-            </a>
-          {% endif %}
+            {% else %}
+              <span class="avatar-initial">{{ (current_user.first_name or '?')[0]|upper }}</span>
+            {% endif %}
+          </a>
         {% else %}
           <a href="/login">Login</a>
           <a href="/signup">Sign Up</a>
