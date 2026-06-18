@@ -10,15 +10,17 @@
   <div class="grid-2">
     {% for favorite in favorites %}
     <div class="poster-card">
-      <img src="{{ favorite.image }}" alt="{{ favorite.title }}" />
-      <div class="poster-card-body">
-        <h5>{{ favorite.title }}</h5>
-        {% if favorite.media_type or favorite.genre %}
-        <div class="poster-meta-line">
-          <span class="type-text">{{ 'TV Show' if favorite.media_type == 'tv' else 'Movie' }}</span>{% if favorite.genre %} · {{ favorite.genre }}{% endif %}
+      {% if favorite.tmdb_id %}<a class="card-link" href="{{ url_for('auth.title_detail', media_type=favorite.media_type or 'movie', tmdb_id=favorite.tmdb_id) }}">{% endif %}
+        <img src="{{ favorite.image }}" alt="{{ favorite.title }}" />
+        <div class="poster-card-body">
+          <h5>{{ favorite.title }}</h5>
+          {% if favorite.media_type or favorite.genre %}
+          <div class="poster-meta-line">
+            <span class="type-text">{{ 'TV Show' if favorite.media_type == 'tv' else 'Movie' }}</span>{% if favorite.genre %} · {{ favorite.genre }}{% endif %}
+          </div>
+          {% endif %}
         </div>
-        {% endif %}
-      </div>
+      {% if favorite.tmdb_id %}</a>{% endif %}
     </div>
     {% endfor %}
   </div>

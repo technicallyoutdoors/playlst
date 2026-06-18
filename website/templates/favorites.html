@@ -9,23 +9,23 @@
   <div class="grid-2">
     {% for favorite in favorites %}
     <div class="poster-card">
-      <div style="position:relative;">
+      {% if favorite.tmdb_id %}<a class="card-link" href="{{ url_for('auth.title_detail', media_type=favorite.media_type or 'movie', tmdb_id=favorite.tmdb_id) }}">{% endif %}
         <img src="{{ favorite.image }}" alt="{{ favorite.title }}" />
-        <form method="post" action="{{ url_for('auth.delete_favorite') }}" style="position:absolute;top:8px;right:8px;">
-          <input type="hidden" name="title" value="{{ favorite.title }}" />
-          <input type="hidden" name="image" value="{{ favorite.image }}" />
-          <input type="hidden" name="current_user" value="{{ current_user }}" />
-          <button type="submit" class="delete-btn" title="Remove">✕</button>
-        </form>
-      </div>
-      <div class="poster-card-body">
-        <h5>{{ favorite.title }}</h5>
-        {% if favorite.media_type or favorite.genre %}
-        <div class="poster-meta-line">
-          <span class="type-text">{{ 'TV Show' if favorite.media_type == 'tv' else 'Movie' }}</span>{% if favorite.genre %} · {{ favorite.genre }}{% endif %}
+        <div class="poster-card-body">
+          <h5>{{ favorite.title }}</h5>
+          {% if favorite.media_type or favorite.genre %}
+          <div class="poster-meta-line">
+            <span class="type-text">{{ 'TV Show' if favorite.media_type == 'tv' else 'Movie' }}</span>{% if favorite.genre %} · {{ favorite.genre }}{% endif %}
+          </div>
+          {% endif %}
         </div>
-        {% endif %}
-      </div>
+      {% if favorite.tmdb_id %}</a>{% endif %}
+      <form method="post" action="{{ url_for('auth.delete_favorite') }}" class="delete-form">
+        <input type="hidden" name="title" value="{{ favorite.title }}" />
+        <input type="hidden" name="image" value="{{ favorite.image }}" />
+        <input type="hidden" name="current_user" value="{{ current_user }}" />
+        <button type="submit" class="delete-btn" title="Remove">✕</button>
+      </form>
     </div>
     {% endfor %}
   </div>
@@ -60,6 +60,7 @@
     line-height: 1;
   }
   .delete-btn:hover { background: #dc2626; }
+  .delete-form { position: absolute; top: 8px; right: 8px; z-index: 2; margin: 0; }
   .empty-state {
     display: flex;
     flex-direction: column;

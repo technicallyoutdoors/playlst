@@ -107,6 +107,7 @@ def create_database(app):
             migrations = [
                 "ALTER TABLE favorite ADD COLUMN IF NOT EXISTS media_type varchar(20)",
                 "ALTER TABLE favorite ADD COLUMN IF NOT EXISTS genre varchar(150)",
+                "ALTER TABLE favorite ADD COLUMN IF NOT EXISTS tmdb_id integer",
             ]
             for stmt in migrations:
                 try:
