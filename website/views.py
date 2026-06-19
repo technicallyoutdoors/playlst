@@ -12,3 +12,13 @@ views = Blueprint('views', __name__)
 @views.route('/')
 def main():
     return render_template("main.html", user=current_user)
+
+
+@views.route('/privacy')
+def privacy():
+    return render_template("privacy.html", user=current_user)
+
+
+@views.route('/terms')
+def terms():
+    return render_template("terms.html", user=current_user)

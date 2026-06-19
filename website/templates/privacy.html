@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Privacy Policy{% endblock %}
+{% block content %}
+
+<div class="page" style="max-width:760px;">
+  <h1>Privacy Policy</h1>
+
+  <div class="card">
+    <div class="card-body legal">
+      <p class="legal-meta">Last updated: [INSERT DATE]</p>
+
+      <p>This Privacy Policy explains how Playlst (“we,” “us,” “our”) collects, uses, and
+      protects your information when you use playlstapp.com and related services (the
+      “Service”). By using the Service, you agree to this policy.</p>
+
+      <h2>Information we collect</h2>
+      <ul>
+        <li><strong>Account information:</strong> your name, email address, and a securely hashed password.</li>
+        <li><strong>If you sign in with Google:</strong> your name and email address from your Google account (we never receive your Google password).</li>
+        <li><strong>Profile photo:</strong> an image you choose to upload.</li>
+        <li><strong>Your activity:</strong> the movies and TV shows you save to your Playlst, and any groups you create or join.</li>
+        <li><strong>Technical data:</strong> basic logs such as IP address, browser type, and timestamps, used for security and operating the Service.</li>
+      </ul>
+
+      <h2>How we use your information</h2>
+      <ul>
+        <li>To create and manage your account and authenticate you.</li>
+        <li>To provide core features — saving titles, creating groups, and matching shared favorites between group members.</li>
+        <li>To send account-related emails, such as password resets.</li>
+        <li>To maintain security, prevent abuse, and improve the Service.</li>
+      </ul>
+
+      <h2>How your information is shared</h2>
+      <p>We do <strong>not</strong> sell your personal information. Information is shared only:</p>
+      <ul>
+        <li><strong>With your group members:</strong> when you join a group, members can see titles you’ve both saved (your “Matchedlst”).</li>
+        <li><strong>With service providers</strong> that help us run the Service: Amazon Web Services (hosting and database), Google (sign-in, if you use it), our email provider (password-reset emails), and The Movie Database (TMDB) for movie/TV information.</li>
+        <li><strong>If required by law</strong> or to protect our rights and users.</li>
+      </ul>
+
+      <h2>Children’s privacy</h2>
+      <p>The Service is not directed to children under 13, and we do not knowingly collect
+      personal information from anyone under 13. If you believe a child under 13 has provided
+      us information, please contact us at [INSERT CONTACT EMAIL] and we will delete it.</p>
+
+      <h2>Your choices and rights</h2>
+      <ul>
+        <li>You can view and edit your profile, and remove saved titles, at any time in the app.</li>
+        <li>You can request deletion of your account and associated data by contacting us at [INSERT CONTACT EMAIL].</li>
+        <li>Depending on where you live (e.g., the EU or California), you may have additional rights to access, correct, or delete your data; contact us to exercise them.</li>
+      </ul>
+
+      <h2>Data security &amp; retention</h2>
+      <p>Passwords are stored hashed, not in plain text, and data is transmitted over HTTPS.
+      No method of storage or transmission is 100% secure, but we take reasonable measures to
+      protect your information. We retain your information for as long as your account is active
+      or as needed to provide the Service.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>We may update this policy from time to time. Material changes will be reflected by the
+      “Last updated” date above.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about this policy? Contact us at <strong>[INSERT CONTACT EMAIL]</strong>.</p>
+
+      <p class="legal-meta" style="margin-top:18px;">This product uses the TMDB API but is not
+      endorsed or certified by TMDB.</p>
+    </div>
+  </div>
+
+  <p class="text-center" style="margin-top:16px;"><a href="/terms" style="font-weight:700;">Terms of Service ›</a></p>
+</div>
+
+<style>
+  .legal { text-align: left; }
+  .legal h2 { font-size: 17px; color: var(--text); margin: 22px 0 8px; }
+  .legal p, .legal li { color: var(--text); font-size: 14px; line-height: 1.6; }
+  .legal ul { padding-left: 20px; margin-bottom: 8px; }
+  .legal li { list-style: disc; margin-bottom: 4px; }
+  .legal-meta { color: var(--text-muted); font-size: 12px; }
+</style>
+
+{% endblock %}

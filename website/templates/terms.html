@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Terms of Service{% endblock %}
+{% block content %}
+
+<div class="page" style="max-width:760px;">
+  <h1>Terms of Service</h1>
+
+  <div class="card">
+    <div class="card-body legal">
+      <p class="legal-meta">Last updated: [INSERT DATE]</p>
+
+      <p>Welcome to Playlst. By creating an account or using playlstapp.com (the “Service”),
+      you agree to these Terms of Service. If you don’t agree, please don’t use the Service.</p>
+
+      <h2>1. Eligibility &amp; age requirement</h2>
+      <p>You must be at least <strong>13 years old</strong> to use the Service. The Service is
+      not intended for children under 13, and by using it you confirm that you are 13 or older.
+      If you are under 18, you should review these Terms with a parent or guardian.</p>
+
+      <h2>2. Your account</h2>
+      <p>You are responsible for keeping your login credentials secure and for all activity
+      under your account. Provide accurate information and let us know of any unauthorized use.</p>
+
+      <h2>3. Acceptable use</h2>
+      <p>You agree not to misuse the Service, including by attempting to disrupt it, access
+      other users’ accounts, upload unlawful or infringing content (including profile photos),
+      or use it for any illegal purpose.</p>
+
+      <h2>4. Content &amp; third-party data</h2>
+      <p>Movie and TV information, posters, and “where to watch” data are provided by The Movie
+      Database (TMDB) and its partners. This product uses the TMDB API but is not endorsed or
+      certified by TMDB. Availability and links to streaming services are provided for
+      convenience and may not be accurate or available in your region.</p>
+
+      <h2>5. Your content</h2>
+      <p>You retain ownership of content you upload (such as a profile photo). You grant us a
+      limited license to store and display it as needed to operate the Service.</p>
+
+      <h2>6. Disclaimers</h2>
+      <p>The Service is provided “as is” and “as available,” without warranties of any kind. We
+      do not guarantee the Service will be uninterrupted, error-free, or that the information
+      shown will be accurate.</p>
+
+      <h2>7. Limitation of liability</h2>
+      <p>To the maximum extent permitted by law, Playlst and its operators will not be liable for
+      any indirect, incidental, or consequential damages arising from your use of the Service.</p>
+
+      <h2>8. Termination</h2>
+      <p>You may delete your account at any time. We may suspend or terminate access if you
+      violate these Terms or misuse the Service.</p>
+
+      <h2>9. Changes to these Terms</h2>
+      <p>We may update these Terms from time to time. Continued use after changes means you
+      accept the updated Terms.</p>
+
+      <h2>10. Governing law</h2>
+      <p>These Terms are governed by the laws of [INSERT STATE/COUNTRY], without regard to its
+      conflict-of-laws rules.</p>
+
+      <h2>11. Contact</h2>
+      <p>Questions about these Terms? Contact us at <strong>[INSERT CONTACT EMAIL]</strong>.</p>
+    </div>
+  </div>
+
+  <p class="text-center" style="margin-top:16px;"><a href="/privacy" style="font-weight:700;">Privacy Policy ›</a></p>
+</div>
+
+<style>
+  .legal { text-align: left; }
+  .legal h2 { font-size: 17px; color: var(--text); margin: 22px 0 8px; }
+  .legal p, .legal li { color: var(--text); font-size: 14px; line-height: 1.6; }
+  .legal ul { padding-left: 20px; margin-bottom: 8px; }
+  .legal li { list-style: disc; margin-bottom: 4px; }
+  .legal-meta { color: var(--text-muted); font-size: 12px; }
+</style>
+
+{% endblock %}
